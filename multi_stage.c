@@ -1,8 +1,8 @@
 /**
  * Smarc
  *
- * Copyright (c) 2009-2011 Institut T�l�com - T�l�com Paristech
- * T�l�com ParisTech / dept. TSI
+ * Copyright (c) 2009-2011 Institut Télécom - Télécom Paristech
+ * Télécom ParisTech / dept. TSI
  *
  * Authors : Benoit Mathieu, Jacques Prado
  *
