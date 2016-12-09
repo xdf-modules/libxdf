@@ -1,8 +1,8 @@
 /**
  * Smarc
  *
- * Copyright (c) 2009-2011 Institut Télécom - Télécom Paristech
- * Télécom ParisTech / dept. TSI
+ * Copyright (c) 2009-2011 Institut TÃ©lÃ©com - TÃ©lÃ©com Paristech
+ * TÃ©lÃ©com ParisTech / dept. TSI
  *
  * Authors : Benoit Mathieu, Jacques Prado
  *
@@ -34,7 +34,7 @@
 
 #include "remez_lp.h"
 #include <math.h>
-#include <malloc.h>
+//#include <malloc.h>
 #include <stdlib.h>
 #include <stdio.h>
 

@@ -1,8 +1,8 @@
 /**
  * Smarc
  *
- * Copyright (c) 2009-2011 Institut Télécom - Télécom Paristech
- * Télécom ParisTech / dept. TSI
+ * Copyright (c) 2009-2011 Institut TÃ©lÃ©com - TÃ©lÃ©com Paristech
+ * TÃ©lÃ©com ParisTech / dept. TSI
  *
  * Authors : Benoit Mathieu, Jacques Prado
  *
@@ -27,7 +27,7 @@
 #include "multi_stage.h"
 #include "polyfilt.h"
 #include <stdio.h>
-#include <malloc.h>
+//#include <malloc.h>
 #include <string.h>
 #include <math.h>
 
@@ -389,8 +389,3 @@ int smarc_resample_flush(struct PFilter* pfilt, struct PState* pstate,
 	}
 	return nbWritten;
 }
-
-
-
-
-
