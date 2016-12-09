@@ -47,11 +47,11 @@ uint64_t readLength(std::ifstream &file)
 }
 
 
-XDF::XDF()
+Xdf::Xdf()
 {
 }
 
-void XDF::load_xdf(XDF::XDFdataStruct &XDFdata, std::string filename)
+void Xdf::load_xdf(Xdf::XDFdataStruct &XDFdata, std::string filename)
 {
     clock_t time;
     time = clock();
@@ -764,4 +764,5 @@ void XDF::load_xdf(XDF::XDFdataStruct &XDFdata, std::string filename)
         std::cout << "Unable to open file";
         exit(EXIT_FAILURE);
     }
+
 }

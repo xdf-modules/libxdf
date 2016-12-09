@@ -23,3 +23,4 @@ add_library(xdf STATIC
 )
 
 set_property(TARGET xdf PROPERTY CXX_STANDARD 11)
+set_property(TARGET xdf PROPERTY C_STANDARD 99)
