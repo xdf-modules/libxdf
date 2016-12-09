@@ -1,8 +1,8 @@
 /**
  * Smarc
  *
- * Copyright (c) 2009-2011 Institut Télécom - Télécom Paristech
- * Télécom ParisTech / dept. TSI
+ * Copyright (c) 2009-2011 Institut Tï¿½lï¿½com - Tï¿½lï¿½com Paristech
+ * Tï¿½lï¿½com ParisTech / dept. TSI
  *
  * Authors : Benoit Mathieu, Jacques Prado
  *
@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-#include "malloc.h"
+//#include "malloc.h"
 
 #include "remez_lp.h"
 
@@ -169,4 +169,3 @@ void reset_psstate(struct PSState* pstate, const struct PSFilter* pfilt) {
 	pstate->skip=pfilt->filter_delay;
 	pstate->phase = 0;
 }
-
