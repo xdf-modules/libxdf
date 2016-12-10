@@ -6,7 +6,7 @@
 #include "pugixml.hpp"  //pugi XML parser
 #include <sstream>
 #include <algorithm>
-#include <smarc.h>      //resampling library
+#include "smarc.h"      //resampling library
 #include <time.h>       /* clock_t, clock, CLOCKS_PER_SEC */
 
 
@@ -47,11 +47,11 @@ uint64_t readLength(std::ifstream &file)
 }
 
 
-XDF::XDF()
+Xdf::Xdf()
 {
 }
 
-void XDF::load_xdf(XDF::XDFdataStruct &XDFdata, std::string filename)
+void Xdf::load_xdf(Xdf::XDFdataStruct &XDFdata, std::string filename)
 {
     clock_t time;
     time = clock();
@@ -605,18 +605,18 @@ void XDF::load_xdf(XDF::XDFdataStruct &XDFdata, std::string filename)
                 //if it already exists, add additional channel numbers to that sample rate
                 else
                 {
-                    int index {std::distance(srateMap.begin(),it)} ;
+                    int index (std::distance(srateMap.begin(),it)) ;
                     srateMap[index].second += XDFdata.streams[st].info.channel_count;
                 }
             }
         }
 
         //search the srateMap to see which sample rate has the most channels
-        int index {std::distance(srateMap.begin(),
+        int index (std::distance(srateMap.begin(),
                                  std::max_element(srateMap.begin(),srateMap.end(),
                                                 [] (const std::pair<sampRate, numChannel> &largest,
                                                 const std::pair<sampRate, numChannel> &first)
-                                                { return largest.second < first.second; }))};
+                                                { return largest.second < first.second; })));
         XDFdata.majSR = srateMap[index].first; //the sample rate that has the most channels
 
 
@@ -764,4 +764,5 @@ void XDF::load_xdf(XDF::XDFdataStruct &XDFdata, std::string filename)
         std::cout << "Unable to open file";
         exit(EXIT_FAILURE);
     }
+
 }

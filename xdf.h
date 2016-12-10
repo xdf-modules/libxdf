@@ -4,11 +4,12 @@
 #include <string>
 #include <vector>
 
-class XDF
+
+class Xdf
 {
 
 public:
-    XDF();
+    Xdf();
 
     //options for loading XDF files
     class Opts
@@ -68,7 +69,7 @@ public:
             std::string channel_format;
             std::string source_id;
             float version;
-            long double created_at;
+            double created_at;
             std::string uid;
             std::string session_id;
             std::string hostname;
@@ -84,6 +85,7 @@ public:
             double last_timestamp;
             int sample_count;
             double measured_srate;
+            //std::map<std::string, std::map<std::string, std::map<std::string, std::string> > > desc;
         } info;
 
         struct
@@ -128,6 +130,7 @@ public:
 
 
     void load_xdf(XDFdataStruct &XDFdata, std::string filename);
+
 };
 
 #endif // XDF_H
