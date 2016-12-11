@@ -530,12 +530,7 @@ void Xdf::load_xdf(Xdf::XDFdataStruct &XDFdata, std::string filename)
         }
 
 
-
-        //=============================================================================
-        //===resampling all channels to the sample rate that has the most channels=====
-        //=============================================================================
-
-        //first find out which sample rate has the most channels
+        // find out which sample rate has the most channels
         typedef int sampRate;
         typedef int numChannel;
 
@@ -584,6 +579,9 @@ void Xdf::load_xdf(Xdf::XDFdataStruct &XDFdata, std::string filename)
 
 void Xdf::resampleXDF(Xdf::XDFdataStruct &XDFdata, int userSrate)
 {
+    //if user entered a preferred sample rate, we resample all the channels to that sample rate
+    //Otherwise, we resample all channels to the sample rate that has the most channels
+
     clock_t time = clock();
 
 #define BUF_SIZE 8192
