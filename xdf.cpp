@@ -30,9 +30,6 @@ void Xdf::load_xdf(Xdf::XDFdataStruct &XDFdata, std::string filename)
     }
     */
 
-
-    //XDFdataStruct XDFdata; //final return data;
-
     std::vector<int> idmap; //remaps stream id's onto indices in streams
 
 
@@ -573,143 +570,8 @@ void Xdf::load_xdf(Xdf::XDFdataStruct &XDFdata, std::string filename)
         XDFdata.majSR = srateMap[index].first; //the sample rate that has the most channels
 
 
-
-        //resampling starts, using smarc resampling library "smarc.c"
-#define BUF_SIZE 8192
-        for (size_t x = 0; x< XDFdata.streams.size(); x++)
-        {
-            if (!XDFdata.streams[x].time_series.empty() &&
-                     XDFdata.streams[x].info.nominal_srate != XDFdata.majSR &&
-                     XDFdata.streams[x].info.nominal_srate != 0)
-            {
-                int fsin = XDFdata.streams[x].info.nominal_srate;       // input samplerate
-                int fsout = XDFdata.majSR;                              // output samplerate
-                double bandwidth = 0.95;                                // bandwidth
-                double rp = 0.1;                                        // passband ripple factor
-                double rs = 140;                                        // stopband attenuation
-                double tol = 0.000001;                                  // tolerance
-
-                // initialize smarc filter
-                struct PFilter* pfilt = smarc_init_pfilter(fsin, fsout, bandwidth, rp,
-                    rs, tol, NULL, 0);
-                if (pfilt == NULL)
-                    continue;
-
-                // initialize smarc filter state
-                struct PState* pstate = smarc_init_pstate(pfilt);
-
-
-                for (size_t w = 0; w < XDFdata.streams[x].time_series.size(); w++)
-                {
-                    // initialize buffers
-                    int read = 0;
-                    int written = 0;
-                    const int IN_BUF_SIZE = BUF_SIZE;
-                    const int OUT_BUF_SIZE = (int) smarc_get_output_buffer_size(pfilt,XDFdata.streams[x].time_series[w].size());
-                    double* inbuf = new double[XDFdata.streams[x].time_series[w].size()];
-                    double* outbuf = new double[OUT_BUF_SIZE];
-
-
-                    std::copy(XDFdata.streams[x].time_series[w].begin(),
-                              XDFdata.streams[x].time_series[w].end(),
-                              inbuf);
-
-                    read = XDFdata.streams[x].time_series[w].size();
-
-
-                    // resample signal block
-                    written = smarc_resample(pfilt, pstate, inbuf, read, outbuf,
-                            OUT_BUF_SIZE);
-
-                    // do what you want with your output
-                    XDFdata.streams[x].time_series[w].resize(written);
-                    std::copy ( outbuf, outbuf+written, XDFdata.streams[x].time_series[w].begin() );
-
-                    // flushing last values
-                    written = smarc_resample_flush(pfilt, pstate, outbuf,
-                            OUT_BUF_SIZE);
-
-                    // do what you want with your output
-                    XDFdata.streams[x].time_series[w].resize(XDFdata.streams[x].time_series[w].size()+written);
-                    std::copy ( outbuf, outbuf+written,
-                                XDFdata.streams[x].time_series[w].begin()
-                                + XDFdata.streams[x].time_series[w].size() - written );
-
-
-                    // you are done with converting your signal.
-                    // If you want to reuse the same converter to process another signal
-                    // just reset the state:
-                    smarc_reset_pstate(pstate,pfilt);
-
-                    delete[] inbuf;
-                    delete[] outbuf;
-                }
-                // release smarc filter state
-               smarc_destroy_pstate(pstate);
-
-               // release smarc filter
-               smarc_destroy_pfilter(pfilt);
-
-               XDFdata.streams[x].info.nominal_srate = XDFdata.majSR;
-            }
-        }
-        //resampling finishes here
-
-
-        //======================================================================
-        //===========Calculating total length & total channel count=============
-        //======================================================================
-
-
-        //calculating total channel count, and indexing them onto streamMap
-        for (size_t c = 0; c < XDFdata.streams.size(); c++)
-        {
-            if(!XDFdata.streams[c].time_series.empty())
-            {
-                XDFdata.totalCh += XDFdata.streams[c].info.channel_count;
-                if (XDFdata.streamMap.empty())
-                    XDFdata.streamMap.emplace_back(c,XDFdata.streams[c].info.channel_count);
-                else
-                    XDFdata.streamMap.emplace_back(c,XDFdata.streamMap.back().second + XDFdata.streams[c].info.channel_count);
-            }
-        }
-
-        //global length
-        XDFdata.totalLen = (XDFdata.maxTS - XDFdata.minTS) * XDFdata.majSR;
-
-        //beware of possible deviation
-        for (size_t st = 0; st < XDFdata.streams.size(); st++)
-        {
-            if(!XDFdata.streams[st].time_series.empty())
-            {
-                if (XDFdata.totalLen < XDFdata.streams[st].time_series.front().size())
-                    XDFdata.totalLen = XDFdata.streams[st].time_series.front().size();
-            }
-        }
-
-        //free up as much memory as possible
-        for (size_t st = 0; st < XDFdata.streams.size(); st++)
-        {
-            //we don't need to keep all the time stamps unless it's a stream with irregular samples
-            if (XDFdata.streams[st].info.nominal_srate != 0)
-            {
-                std::vector<float> nothing;
-                //however we still need to keep the first time stamp of each stream to decide at which position the signal should start
-                nothing.emplace_back(XDFdata.streams[st].time_stamps.front());
-                XDFdata.streams[st].time_stamps.swap(nothing);
-            }
-        }
-
-        time = clock() - time;
-
-        std::cout << "it took " << time << " clicks (" << ((float)time) / CLOCKS_PER_SEC << " seconds)"
-                  << " reading and resampling in total" << std::endl;
-
-
-        //loading finishes, close file and return XDFdata
+        //loading finishes, close file
         file.close();
-
-        //return XDFdata;
 
     }
     else
@@ -717,6 +579,142 @@ void Xdf::load_xdf(Xdf::XDFdataStruct &XDFdata, std::string filename)
         std::cout << "Unable to open file";
         exit(EXIT_FAILURE);
     }
+
+}
+
+void Xdf::resampleXDF(Xdf::XDFdataStruct &XDFdata, int userSrate)
+{
+    clock_t time = clock();
+
+#define BUF_SIZE 8192
+    for (size_t x = 0; x< XDFdata.streams.size(); x++)
+    {
+        if (!XDFdata.streams[x].time_series.empty() &&
+                 XDFdata.streams[x].info.nominal_srate != userSrate &&
+                 XDFdata.streams[x].info.nominal_srate != 0)
+        {
+            int fsin = XDFdata.streams[x].info.nominal_srate;       // input samplerate
+            int fsout = userSrate;                              // output samplerate
+            double bandwidth = 0.95;                                // bandwidth
+            double rp = 0.1;                                        // passband ripple factor
+            double rs = 140;                                        // stopband attenuation
+            double tol = 0.000001;                                  // tolerance
+
+            // initialize smarc filter
+            struct PFilter* pfilt = smarc_init_pfilter(fsin, fsout, bandwidth, rp,
+                rs, tol, NULL, 0);
+            if (pfilt == NULL)
+                continue;
+
+            // initialize smarc filter state
+            struct PState* pstate = smarc_init_pstate(pfilt);
+
+
+            for (size_t w = 0; w < XDFdata.streams[x].time_series.size(); w++)
+            {
+                // initialize buffers
+                int read = 0;
+                int written = 0;
+                const int IN_BUF_SIZE = BUF_SIZE;
+                const int OUT_BUF_SIZE = (int) smarc_get_output_buffer_size(pfilt,XDFdata.streams[x].time_series[w].size());
+                double* inbuf = new double[XDFdata.streams[x].time_series[w].size()];
+                double* outbuf = new double[OUT_BUF_SIZE];
+
+
+                std::copy(XDFdata.streams[x].time_series[w].begin(),
+                          XDFdata.streams[x].time_series[w].end(),
+                          inbuf);
+
+                read = XDFdata.streams[x].time_series[w].size();
+
+
+                // resample signal block
+                written = smarc_resample(pfilt, pstate, inbuf, read, outbuf,
+                        OUT_BUF_SIZE);
+
+                // do what you want with your output
+                XDFdata.streams[x].time_series[w].resize(written);
+                std::copy ( outbuf, outbuf+written, XDFdata.streams[x].time_series[w].begin() );
+
+                // flushing last values
+                written = smarc_resample_flush(pfilt, pstate, outbuf,
+                        OUT_BUF_SIZE);
+
+                // do what you want with your output
+                XDFdata.streams[x].time_series[w].resize(XDFdata.streams[x].time_series[w].size()+written);
+                std::copy ( outbuf, outbuf+written,
+                            XDFdata.streams[x].time_series[w].begin()
+                            + XDFdata.streams[x].time_series[w].size() - written );
+
+
+                // you are done with converting your signal.
+                // If you want to reuse the same converter to process another signal
+                // just reset the state:
+                smarc_reset_pstate(pstate,pfilt);
+
+                delete[] inbuf;
+                delete[] outbuf;
+            }
+            // release smarc filter state
+           smarc_destroy_pstate(pstate);
+
+           // release smarc filter
+           smarc_destroy_pfilter(pfilt);
+
+           //XDFdata.streams[x].info.nominal_srate = XDFdata.majSR;
+        }
+    }
+    //resampling finishes here
+
+
+    //======================================================================
+    //===========Calculating total length & total channel count=============
+    //======================================================================
+
+
+    //calculating total channel count, and indexing them onto streamMap
+    for (size_t c = 0; c < XDFdata.streams.size(); c++)
+    {
+        if(!XDFdata.streams[c].time_series.empty())
+        {
+            XDFdata.totalCh += XDFdata.streams[c].info.channel_count;
+            if (XDFdata.streamMap.empty())
+                XDFdata.streamMap.emplace_back(c,XDFdata.streams[c].info.channel_count);
+            else
+                XDFdata.streamMap.emplace_back(c,XDFdata.streamMap.back().second + XDFdata.streams[c].info.channel_count);
+        }
+    }
+
+    //global length
+    XDFdata.totalLen = (XDFdata.maxTS - XDFdata.minTS) * userSrate;
+
+    //beware of possible deviation
+    for (size_t st = 0; st < XDFdata.streams.size(); st++)
+    {
+        if(!XDFdata.streams[st].time_series.empty())
+        {
+            if (XDFdata.totalLen < XDFdata.streams[st].time_series.front().size())
+                XDFdata.totalLen = XDFdata.streams[st].time_series.front().size();
+        }
+    }
+
+    //free up as much memory as possible
+    for (size_t st = 0; st < XDFdata.streams.size(); st++)
+    {
+        //we don't need to keep all the time stamps unless it's a stream with irregular samples
+        if (XDFdata.streams[st].info.nominal_srate != 0)
+        {
+            std::vector<float> nothing;
+            //however we still need to keep the first time stamp of each stream to decide at which position the signal should start
+            nothing.emplace_back(XDFdata.streams[st].time_stamps.front());
+            XDFdata.streams[st].time_stamps.swap(nothing);
+        }
+    }
+
+    time = clock() - time;
+
+    std::cout << "it took " << time << " clicks (" << ((float)time) / CLOCKS_PER_SEC << " seconds)"
+              << " resampling" << std::endl;
 
 }
 
@@ -753,3 +751,4 @@ uint64_t Xdf::readLength(std::ifstream &file)
         return 0;
     }
 }
+

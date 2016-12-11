@@ -86,8 +86,11 @@ public:
 
     void load_xdf(XDFdataStruct &XDFdata, std::string filename);
 
+    void resampleXDF(XDFdataStruct &XDFdata, int userSrate);
+
     uint64_t readLength(std::ifstream &file);
 
+    int userPreferredSrate = 0;
 };
 
 #endif // XDF_H
