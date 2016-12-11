@@ -6,7 +6,7 @@
 
 QT       -= gui
 
-TARGET = XDF
+TARGET = xdf
 TEMPLATE = lib
 CONFIG += staticlib
 

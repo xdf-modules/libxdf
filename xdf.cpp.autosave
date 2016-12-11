@@ -30,9 +30,6 @@ void Xdf::load_xdf(Xdf::XDFdataStruct &XDFdata, std::string filename)
     }
     */
 
-
-    //XDFdataStruct XDFdata; //final return data;
-
     std::vector<int> idmap; //remaps stream id's onto indices in streams
 
 

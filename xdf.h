@@ -11,50 +11,6 @@ class Xdf
 public:
     Xdf();
 
-    //options for loading XDF files
-    class Opts
-    {
-    public:
-        bool onChunk;
-        bool verbose;
-        bool handleClockSynchronization;
-        bool handleClockResets;
-        bool handleJitterRemoval;
-        double jitterBreakThresholdSeconds;
-        int jitterBreakThresholdSamples;
-        int clockResetThresholdSeconds;
-        int clockResetThresholdStds;
-        int clockResetThresholdOffsetSeconds;
-        int clockResetThresholdOffsetStds;
-        double winsorThreshold;
-        int clockResetMaxJitter;
-        bool correctStreamLags;
-        double frameRateAccuracy;
-
-        Opts() : onChunk { false },
-        verbose{ false },
-        handleClockSynchronization{ true },
-        handleClockResets{ true },
-        handleJitterRemoval{ true },
-        jitterBreakThresholdSeconds{ 1 },
-        jitterBreakThresholdSamples{ 500 },
-        clockResetThresholdSeconds{ 5 },
-        clockResetThresholdStds{ 5 },
-        clockResetThresholdOffsetSeconds{ 1 },
-        clockResetThresholdOffsetStds{ 10 },
-        winsorThreshold{ 0.0001 },//???
-        clockResetMaxJitter{ 5 }, //double check??
-        correctStreamLags{ true },
-        frameRateAccuracy{ 0.05 }
-        {
-        }
-        ~Opts()
-        {
-
-        }
-        //OnChunk onChunkFunc(OnChunk input);  //need help
-    };
-
     struct Stream
     {
         std::vector<std::vector<float> > time_series;
@@ -128,8 +84,9 @@ public:
         std::vector<std::pair<eventName, eventTimeStamp> > eventMap; //copy all the events of all streams to here <events, timestamps>
     };
 
-
     void load_xdf(XDFdataStruct &XDFdata, std::string filename);
+
+    uint64_t readLength(std::ifstream &file);
 
 };
 
