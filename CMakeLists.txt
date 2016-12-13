@@ -1,26 +1,33 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.1)
 
 project(libxdf)
 
-add_library(xdf STATIC
-    xdf.h
+include_directories("${PROJECT_SOURCE_DIR}")
+
+set(SOURCE_FILES
     xdf.cpp
-    pugiconfig.hpp
-    pugixml.hpp
     pugixml.cpp
-    filtering.h
     filtering.c
-    multi_stage.h
     multi_stage.c
-    polyfilt.h
     polyfilt.c
-    remez_lp.h
     remez_lp.c
-    smarc.h
     smarc.c
-    stage_impl.h
     stage_impl.c
 )
+
+set(HEADER_FILES
+    xdf.h
+    pugiconfig.hpp
+    pugixml.hpp
+    filtering.h
+    multi_stage.h
+    polyfilt.h
+    remez_lp.h
+    smarc.h
+    stage_impl.h
+)
+
+add_library(xdf STATIC ${SOURCE_FILES} ${HEADER_FILES})
 
 set_property(TARGET xdf PROPERTY CXX_STANDARD 11)
 set_property(TARGET xdf PROPERTY C_STANDARD 99)
