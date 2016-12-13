@@ -15,7 +15,7 @@ public:
         std::vector<std::vector<float> > time_series;
         std::vector<float> time_stamps;
 
-        struct
+        struct  //info struct
         {
             std::string name;
             std::string type;
@@ -43,59 +43,57 @@ public:
             //std::map<std::string, std::map<std::string, std::map<std::string, std::string> > > desc;
         } info;
 
-        struct
-        {
-            int num_samples;
-            double t_begin;
-            double t_end;
-            double duration;
-            double effective_srate;
-        } segment;
-
         float last_timestamp{ 0 };  //for temporary use
-        float sampling_interval;    //if srate>0,sampling_interval=1/srate;otherwise 0
+        float sampling_interval;    //if srate > 0, sampling_interval = 1/srate; otherwise 0
         std::vector<double> clock_times;
         std::vector<double> clock_values;
     };
 
 
-    struct XDFdataStruct    //data of all streams as an entity
+    std::vector<Stream> streams;
+    struct
     {
-        std::vector<Stream> streams;
         struct
         {
-            struct
-            {
-                float version;
-            }info;
-        } fileHeader;
+            float version;
+        }info;
+    } fileHeader;
 
-        uint64_t totalLen;
-        float minTS {0};
-        float maxTS {0};
-        size_t totalCh {0};
-        int majSR;      //the sample rate that has the most channels;
-        std::vector<std::pair<int, unsigned> > streamMap; //streamNum, channel count
+    uint64_t totalLen;
+    float minTS {0};
+    float maxTS {0};
+    size_t totalCh {0};
+    int majSR;      //the sample rate that has the most channels;
+    std::vector<std::pair<int, unsigned> > streamMap; //streamNum, channel count
 
-        typedef std::string eventName;
-        typedef float eventTimeStamp;
+    typedef std::string eventName;
+    typedef float eventTimeStamp;
 
-        std::vector<std::pair<eventName, eventTimeStamp> > eventMap; //copy all the events of all streams to here <events, timestamps>
-        std::vector<std::string> dictionary;    //store unique event types
-        std::vector<uint16_t> eventType;        //store events by their index in the dictionary
-        std::vector<std::string> labels;        //store descriptive labels of each channel
+    std::vector<std::pair<eventName, eventTimeStamp> > eventMap; //copy all the events of all streams to here <events, timestamps>
+    std::vector<std::string> dictionary;    //store unique event types
+    std::vector<uint16_t> eventType;        //store events by their index in the dictionary
+    std::vector<std::string> labels;        //store descriptive labels of each channel
 
-        void createLabels();                    //create descriptive labels
-        void loadDictionary();                  //copy events into dictionary (with no repeats)
-    };
+    void createLabels();                    //create descriptive labels
 
-    void load_xdf(XDFdataStruct &XDFdata, std::string filename);
+    void loadDictionary();                  //copy events into dictionary (with no repeats)
 
-    void resampleXDF(XDFdataStruct &XDFdata, int userSrate);
+    void load_xdf(std::string filename);
+
+    void resampleXDF(int userSrate);
 
     uint64_t readLength(std::ifstream &file);
 
-    int userPreferredSrate = 0;
+    void findMinMax();      //find Min & Max time stamps
+
+    void findMajSR();       //find the major sample rate that has the most channels
+
+    void calcTotalChannel();//calculating total channel count
+
+    void freeUpTimeStamps();//to release some memory
+
+    void adjustTotalLength();//If total length is shorter than the actual length of any channel, make it equal to length of that channel
+
 };
 
 #endif // XDF_H
