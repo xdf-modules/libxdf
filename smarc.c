@@ -27,7 +27,7 @@
 #include "multi_stage.h"
 #include "polyfilt.h"
 #include <stdio.h>
-//#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
