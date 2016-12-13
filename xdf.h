@@ -6,12 +6,11 @@
 
 
 class Xdf
-{
-
+{  
 public:
     Xdf();
 
-    struct Stream
+    struct Stream   //data of each stream
     {
         std::vector<std::vector<float> > time_series;
         std::vector<float> time_stamps;
@@ -60,7 +59,7 @@ public:
     };
 
 
-    struct XDFdataStruct	//final return value
+    struct XDFdataStruct    //data of all streams as an entity
     {
         std::vector<Stream> streams;
         struct
@@ -74,7 +73,7 @@ public:
         uint64_t totalLen;
         float minTS {0};
         float maxTS {0};
-        int totalCh {0};
+        size_t totalCh {0};
         int majSR;      //the sample rate that has the most channels;
         std::vector<std::pair<int, unsigned> > streamMap; //streamNum, channel count
 
@@ -82,6 +81,12 @@ public:
         typedef float eventTimeStamp;
 
         std::vector<std::pair<eventName, eventTimeStamp> > eventMap; //copy all the events of all streams to here <events, timestamps>
+        std::vector<std::string> dictionary;    //store unique event types
+        std::vector<uint16_t> eventType;        //store events by their index in the dictionary
+        std::vector<std::string> labels;        //store descriptive labels of each channel
+
+        void createLabels();                    //create descriptive labels
+        void loadDictionary();                  //copy events into dictionary (with no repeats)
     };
 
     void load_xdf(XDFdataStruct &XDFdata, std::string filename);

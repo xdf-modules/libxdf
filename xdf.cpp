@@ -696,6 +696,10 @@ void Xdf::resampleXDF(Xdf::XDFdataStruct &XDFdata, int userSrate)
         }
     }
 
+    XDFdata.loadDictionary();
+
+    XDFdata.createLabels();
+
     //free up as much memory as possible
     for (size_t st = 0; st < XDFdata.streams.size(); st++)
     {
@@ -750,3 +754,52 @@ uint64_t Xdf::readLength(std::ifstream &file)
     }
 }
 
+
+void Xdf::XDFdataStruct::createLabels()
+{
+    for (size_t i = 0; i < totalCh; i++)
+    {
+        std::string label = "Channel ";
+        label += std::to_string(i);
+        label += "\nStream ";
+        for (size_t k = 0; k < streamMap.size(); k++)
+        {
+            if (i < streamMap[k].second)
+            {
+                int nb = streamMap[k].first;
+                label += std::to_string(nb);
+                label += '\n';
+                label += streams[nb].info.name;
+                label += '\n';
+                label += streams[nb].info.type;
+                break;
+            }
+        }
+
+        labels.emplace_back(label);
+    }
+}
+
+void Xdf::XDFdataStruct::loadDictionary()
+{
+    //loop through the eventMap
+    for (size_t e = 0; e < eventMap.size(); e++)
+    {
+        //search the dictionary to see whether an event is already in it
+        std::vector<std::string>::iterator it
+                = std::find(dictionary.begin(),dictionary.end(),eventMap[e].first);
+        //if it isn't yet
+        if (it == dictionary.end())
+        {
+            //add it to the dictionary, also store its index into eventType vector for future use
+            eventType.emplace_back(dictionary.size());
+            dictionary.emplace_back(eventMap[e].first);
+        }
+        //if it's already in there
+        else
+        {
+            //store its index into eventType vector
+            eventType.emplace_back(std::distance(dictionary.begin(), it));
+        }
+    }
+}
