@@ -49,6 +49,7 @@ public:
         std::vector<double> clock_values;
     };
 
+//===============================================================================================
 
     std::vector<Stream> streams;
     struct
@@ -74,6 +75,8 @@ public:
     std::vector<uint16_t> eventType;        //store events by their index in the dictionary
     std::vector<std::string> labels;        //store descriptive labels of each channel
 
+//=============================================================================================
+
     void createLabels();                    //create descriptive labels
 
     void loadDictionary();                  //copy events into dictionary (with no repeats)
@@ -89,6 +92,8 @@ public:
     void findMajSR();       //find the major sample rate that has the most channels
 
     void calcTotalChannel();//calculating total channel count
+
+    void calcTotalLength(int sampleRate); //calculating the globle length from the earliest time stamp to the last time stamp across all channels
 
     void freeUpTimeStamps();//to release some memory
 

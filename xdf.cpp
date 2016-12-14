@@ -601,10 +601,8 @@ void Xdf::resampleXDF(int userSrate)
 
     calcTotalChannel();
 
-    //global length
-    totalLen = (maxTS - minTS) * userSrate;
+    calcTotalLength(userSrate);
 
-    //beware of possible deviation
     adjustTotalLength();
 
     loadDictionary();
@@ -747,6 +745,11 @@ void Xdf::calcTotalChannel()
                 streamMap.emplace_back(c,streamMap.back().second + streams[c].info.channel_count);
         }
     }
+}
+
+void Xdf::calcTotalLength(int sampleRate)
+{
+    totalLen = (maxTS - minTS) * sampleRate;
 }
 
 void Xdf::freeUpTimeStamps()
