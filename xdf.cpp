@@ -739,10 +739,10 @@ void Xdf::calcTotalChannel()
         if(!streams[c].time_series.empty())
         {
             totalCh += streams[c].info.channel_count;
-            if (streamMap.empty())
-                streamMap.emplace_back(c,streams[c].info.channel_count);
-            else
-                streamMap.emplace_back(c,streamMap.back().second + streams[c].info.channel_count);
+            for (size_t i = 0; i < streams[c].info.channel_count; i++)
+            {
+                streamMap.emplace_back(c);
+            }
         }
     }
 }
@@ -788,19 +788,11 @@ void Xdf::createLabels()
         std::string label = "Channel ";
         label += std::to_string(i);
         label += "\nStream ";
-        for (size_t k = 0; k < streamMap.size(); k++)
-        {
-            if (i < streamMap[k].second)
-            {
-                int nb = streamMap[k].first;
-                label += std::to_string(nb);
-                label += '\n';
-                label += streams[nb].info.name;
-                label += '\n';
-                label += streams[nb].info.type;
-                break;
-            }
-        }
+        label += std::to_string(streamMap[i]);
+        label += '\n';
+        label += streams[streamMap[i]].info.name;
+        label += '\n';
+        label += streams[streamMap[i]].info.type;
 
         labels.emplace_back(label);
     }

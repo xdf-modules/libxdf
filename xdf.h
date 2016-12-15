@@ -15,6 +15,8 @@ public:
         std::vector<std::vector<float> > time_series;
         std::vector<float> time_stamps;
 
+        bool StringStream;
+
         struct  //info struct
         {
             std::string name;
@@ -65,7 +67,7 @@ public:
     float maxTS {0};
     size_t totalCh {0};
     int majSR;      //the sample rate that has the most channels;
-    std::vector<std::pair<int, unsigned> > streamMap; //streamNum, channel count
+    std::vector<int> streamMap; //The index indicates channel count; actual content is the stream Number
 
     typedef std::string eventName;
     typedef float eventTimeStamp;
