@@ -63,10 +63,11 @@ public:
     } fileHeader;
 
     uint64_t totalLen;
-    float minTS {0};
-    float maxTS {0};
-    size_t totalCh {0};
-    int majSR;      //the sample rate that has the most channels;
+    float minTS = 0;
+    float maxTS = 0;
+    size_t totalCh = 0;
+    int majSR;  //the sample rate that has the most channels;
+    int maxSR = 0;  //highest sample rate
     std::vector<int> streamMap; //The index indicates channel count; actual content is the stream Number
 
     typedef std::string eventName;
@@ -101,6 +102,7 @@ public:
 
     void adjustTotalLength();//If total length is shorter than the actual length of any channel, make it equal to length of that channel
 
+    void getHighestSampleRate();
 };
 
 #endif // XDF_H

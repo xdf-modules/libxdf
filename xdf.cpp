@@ -495,6 +495,8 @@ void Xdf::load_xdf(std::string filename)
 
         findMajSR();
 
+        getHighestSampleRate();
+
         //loading finishes, close file
         file.close();
 
@@ -777,6 +779,15 @@ void Xdf::adjustTotalLength()
             if (totalLen < streams[st].time_series.front().size())
                 totalLen = streams[st].time_series.front().size();
         }
+    }
+}
+
+void Xdf::getHighestSampleRate()
+{
+    for (size_t i = 0; i < streams.size(); i++)
+    {
+        if (streams[i].info.nominal_srate > maxSR)
+            maxSR = streams[i].info.nominal_srate;
     }
 }
 
