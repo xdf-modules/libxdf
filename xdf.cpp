@@ -132,6 +132,8 @@ void Xdf::load_xdf(std::string filename)
                 streams[index].info.v6service_port = info.child("v6service_port").text().as_int();
                 //streams[index].info.desc = info.child("desc").text().get();//need further work
 
+                //streams[index].info.desc.channels.unit = info.child("desc").child("channels").child("unit").text().get();
+
                 if (streams[index].info.nominal_srate > 0)
                     streams[index].sampling_interval = 1 / streams[index].info.nominal_srate;
                 else
@@ -497,6 +499,8 @@ void Xdf::load_xdf(std::string filename)
 
         getHighestSampleRate();
 
+        loadSampleRateMap();
+
         //loading finishes, close file
         file.close();
 
@@ -788,6 +792,15 @@ void Xdf::getHighestSampleRate()
     {
         if (streams[i].info.nominal_srate > maxSR)
             maxSR = streams[i].info.nominal_srate;
+    }
+}
+
+void Xdf::loadSampleRateMap()
+{
+    for (size_t i = 0; i < streams.size(); i++)
+    {
+        if (std::find(sampleRateMap.begin(), sampleRateMap.end(), streams[i].info.nominal_srate)==sampleRateMap.end())
+            sampleRateMap.emplace_back(streams[i].info.nominal_srate);
     }
 }
 

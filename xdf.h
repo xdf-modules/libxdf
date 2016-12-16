@@ -145,8 +145,8 @@ public:
             double measured_srate;
         } info;
 
-        float last_timestamp{ 0 };  //for temporary use
-        float sampling_interval;    //if srate > 0, sampling_interval = 1/srate; otherwise 0
+        float last_timestamp{ 0 };      //for temporary use
+        float sampling_interval;        //if srate > 0, sampling_interval = 1/srate; otherwise 0
         std::vector<double> clock_times;
         std::vector<double> clock_values;
     };
@@ -166,23 +166,24 @@ public:
     float minTS = 0;
     float maxTS = 0;
     size_t totalCh = 0;
-    int majSR;  //the sample rate that has the most channels;
-    int maxSR = 0;  //highest sample rate
-    std::vector<int> streamMap; //The index indicates channel count; actual content is the stream Number
+    int majSR;                          //the sample rate that has the most channels;
+    int maxSR = 0;                      //highest sample rate
+    std::vector<int> streamMap;         //The index indicates channel count; actual content is the stream Number
 
     typedef std::string eventName;
     typedef float eventTimeStamp;
 
     std::vector<std::pair<eventName, eventTimeStamp> > eventMap; //copy all the events of all streams to here <events, timestamps>
-    std::vector<std::string> dictionary;    //store unique event types
-    std::vector<uint16_t> eventType;        //store events by their index in the dictionary
-    std::vector<std::string> labels;        //store descriptive labels of each channel
+    std::vector<std::string> dictionary;//store unique event types
+    std::vector<uint16_t> eventType;    //store events by their index in the dictionary
+    std::vector<std::string> labels;    //store descriptive labels of each channel
+    std::vector<int> sampleRateMap;     //store all sample rates across all the streams
 
     //=============================================================================================
 
-    void createLabels();                    //create descriptive labels
+    void createLabels();                //create descriptive labels
 
-    void loadDictionary();                  //copy events into dictionary (with no repeats)
+    void loadDictionary();              //copy events into dictionary (with no repeats)
 
     void load_xdf(std::string filename);
 
@@ -190,19 +191,21 @@ public:
 
     uint64_t readLength(std::ifstream &file);
 
-    void findMinMax();      //find Min & Max time stamps
+    void findMinMax();                  //find Min & Max time stamps
 
-    void findMajSR();       //find the major sample rate that has the most channels
+    void findMajSR();                   //find the major sample rate that has the most channels
 
-    void calcTotalChannel();//calculating total channel count
+    void calcTotalChannel();            //calculating total channel count
 
-    void calcTotalLength(int sampleRate); //calculating the globle length from the earliest time stamp to the last time stamp across all channels
+    void calcTotalLength(int sampleRate);//calculating the globle length from the earliest time stamp to the last time stamp across all channels
 
-    void freeUpTimeStamps();//to release some memory
+    void freeUpTimeStamps();            //to release some memory
 
-    void adjustTotalLength();//If total length is shorter than the actual length of any channel, make it equal to length of that channel
+    void adjustTotalLength();           //If total length is shorter than the actual length of any channel, make it equal to length of that channel
 
     void getHighestSampleRate();
+
+    void loadSampleRateMap();
 };
 
 #endif // XDF_H
