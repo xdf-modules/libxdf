@@ -130,9 +130,38 @@ void Xdf::load_xdf(std::string filename)
                 streams[index].info.v6address = info.child("v6address").text().get();
                 streams[index].info.v6data_port = info.child("v6data_port").text().as_int();
                 streams[index].info.v6service_port = info.child("v6service_port").text().as_int();
-                //streams[index].info.desc = info.child("desc").text().get();//need further work
 
-                //streams[index].info.desc.channels.unit = info.child("desc").child("channels").child("unit").text().get();
+                pugi::xml_node desc = info.child("desc");
+
+                for (pugi::xml_node channel = desc.child("channels").child("channel"); channel; channel = channel.next_sibling("channel"))
+                {
+                    streams[index].info.desc.channels.emplace_back();
+                    streams[index].info.desc.channels.back().unit = channel.child("unit").text().get();
+                    streams[index].info.desc.channels.back().type = channel.child("type").text().get();
+                    streams[index].info.desc.channels.back().label = channel.child("label").text().get();
+                    streams[index].info.desc.channels.back().coordinate_system = channel.child("coordinate_system").text().get();
+                    streams[index].info.desc.channels.back().impedance = channel.child("impedance").text().get();
+
+                    for (pugi::xml_node location : channel.child("location").children())
+                        streams[index].info.desc.channels.back().location.emplace(location.name(), location.child_value());
+
+                    for (pugi::xml_node hardware : channel.child("hardware").children())
+                        streams[index].info.desc.channels.back().hardware.emplace(hardware.name(), hardware.child_value());
+                }
+
+                for (auto entry : desc.child("acquisition").children())
+                    streams[index].info.desc.acquisition.emplace(entry.name(), entry.child_value());
+
+                for (auto entry : desc.child("reference").children())
+                    streams[index].info.desc.reference.emplace(entry.name(), entry.child_value());
+
+                for (auto entry : desc.child("cap").children())
+                    streams[index].info.desc.cap.emplace(entry.name(), entry.child_value());
+
+                for (auto entry : desc.child("location_measurement").children())
+                    streams[index].info.desc.location_measurement.emplace(entry.name(), entry.child_value());
+
+
 
                 if (streams[index].info.nominal_srate > 0)
                     streams[index].sampling_interval = 1 / streams[index].info.nominal_srate;
