@@ -18,44 +18,21 @@ public:
 
         struct  //info struct
         {
-            //Stream Header Chunk
-            std::string name;
-            std::string type;
             int channel_count;
             double nominal_srate;
-            std::string channel_format;
-            std::string source_id;
-            float version;
-            double created_at;
-            std::string uid;
-            std::string session_id;
-            std::string hostname;
-            std::string v4address;
-            int v4data_port;
-            int v4service_port;
-            std::string v6address;
-            int v6data_port;
-            int v6service_port;
+            std::map<std::string, std::string> infoMap;
             struct {
                 struct Channel          //description of one channel, repeated (one for each channel in the time series)
                 {
-                    std::string unit;   //measurement unit (strongly preferred unit: microvolts)
-                    std::string type;   //channel content-type (EEG, EMG, EOG, ...)
-                    std::string label;  //channel label, according to labeling scheme; the preferred labeling scheme for EEG is 10-20 (or the finer-grained 10-5)
-                    std::string coordinate_system;//coordinate system of the respective parameter, can be world-space, object-space, camera-space, or image-space
-                    std::string eye;    //which eye the channel is referring to (can be left, right, or both)
-                    std::string impedance;    //measured impedance value during setup, in kOhm
-
+                    std::map<std::string, std::string> channelInfoMap;//wrap those single entries into a map, though they should be at the same level of other maps
                     std::map<std::string, std::string> location;
                     std::map<std::string, std::string> hardware;
-
                     struct {
                         std::map<std::string, std::string> highpass;
                         std::map<std::string, std::string> lowpass;
                         std::map<std::string, std::string> notch;
                     } filtering;        //information about the hardware/software filters already applied to the data (e.g. notch)
                 };
-
                 std::vector<Channel> channels;//per-channel meta-data; might be repeated
 
                 std::map<std::string, std::string> reference;
@@ -72,9 +49,7 @@ public:
                 std::vector<Fiducials> fiducials;//locations of fiducials (in the same space as the signal-carrying channels)
 
                 struct {
-                    struct {
-                        float speedmode;
-                    } settings;         //settings of the amplifier
+                    std::map<std::string, std::string> settings;
                 } amplifier;            //information about the used amplification (e.g. Gain, OpAmps/InAmps...)
             } desc;
 
@@ -105,11 +80,11 @@ public:
         }info;
     } fileHeader;
 
-    uint64_t totalLen;
+    uint64_t totalLen = 0;
     float minTS = 0;
     float maxTS = 0;
     size_t totalCh = 0;
-    int majSR;                          //the sample rate that has the most channels;
+    int majSR = 0;                          //the sample rate that has the most channels;
     int maxSR = 0;                      //highest sample rate
     std::vector<int> streamMap;         //The index indicates channel count; actual content is the stream Number
 
@@ -120,7 +95,7 @@ public:
     std::vector<std::string> dictionary;//store unique event types
     std::vector<uint16_t> eventType;    //store events by their index in the dictionary
     std::vector<std::string> labels;    //store descriptive labels of each channel
-    std::vector<int> sampleRateMap;     //store all sample rates across all the streams
+    std::vector<double> sampleRateMap;     //store all sample rates across all the streams
 
     //=============================================================================================
 

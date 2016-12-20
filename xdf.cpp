@@ -113,40 +113,39 @@ void Xdf::load_xdf(std::string filename)
 
                 pugi::xml_node info = doc.child("info");
 
-                streams[index].info.name = info.child("name").text().get();
-                streams[index].info.type = info.child("type").text().get();
+                for (auto entry : info.children())
+                {
+                    std::string buff = entry.name();
+                    if (buff.compare("desc"))
+                        streams[index].info.infoMap.emplace(entry.name(), entry.child_value());
+                }
+
                 streams[index].info.channel_count = info.child("channel_count").text().as_int();
                 streams[index].info.nominal_srate = info.child("nominal_srate").text().as_double();
-                streams[index].info.channel_format = info.child("channel_format").text().get();
-                streams[index].info.source_id = info.child("source_id").text().get();
-                streams[index].info.version = info.child("version").text().as_float();
-                streams[index].info.created_at = info.child("created_at").text().as_double();
-                streams[index].info.uid = info.child("uid").text().get();
-                streams[index].info.session_id = info.child("session_id").text().get();
-                streams[index].info.hostname = info.child("hostname").text().get();
-                streams[index].info.v4address = info.child("v4address").text().get();
-                streams[index].info.v4data_port = info.child("v4data_port").text().as_int();
-                streams[index].info.v4service_port = info.child("v4service_port").text().as_int();
-                streams[index].info.v6address = info.child("v6address").text().get();
-                streams[index].info.v6data_port = info.child("v6data_port").text().as_int();
-                streams[index].info.v6service_port = info.child("v6service_port").text().as_int();
 
                 pugi::xml_node desc = info.child("desc");
 
                 for (pugi::xml_node channel = desc.child("channels").child("channel"); channel; channel = channel.next_sibling("channel"))
                 {
                     streams[index].info.desc.channels.emplace_back();
-                    streams[index].info.desc.channels.back().unit = channel.child("unit").text().get();
-                    streams[index].info.desc.channels.back().type = channel.child("type").text().get();
-                    streams[index].info.desc.channels.back().label = channel.child("label").text().get();
-                    streams[index].info.desc.channels.back().coordinate_system = channel.child("coordinate_system").text().get();
-                    streams[index].info.desc.channels.back().impedance = channel.child("impedance").text().get();
 
-                    for (pugi::xml_node location : channel.child("location").children())
-                        streams[index].info.desc.channels.back().location.emplace(location.name(), location.child_value());
+                    for (auto entry : channel.children())
+                        streams[index].info.desc.channels.back().channelInfoMap.emplace(entry.name(), entry.child_value());
 
-                    for (pugi::xml_node hardware : channel.child("hardware").children())
-                        streams[index].info.desc.channels.back().hardware.emplace(hardware.name(), hardware.child_value());
+                    for (auto entry : channel.child("location").children())
+                        streams[index].info.desc.channels.back().location.emplace(entry.name(), entry.child_value());
+
+                    for (auto entry : channel.child("hardware").children())
+                        streams[index].info.desc.channels.back().hardware.emplace(entry.name(), entry.child_value());
+
+                    for (auto entry : channel.child("filtering").child("highpass").children())
+                        streams[index].info.desc.channels.back().filtering.highpass.emplace(entry.name(), entry.child_value());
+
+                    for (auto entry : channel.child("filtering").child("lowpass").children())
+                        streams[index].info.desc.channels.back().filtering.lowpass.emplace(entry.name(), entry.child_value());
+
+                    for (auto entry : channel.child("filtering").child("notch").children())
+                        streams[index].info.desc.channels.back().filtering.notch.emplace(entry.name(), entry.child_value());
                 }
 
                 for (auto entry : desc.child("acquisition").children())
@@ -161,6 +160,8 @@ void Xdf::load_xdf(std::string filename)
                 for (auto entry : desc.child("location_measurement").children())
                     streams[index].info.desc.location_measurement.emplace(entry.name(), entry.child_value());
 
+                for (auto entry : desc.child("amplifier").child("settings").children())
+                    streams[index].info.desc.amplifier.settings.emplace(entry.name(), entry.child_value());
 
 
                 if (streams[index].info.nominal_srate > 0)
@@ -192,7 +193,7 @@ void Xdf::load_xdf(std::string filename)
                 uint64_t numSamp = readLength(file);
 
                 //check the data type
-                if (streams[index].info.channel_format.compare("float32") == 0)
+                if (streams[index].info.infoMap["channel_format"].compare("float32") == 0)
                 {
                     //if the time series is empty
                     if (streams[index].time_series.empty())
@@ -225,7 +226,7 @@ void Xdf::load_xdf(std::string filename)
                         }
                     }
                 }
-                else if (streams[index].info.channel_format.compare("double64") == 0)
+                else if (streams[index].info.infoMap["channel_format"].compare("double64") == 0)
                 {
                     //if the time series is empty
                     if (streams[index].time_series.empty())
@@ -258,7 +259,7 @@ void Xdf::load_xdf(std::string filename)
                         }
                     }
                 }
-                else if (streams[index].info.channel_format.compare("int8") == 0)
+                else if (streams[index].info.infoMap["channel_format"].compare("int8") == 0)
                 {
                     //if the time series is empty
                     if (streams[index].time_series.empty())
@@ -291,7 +292,7 @@ void Xdf::load_xdf(std::string filename)
                         }
                     }
                 }
-                else if (streams[index].info.channel_format.compare("int16") == 0)
+                else if (streams[index].info.infoMap["channel_format"].compare("int16") == 0)
                 {
                     //if the time series is empty
                     if (streams[index].time_series.empty())
@@ -324,7 +325,7 @@ void Xdf::load_xdf(std::string filename)
                         }
                     }
                 }
-                else if (streams[index].info.channel_format.compare("int32") == 0)
+                else if (streams[index].info.infoMap["channel_format"].compare("int32") == 0)
                 {
                     //if the time series is empty
                     if (streams[index].time_series.empty())
@@ -357,7 +358,7 @@ void Xdf::load_xdf(std::string filename)
                         }
                     }
                 }
-                else if (streams[index].info.channel_format.compare("int64") == 0)
+                else if (streams[index].info.infoMap["channel_format"].compare("int64") == 0)
                 {
                     //if the time series is empty
                     if (streams[index].time_series.empty())
@@ -390,7 +391,7 @@ void Xdf::load_xdf(std::string filename)
                         }
                     }
                 }
-                else if (streams[index].info.channel_format.compare("string") == 0)
+                else if (streams[index].info.infoMap["channel_format"].compare("string") == 0)
                 {
                     //for each event
                     for (size_t i = 0; i < numSamp; i++)
@@ -624,7 +625,6 @@ void Xdf::resampleXDF(int userSrate)
            // release smarc filter
            smarc_destroy_pfilter(pfilt);
 
-           //streams[x].info.nominal_srate = majSR;
         }
     }
     //resampling finishes here
@@ -739,7 +739,7 @@ void Xdf::findMajSR()
     //find out whether a sample rate already exists in srateMap
     for (size_t st = 0; st < streams.size(); st++)
     {
-        if (streams[st].info.nominal_srate!=0)
+        if (streams[st].info.nominal_srate != 0)
         {
             std::vector<std::pair<sampRate, numChannel> >::iterator it {std::find_if(srateMap.begin(), srateMap.end(),
                                   [&](const std::pair<sampRate, numChannel> &element)
@@ -774,10 +774,9 @@ void Xdf::calcTotalChannel()
         if(!streams[c].time_series.empty())
         {
             totalCh += streams[c].info.channel_count;
+
             for (size_t i = 0; i < streams[c].info.channel_count; i++)
-            {
                 streamMap.emplace_back(c);
-            }
         }
     }
 }
@@ -843,9 +842,9 @@ void Xdf::createLabels()
         label += "\nStream ";
         label += std::to_string(streamMap[i]);
         label += '\n';
-        label += streams[streamMap[i]].info.name;
+        label += streams[streamMap[i]].info.infoMap["name"];
         label += '\n';
-        label += streams[streamMap[i]].info.type;
+        label += streams[streamMap[i]].info.infoMap["type"];
 
         labels.emplace_back(label);
     }
