@@ -11,23 +11,24 @@ TEMPLATE = lib
 CONFIG += staticlib
 
 SOURCES += xdf.cpp \
-    pugixml.cpp \
-    filtering.c \
-    multi_stage.c \
-    polyfilt.c \
-    remez_lp.c \
-    smarc.c \
-    stage_impl.c
+    smarc/filtering.c \
+    smarc/multi_stage.c \
+    smarc/polyfilt.c \
+    smarc/remez_lp.c \
+    smarc/smarc.c \
+    smarc/stage_impl.c \
+    pugixml/pugixml.cpp
 
 HEADERS += xdf.h \
-    filtering.h \
-    multi_stage.h \
-    polyfilt.h \
-    pugiconfig.hpp \
-    pugixml.hpp \
-    remez_lp.h \
-    smarc.h \
-    stage_impl.h
+    smarc/filtering.h \
+    smarc/multi_stage.h \
+    smarc/polyfilt.h \
+    smarc/remez_lp.h \
+    smarc/smarc.h \
+    smarc/stage_impl.h \
+    pugixml/pugiconfig.hpp \
+    pugixml/pugixml.hpp
+
 unix {
     target.path = /usr/lib
     INSTALLS += target

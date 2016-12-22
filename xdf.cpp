@@ -3,10 +3,10 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>     //EXIT_FAILURE, NULL, abs
-#include "pugixml.hpp"  //pugi XML parser
+#include "pugixml/pugixml.hpp"  //pugi XML parser
 #include <sstream>
 #include <algorithm>
-#include "smarc.h"      //resampling library
+#include "smarc/smarc.h"      //resampling library
 #include <time.h>       /* clock_t, clock, CLOCKS_PER_SEC */
 
 
