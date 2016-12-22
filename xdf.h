@@ -86,7 +86,7 @@ public:
     size_t totalCh = 0;
     int majSR = 0;                          //the sample rate that has the most channels;
     int maxSR = 0;                      //highest sample rate
-    std::vector<int> streamMap;         //The index indicates channel count; actual content is the stream Number
+    std::vector<int> streamMap;         //The index indicates channel number; actual content is the stream Number
 
     typedef std::string eventName;
     typedef float eventTimeStamp;

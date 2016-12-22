@@ -114,11 +114,8 @@ void Xdf::load_xdf(std::string filename)
                 pugi::xml_node info = doc.child("info");
 
                 for (auto entry : info.children())
-                {
-                    std::string buff = entry.name();
-                    if (buff.compare("desc"))
-                        streams[index].info.infoMap.emplace(entry.name(), entry.child_value());
-                }
+                    streams[index].info.infoMap.emplace(entry.name(), entry.child_value());
+                streams[index].info.infoMap.erase("desc");
 
                 streams[index].info.channel_count = info.child("channel_count").text().as_int();
                 streams[index].info.nominal_srate = info.child("nominal_srate").text().as_double();
