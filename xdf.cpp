@@ -412,7 +412,7 @@ void Xdf::load_xdf(std::string filename)
                             char* buffer = new char[length + 1];
                             file.read(buffer, length);
                             buffer[length] = '\0';
-                            eventMap.emplace_back(buffer, ts);
+                            eventMap.emplace_back(std::make_pair(buffer, ts), index);
                             delete[] buffer;
                         }
                         else if (bytes == 4)
@@ -422,7 +422,7 @@ void Xdf::load_xdf(std::string filename)
                             char* buffer = new char[length + 1];
                             file.read(buffer, length);
                             buffer[length] = '\0';
-                            eventMap.emplace_back(buffer, ts);
+                            eventMap.emplace_back(std::make_pair(buffer, ts), index);
                             delete[] buffer;
                         }
                         else if (bytes == 8)
@@ -432,7 +432,7 @@ void Xdf::load_xdf(std::string filename)
                             char* buffer = new char[length + 1];
                             file.read(buffer, length);
                             buffer[length] = '\0';
-                            eventMap.emplace_back(buffer, ts);
+                            eventMap.emplace_back(std::make_pair(buffer, ts), index);
                             delete[] buffer;
                         }
 
@@ -705,8 +705,8 @@ void Xdf::findMinMax()
     //including the timestamps of the events as well
     for (auto &elem : eventMap)
     {
-        if (minTS > elem.second)
-            minTS = elem.second;
+        if (minTS > elem.first.second)
+            minTS = elem.first.second;
     }
 
     //find the max timestamp of all streams
@@ -720,8 +720,8 @@ void Xdf::findMinMax()
     //including the timestamps of the events as well
     for (auto &elem : eventMap)
     {
-        if (maxTS < elem.second)
-            maxTS = elem.second;
+        if (maxTS < elem.first.second)
+            maxTS = elem.first.second;
     }
 }
 
@@ -854,13 +854,13 @@ void Xdf::loadDictionary()
     {
         //search the dictionary to see whether an event is already in it
         std::vector<std::string>::iterator it
-                = std::find(dictionary.begin(),dictionary.end(),eventMap[e].first);
+                = std::find(dictionary.begin(),dictionary.end(),eventMap[e].first.first);
         //if it isn't yet
         if (it == dictionary.end())
         {
             //add it to the dictionary, also store its index into eventType vector for future use
             eventType.emplace_back(dictionary.size());
-            dictionary.emplace_back(eventMap[e].first);
+            dictionary.emplace_back(eventMap[e].first.first);
         }
         //if it's already in there
         else

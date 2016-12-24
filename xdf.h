@@ -91,7 +91,7 @@ public:
     typedef std::string eventName;
     typedef float eventTimeStamp;
 
-    std::vector<std::pair<eventName, eventTimeStamp> > eventMap; //copy all the events of all streams to here <events, timestamps>
+    std::vector<std::pair<std::pair<eventName, eventTimeStamp>, int> > eventMap; //copy all the events of all streams to here <<events, timestamps>, streamNum>
     std::vector<std::string> dictionary;//store unique event types
     std::vector<uint16_t> eventType;    //store events by their index in the dictionary
     std::vector<std::string> labels;    //store descriptive labels of each channel
