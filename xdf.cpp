@@ -112,6 +112,7 @@ void Xdf::load_xdf(std::string filename)
                 pugi::xml_parse_result result = doc.load_buffer_inplace(buffer, ChLen - 6);
 
                 pugi::xml_node info = doc.child("info");
+                pugi::xml_node desc = info.child("desc");
 
                 for (auto entry : info.children())
                     streams[index].info.infoMap.emplace(entry.name(), entry.child_value());
@@ -120,7 +121,6 @@ void Xdf::load_xdf(std::string filename)
                 streams[index].info.channel_count = info.child("channel_count").text().as_int();
                 streams[index].info.nominal_srate = info.child("nominal_srate").text().as_double();
 
-                pugi::xml_node desc = info.child("desc");
 
                 for (pugi::xml_node channel = desc.child("channels").child("channel"); channel; channel = channel.next_sibling("channel"))
                 {
@@ -160,6 +160,15 @@ void Xdf::load_xdf(std::string filename)
                 for (auto entry : desc.child("amplifier").child("settings").children())
                     streams[index].info.desc.amplifier.settings.emplace(entry.name(), entry.child_value());
 
+                for (auto fiducial = desc.child("fiducials").child("fiducial"); fiducial; fiducial = fiducial.next_sibling("fiducial"))
+                {
+                    streams[index].info.desc.fiducials.emplace_back();
+
+                    streams[index].info.desc.fiducials.back().label = fiducial.child("label").text().get();
+
+                    for (auto entry : fiducial.child("location").children())
+                        streams[index].info.desc.fiducials.back().location.emplace(entry.name(), entry.child_value());
+                }
 
                 if (streams[index].info.nominal_srate > 0)
                     streams[index].sampling_interval = 1 / streams[index].info.nominal_srate;
