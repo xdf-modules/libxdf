@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "smarc/smarc.h"      //resampling library
 #include <time.h>       /* clock_t, clock, CLOCKS_PER_SEC */
+#include <numeric>      //std::accumulate
 
 
 Xdf::Xdf()
@@ -847,6 +848,21 @@ void Xdf::loadSampleRateMap()
     {
         if (std::find(sampleRateMap.begin(), sampleRateMap.end(), streams[i].info.nominal_srate)==sampleRateMap.end())
             sampleRateMap.emplace_back(streams[i].info.nominal_srate);
+    }
+}
+
+void Xdf::subtractByMean()
+{
+    for (auto &stream : streams)
+    {
+        for (auto &row : stream.time_series)
+        {
+            long double mean = std::accumulate(row.begin(), row.end(), 0) / row.size();
+            /*std::transform(row.begin(), row.end(), row.begin(),
+                      bind2nd(std::minus<double>(), mean));*/
+            for (auto &item : row)
+                item -= mean;
+        }
     }
 }
 

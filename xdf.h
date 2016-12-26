@@ -131,6 +131,8 @@ public:
     void getHighestSampleRate();
 
     void loadSampleRateMap();
+
+    void subtractByMean();
 };
 
 #endif // XDF_H
