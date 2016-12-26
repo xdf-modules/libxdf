@@ -52,7 +52,7 @@ void Xdf::load_xdf(std::string filename)
                 break;
         }
 
-        if (magicNumber.compare("XDF:") != 0)
+        if (magicNumber.compare("XDF:"))
         {
             std::cout << "This is not a valid XDF file.('" << filename << "')\n";
             exit(EXIT_FAILURE);
@@ -663,8 +663,6 @@ void Xdf::resampleXDF(int userSrate)
 
     createLabels();
 
-    freeUpTimeStamps();
-
     time = clock() - time;
 
     std::cout << "it took " << time << " clicks (" << ((float)time) / CLOCKS_PER_SEC << " seconds)"
@@ -857,11 +855,9 @@ void Xdf::subtractByMean()
     {
         for (auto &row : stream.time_series)
         {
-            long double mean = std::accumulate(row.begin(), row.end(), 0) / row.size();
-            /*std::transform(row.begin(), row.end(), row.begin(),
-                      bind2nd(std::minus<double>(), mean));*/
-            for (auto &item : row)
-                item -= mean;
+            long double mean = std::accumulate(row.begin(), row.end(), 0.0) / row.size();
+            std::transform(row.begin(), row.end(), row.begin(), bind2nd(std::minus<double>(), mean));
+            offsets.emplace_back(mean);
         }
     }
 }
@@ -871,14 +867,14 @@ void Xdf::createLabels()
 {
     for (size_t i = 0; i < totalCh; i++)
     {
-        std::string label = "Channel ";
-        label += std::to_string(i);
-        label += "\nStream ";
+        std::string label = "Stream ";
         label += std::to_string(streamMap[i]);
         label += '\n';
         label += streams[streamMap[i]].info.infoMap["name"];
         label += '\n';
         label += streams[streamMap[i]].info.infoMap["type"];
+        label += "\nOffset: ";
+        label += std::to_string(offsets[i]);
 
         labels.emplace_back(label);
     }

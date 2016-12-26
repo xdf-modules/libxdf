@@ -103,6 +103,7 @@ public:
     std::vector<uint16_t> eventType;    //store events by their index in the dictionary
     std::vector<std::string> labels;    //store descriptive labels of each channel
     std::vector<double> sampleRateMap;     //store all sample rates across all the streams
+    std::vector<float> offsets; //offsets of each channel
 
     //=============================================================================================
 
