@@ -39,6 +39,13 @@ public:
                 std::map<std::string, std::string> cap;
                 std::map<std::string, std::string> location_measurement;
                 std::map<std::string, std::string> acquisition;
+                std::map<std::string, std::string> provider;
+                std::map<std::string, std::string> facility;
+                std::map<std::string, std::string> synchronization;
+                std::map<std::string, std::string> encoding;
+
+
+
 
                 struct Fiducials        //information about a single fiducial (repeated for each one)
                 {

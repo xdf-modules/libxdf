@@ -145,6 +145,18 @@ void Xdf::load_xdf(std::string filename)
                         streams[index].info.desc.channels.back().filtering.notch.emplace(entry.name(), entry.child_value());
                 }
 
+                for (auto entry : desc.child("encoding").children())
+                    streams[index].info.desc.encoding.emplace(entry.name(), entry.child_value());
+
+                for (auto entry : desc.child("synchronization").children())
+                    streams[index].info.desc.synchronization.emplace(entry.name(), entry.child_value());
+
+                for (auto entry : desc.child("facility").children())
+                    streams[index].info.desc.facility.emplace(entry.name(), entry.child_value());
+
+                for (auto entry : desc.child("provider").children())
+                    streams[index].info.desc.provider.emplace(entry.name(), entry.child_value());
+
                 for (auto entry : desc.child("acquisition").children())
                     streams[index].info.desc.acquisition.emplace(entry.name(), entry.child_value());
 
