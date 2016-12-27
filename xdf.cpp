@@ -853,6 +853,45 @@ void Xdf::subtractByMean()
 
 void Xdf::createLabels()
 {
+    int channelCount = 0;
+
+    for (auto stream : streams)
+    {
+        if (stream.info.desc.channels.size())
+        {
+            for (auto const &channelItem : stream.info.desc.channels)
+            {
+                std::string label = std::to_string(channelCount) + ". ";
+
+                for (auto const &entry : channelItem.channelInfoMap)
+                {
+                    if (entry.second != "")
+                        label.append(entry.first).append(":").append(entry.second).append("\n");
+                }
+                label.append("Offset: ").append(std::to_string(-offsets[channelCount]));
+
+                labels.emplace_back(label);
+                channelCount++;
+            }
+        }
+        else
+        {
+            for (size_t i = 0; i < stream.time_series.size(); i++)
+            {
+                std::string label = std::to_string(channelCount) + ". ";
+                label += stream.info.infoMap["name"];
+                label += '\n';
+                label += stream.info.infoMap["type"];
+                label += "\nOffset: ";
+                label += std::to_string(-offsets[channelCount]);
+
+                labels.emplace_back(label);
+                channelCount++;
+            }
+        }
+    }
+
+    /*
     for (size_t i = 0; i < totalCh; i++)
     {
         std::string label = "Stream ";
@@ -862,10 +901,11 @@ void Xdf::createLabels()
         label += '\n';
         label += streams[streamMap[i]].info.infoMap["type"];
         label += "\nOffset: ";
-        label += std::to_string(offsets[i]);
+        label += std::to_string(-offsets[i]);
 
         labels.emplace_back(label);
     }
+    */
 }
 
 void Xdf::loadDictionary()
