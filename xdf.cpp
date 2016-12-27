@@ -570,65 +570,56 @@ void Xdf::resampleXDF(int userSrate)
     clock_t time = clock();
 
 #define BUF_SIZE 8192
-    for (size_t x = 0; x< streams.size(); x++)
+    for (auto &stream : streams)
     {
-        if (!streams[x].time_series.empty() &&
-                 streams[x].info.nominal_srate != userSrate &&
-                 streams[x].info.nominal_srate != 0)
+        if (!stream.time_series.empty() &&
+                stream.info.nominal_srate != userSrate &&
+                stream.info.nominal_srate != 0)
         {
-            int fsin = streams[x].info.nominal_srate;       // input samplerate
-            int fsout = userSrate;                              // output samplerate
-            double bandwidth = 0.95;                                // bandwidth
-            double rp = 0.1;                                        // passband ripple factor
-            double rs = 140;                                        // stopband attenuation
-            double tol = 0.000001;                                  // tolerance
+            int fsin = stream.info.nominal_srate;       // input samplerate
+            int fsout = userSrate;                      // output samplerate
+            double bandwidth = 0.95;                    // bandwidth
+            double rp = 0.1;                            // passband ripple factor
+            double rs = 140;                            // stopband attenuation
+            double tol = 0.000001;                      // tolerance
 
             // initialize smarc filter
             struct PFilter* pfilt = smarc_init_pfilter(fsin, fsout, bandwidth, rp,
-                rs, tol, NULL, 0);
+                                                       rs, tol, NULL, 0);
             if (pfilt == NULL)
                 continue;
 
             // initialize smarc filter state
             struct PState* pstate = smarc_init_pstate(pfilt);
 
-
-            for (size_t w = 0; w < streams[x].time_series.size(); w++)
+            for (auto &row : stream.time_series)
             {
                 // initialize buffers
                 int read = 0;
                 int written = 0;
                 const int IN_BUF_SIZE = BUF_SIZE;
-                const int OUT_BUF_SIZE = (int) smarc_get_output_buffer_size(pfilt,streams[x].time_series[w].size());
-                double* inbuf = new double[streams[x].time_series[w].size()];
+                const int OUT_BUF_SIZE = (int) smarc_get_output_buffer_size(pfilt, row.size());
+                double* inbuf = new double[row.size()];
                 double* outbuf = new double[OUT_BUF_SIZE];
 
 
-                std::copy(streams[x].time_series[w].begin(),
-                          streams[x].time_series[w].end(),
-                          inbuf);
+                std::copy(row.begin(), row.end(), inbuf);
 
-                read = streams[x].time_series[w].size();
-
+                read = row.size();
 
                 // resample signal block
-                written = smarc_resample(pfilt, pstate, inbuf, read, outbuf,
-                        OUT_BUF_SIZE);
+                written = smarc_resample(pfilt, pstate, inbuf, read, outbuf, OUT_BUF_SIZE);
 
                 // do what you want with your output
-                streams[x].time_series[w].resize(written);
-                std::copy ( outbuf, outbuf+written, streams[x].time_series[w].begin() );
+                row.resize(written);
+                std::copy ( outbuf, outbuf+written, row.begin() );
 
                 // flushing last values
-                written = smarc_resample_flush(pfilt, pstate, outbuf,
-                        OUT_BUF_SIZE);
+                written = smarc_resample_flush(pfilt, pstate, outbuf, OUT_BUF_SIZE);
 
                 // do what you want with your output
-                streams[x].time_series[w].resize(streams[x].time_series[w].size()+written);
-                std::copy ( outbuf, outbuf+written,
-                            streams[x].time_series[w].begin()
-                            + streams[x].time_series[w].size() - written );
-
+                row.resize(row.size() + written);
+                std::copy ( outbuf, outbuf+written, row.begin() + row.size() - written );
 
                 // you are done with converting your signal.
                 // If you want to reuse the same converter to process another signal
@@ -639,11 +630,10 @@ void Xdf::resampleXDF(int userSrate)
                 delete[] outbuf;
             }
             // release smarc filter state
-           smarc_destroy_pstate(pstate);
+            smarc_destroy_pstate(pstate);
 
-           // release smarc filter
-           smarc_destroy_pfilter(pfilt);
-
+            // release smarc filter
+            smarc_destroy_pfilter(pfilt);
         }
     }
     //resampling finishes here
@@ -707,19 +697,18 @@ uint64_t Xdf::readLength(std::ifstream &file)
 void Xdf::findMinMax()
 {
     //find the smallest timestamp of all streams
-    for (size_t i = 0; i < streams.size(); i++)
+    for (auto &stream : streams)
     {
-        if (!streams[i].time_stamps.empty())
+        if (!stream.time_stamps.empty())
         {
-            minTS = streams[i].time_stamps.front();
+            minTS = stream.time_stamps.front();
             break;
         }
     }
-    for (size_t i = 0; i < streams.size(); i++)
+    for (auto &stream : streams)
     {
-        if (!streams[i].time_stamps.empty() &&
-                streams[i].time_stamps.front() < minTS)
-            minTS = streams[i].time_stamps.front();
+        if (!stream.time_stamps.empty() && stream.time_stamps.front() < minTS)
+            minTS = stream.time_stamps.front();
     }
 
     //including the timestamps of the events as well
@@ -730,11 +719,10 @@ void Xdf::findMinMax()
     }
 
     //find the max timestamp of all streams
-    for (size_t i = 0; i < streams.size(); i++)
+    for (auto &stream : streams)
     {
-        if (!streams[i].time_stamps.empty() &&
-                streams[i].time_stamps.back() > maxTS)
-            maxTS = streams[i].time_stamps.back();
+        if (!stream.time_stamps.empty() && stream.time_stamps.back() > maxTS)
+            maxTS = stream.time_stamps.back();
     }
 
     //including the timestamps of the events as well
@@ -754,21 +742,21 @@ void Xdf::findMajSR()
     std::vector<std::pair<sampRate, numChannel> > srateMap; //<srate, numChannels> pairs of all the streams
 
     //find out whether a sample rate already exists in srateMap
-    for (size_t st = 0; st < streams.size(); st++)
+    for (auto &stream : streams)
     {
-        if (streams[st].info.nominal_srate != 0)
+        if (stream.info.nominal_srate != 0)
         {
             std::vector<std::pair<sampRate, numChannel> >::iterator it {std::find_if(srateMap.begin(), srateMap.end(),
                                   [&](const std::pair<sampRate, numChannel> &element)
-                                        {return element.first == streams[st].info.nominal_srate; })} ;
+                                        {return element.first == stream.info.nominal_srate; })} ;
             //if it doesn't, add it here
             if (it == srateMap.end())
-                srateMap.emplace_back(streams[st].info.nominal_srate, streams[st].info.channel_count);
+                srateMap.emplace_back(stream.info.nominal_srate, stream.info.channel_count);
             //if it already exists, add additional channel numbers to that sample rate
             else
             {
                 int index (std::distance(srateMap.begin(),it)) ;
-                srateMap[index].second += streams[st].info.channel_count;
+                srateMap[index].second += stream.info.channel_count;
             }
         }
     }
@@ -806,46 +794,46 @@ void Xdf::calcTotalLength(int sampleRate)
 void Xdf::freeUpTimeStamps()
 {
     //free up as much memory as possible
-    for (size_t st = 0; st < streams.size(); st++)
+    for (auto &stream : streams)
     {
         //we don't need to keep all the time stamps unless it's a stream with irregular samples
-        if (streams[st].info.nominal_srate != 0)
+        if (stream.info.nominal_srate != 0)
         {
             std::vector<float> nothing;
             //however we still need to keep the first time stamp of each stream to decide at which position the signal should start
-            nothing.emplace_back(streams[st].time_stamps.front());
-            streams[st].time_stamps.swap(nothing);
+            nothing.emplace_back(stream.time_stamps.front());
+            stream.time_stamps.swap(nothing);
         }
     }
 }
 
 void Xdf::adjustTotalLength()
 {
-    for (size_t st = 0; st < streams.size(); st++)
+    for (auto &stream : streams)
     {
-        if(!streams[st].time_series.empty())
+        if(!stream.time_series.empty())
         {
-            if (totalLen < streams[st].time_series.front().size())
-                totalLen = streams[st].time_series.front().size();
+            if (totalLen < stream.time_series.front().size())
+                totalLen = stream.time_series.front().size();
         }
     }
 }
 
 void Xdf::getHighestSampleRate()
 {
-    for (size_t i = 0; i < streams.size(); i++)
+    for (auto &stream : streams)
     {
-        if (streams[i].info.nominal_srate > maxSR)
-            maxSR = streams[i].info.nominal_srate;
+        if (stream.info.nominal_srate > maxSR)
+            maxSR = stream.info.nominal_srate;
     }
 }
 
 void Xdf::loadSampleRateMap()
 {
-    for (size_t i = 0; i < streams.size(); i++)
+    for (auto &stream : streams)
     {
-        if (std::find(sampleRateMap.begin(), sampleRateMap.end(), streams[i].info.nominal_srate)==sampleRateMap.end())
-            sampleRateMap.emplace_back(streams[i].info.nominal_srate);
+        if (std::find(sampleRateMap.begin(), sampleRateMap.end(), stream.info.nominal_srate)==sampleRateMap.end())
+            sampleRateMap.emplace_back(stream.info.nominal_srate);
     }
 }
 
@@ -883,23 +871,18 @@ void Xdf::createLabels()
 void Xdf::loadDictionary()
 {
     //loop through the eventMap
-    for (size_t e = 0; e < eventMap.size(); e++)
+    for (auto &entry : eventMap)
     {
         //search the dictionary to see whether an event is already in it
-        std::vector<std::string>::iterator it
-                = std::find(dictionary.begin(),dictionary.end(),eventMap[e].first.first);
+        auto it = std::find(dictionary.begin(),dictionary.end(),entry.first.first);
         //if it isn't yet
         if (it == dictionary.end())
-        {
-            //add it to the dictionary, also store its index into eventType vector for future use
+        {   //add it to the dictionary, also store its index into eventType vector for future use
             eventType.emplace_back(dictionary.size());
-            dictionary.emplace_back(eventMap[e].first.first);
+            dictionary.emplace_back(entry.first.first);
         }
         //if it's already in there
-        else
-        {
-            //store its index into eventType vector
+        else    //store its index into eventType vector
             eventType.emplace_back(std::distance(dictionary.begin(), it));
-        }
     }
 }
