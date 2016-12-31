@@ -115,7 +115,7 @@ void Xdf::load_xdf(std::string filename)
                 pugi::xml_node info = doc.child("info");
                 pugi::xml_node desc = info.child("desc");
 
-                for (auto entry : info.children())
+                for (auto const &entry : info.children())
                     streams[index].info.infoMap.emplace(entry.name(), entry.child_value());
                 streams[index].info.infoMap.erase("desc");
 
@@ -123,54 +123,54 @@ void Xdf::load_xdf(std::string filename)
                 streams[index].info.nominal_srate = info.child("nominal_srate").text().as_double();
 
 
-                for (pugi::xml_node channel = desc.child("channels").child("channel"); channel; channel = channel.next_sibling("channel"))
+                for (auto channel = desc.child("channels").child("channel"); channel; channel = channel.next_sibling("channel"))
                 {
                     streams[index].info.desc.channels.emplace_back();
 
-                    for (auto entry : channel.children())
+                    for (auto const &entry : channel.children())
                         streams[index].info.desc.channels.back().channelInfoMap.emplace(entry.name(), entry.child_value());
 
-                    for (auto entry : channel.child("location").children())
+                    for (auto const &entry : channel.child("location").children())
                         streams[index].info.desc.channels.back().location.emplace(entry.name(), entry.child_value());
 
-                    for (auto entry : channel.child("hardware").children())
+                    for (auto const &entry : channel.child("hardware").children())
                         streams[index].info.desc.channels.back().hardware.emplace(entry.name(), entry.child_value());
 
-                    for (auto entry : channel.child("filtering").child("highpass").children())
+                    for (auto const &entry : channel.child("filtering").child("highpass").children())
                         streams[index].info.desc.channels.back().filtering.highpass.emplace(entry.name(), entry.child_value());
 
-                    for (auto entry : channel.child("filtering").child("lowpass").children())
+                    for (auto const &entry : channel.child("filtering").child("lowpass").children())
                         streams[index].info.desc.channels.back().filtering.lowpass.emplace(entry.name(), entry.child_value());
 
-                    for (auto entry : channel.child("filtering").child("notch").children())
+                    for (auto const &entry : channel.child("filtering").child("notch").children())
                         streams[index].info.desc.channels.back().filtering.notch.emplace(entry.name(), entry.child_value());
                 }
 
-                for (auto entry : desc.child("encoding").children())
+                for (auto const &entry : desc.child("encoding").children())
                     streams[index].info.desc.encoding.emplace(entry.name(), entry.child_value());
 
-                for (auto entry : desc.child("synchronization").children())
+                for (auto const &entry : desc.child("synchronization").children())
                     streams[index].info.desc.synchronization.emplace(entry.name(), entry.child_value());
 
-                for (auto entry : desc.child("facility").children())
+                for (auto const &entry : desc.child("facility").children())
                     streams[index].info.desc.facility.emplace(entry.name(), entry.child_value());
 
-                for (auto entry : desc.child("provider").children())
+                for (auto const &entry : desc.child("provider").children())
                     streams[index].info.desc.provider.emplace(entry.name(), entry.child_value());
 
-                for (auto entry : desc.child("acquisition").children())
+                for (auto const &entry : desc.child("acquisition").children())
                     streams[index].info.desc.acquisition.emplace(entry.name(), entry.child_value());
 
-                for (auto entry : desc.child("reference").children())
+                for (auto const &entry : desc.child("reference").children())
                     streams[index].info.desc.reference.emplace(entry.name(), entry.child_value());
 
-                for (auto entry : desc.child("cap").children())
+                for (auto const &entry : desc.child("cap").children())
                     streams[index].info.desc.cap.emplace(entry.name(), entry.child_value());
 
-                for (auto entry : desc.child("location_measurement").children())
+                for (auto const &entry : desc.child("location_measurement").children())
                     streams[index].info.desc.location_measurement.emplace(entry.name(), entry.child_value());
 
-                for (auto entry : desc.child("amplifier").child("settings").children())
+                for (auto const &entry : desc.child("amplifier").child("settings").children())
                     streams[index].info.desc.amplifier.settings.emplace(entry.name(), entry.child_value());
 
                 for (auto fiducial = desc.child("fiducials").child("fiducial"); fiducial; fiducial = fiducial.next_sibling("fiducial"))
@@ -179,7 +179,7 @@ void Xdf::load_xdf(std::string filename)
 
                     streams[index].info.desc.fiducials.back().label = fiducial.child("label").text().get();
 
-                    for (auto entry : fiducial.child("location").children())
+                    for (auto const &entry : fiducial.child("location").children())
                         streams[index].info.desc.fiducials.back().location.emplace(entry.name(), entry.child_value());
                 }
 
@@ -550,9 +550,16 @@ void Xdf::load_xdf(std::string filename)
 
         loadSampleRateMap();
 
+        calcTotalChannel();
+
+        loadDictionary();
+
+        subtractMean();
+
+        createLabels();
+
         //loading finishes, close file
         file.close();
-
     }
     else
     {
@@ -643,21 +650,15 @@ void Xdf::resampleXDF(int userSrate)
     //===========Calculating total length & total channel count=============
     //======================================================================
 
-    calcTotalChannel();
 
     calcTotalLength(userSrate);
 
     adjustTotalLength();
 
-    loadDictionary();
-
-    createLabels();
-
     time = clock() - time;
 
     std::cout << "it took " << time << " clicks (" << ((float)time) / CLOCKS_PER_SEC << " seconds)"
               << " resampling" << std::endl;
-
 }
 
 //function of reading the length of each chunk
@@ -697,7 +698,7 @@ uint64_t Xdf::readLength(std::ifstream &file)
 void Xdf::findMinMax()
 {
     //find the smallest timestamp of all streams
-    for (auto &stream : streams)
+    for (auto const &stream : streams)
     {
         if (!stream.time_stamps.empty())
         {
@@ -705,28 +706,28 @@ void Xdf::findMinMax()
             break;
         }
     }
-    for (auto &stream : streams)
+    for (auto const &stream : streams)
     {
         if (!stream.time_stamps.empty() && stream.time_stamps.front() < minTS)
             minTS = stream.time_stamps.front();
     }
 
     //including the timestamps of the events as well
-    for (auto &elem : eventMap)
+    for (auto const &elem : eventMap)
     {
         if (minTS > elem.first.second)
             minTS = elem.first.second;
     }
 
     //find the max timestamp of all streams
-    for (auto &stream : streams)
+    for (auto const &stream : streams)
     {
         if (!stream.time_stamps.empty() && stream.time_stamps.back() > maxTS)
             maxTS = stream.time_stamps.back();
     }
 
     //including the timestamps of the events as well
-    for (auto &elem : eventMap)
+    for (auto const &elem : eventMap)
     {
         if (maxTS < elem.first.second)
             maxTS = elem.first.second;
@@ -742,7 +743,7 @@ void Xdf::findMajSR()
     std::vector<std::pair<sampRate, numChannel> > srateMap; //<srate, numChannels> pairs of all the streams
 
     //find out whether a sample rate already exists in srateMap
-    for (auto &stream : streams)
+    for (auto const &stream : streams)
     {
         if (stream.info.nominal_srate != 0)
         {
@@ -809,7 +810,7 @@ void Xdf::freeUpTimeStamps()
 
 void Xdf::adjustTotalLength()
 {
-    for (auto &stream : streams)
+    for (auto const &stream : streams)
     {
         if(!stream.time_series.empty())
         {
@@ -821,7 +822,7 @@ void Xdf::adjustTotalLength()
 
 void Xdf::getHighestSampleRate()
 {
-    for (auto &stream : streams)
+    for (auto const &stream : streams)
     {
         if (stream.info.nominal_srate > maxSR)
             maxSR = stream.info.nominal_srate;
@@ -830,43 +831,46 @@ void Xdf::getHighestSampleRate()
 
 void Xdf::loadSampleRateMap()
 {
-    for (auto &stream : streams)
+    for (auto const &stream : streams)
     {
         if (std::find(sampleRateMap.begin(), sampleRateMap.end(), stream.info.nominal_srate)==sampleRateMap.end())
             sampleRateMap.emplace_back(stream.info.nominal_srate);
     }
 }
 
-void Xdf::subtractByMean()
+void Xdf::subtractMean()
 {
     for (auto &stream : streams)
     {
         for (auto &row : stream.time_series)
         {
-            long double mean = std::accumulate(row.begin(), row.end(), 0.0) / row.size();
+            long double init = 0.0;
+            long double mean = std::accumulate(row.begin(), row.end(), init) / row.size();
             std::transform(row.begin(), row.end(), row.begin(), bind2nd(std::minus<double>(), mean));
             offsets.emplace_back(mean);
         }
     }
 }
 
-
 void Xdf::createLabels()
 {
     int channelCount = 0;
 
-    for (auto stream : streams)
+    for (auto const &stream : streams)
     {
         if (stream.info.desc.channels.size())
         {
             for (auto const &channelItem : stream.info.desc.channels)
             {
-                std::string label = std::to_string(channelCount) + ". ";
+                std::string label = "Channel " + std::to_string(channelCount) + "/Stream " + std::to_string(streamMap[channelCount]) + "\n";
 
                 for (auto const &entry : channelItem.channelInfoMap)
                 {
                     if (entry.second != "")
-                        label.append(entry.first).append(":").append(entry.second).append("\n");
+                    {
+                        label.append(entry.first).append(": ").append(entry.second);
+                        label += '\n';
+                    }
                 }
                 label.append("Offset: ").append(std::to_string(-offsets[channelCount]));
 
@@ -878,10 +882,10 @@ void Xdf::createLabels()
         {
             for (size_t i = 0; i < stream.time_series.size(); i++)
             {
-                std::string label = std::to_string(channelCount) + ". ";
-                label += stream.info.infoMap["name"];
+                std::string label = "Channel " + std::to_string(channelCount) + "/Stream " + std::to_string(streamMap[channelCount]) + "\n";
+                label += stream.info.infoMap.at("name");
                 label += '\n';
-                label += stream.info.infoMap["type"];
+                label += stream.info.infoMap.at("type");
                 label += "\nOffset: ";
                 label += std::to_string(-offsets[channelCount]);
 
@@ -890,28 +894,12 @@ void Xdf::createLabels()
             }
         }
     }
-
-    /*
-    for (size_t i = 0; i < totalCh; i++)
-    {
-        std::string label = "Stream ";
-        label += std::to_string(streamMap[i]);
-        label += '\n';
-        label += streams[streamMap[i]].info.infoMap["name"];
-        label += '\n';
-        label += streams[streamMap[i]].info.infoMap["type"];
-        label += "\nOffset: ";
-        label += std::to_string(-offsets[i]);
-
-        labels.emplace_back(label);
-    }
-    */
 }
 
 void Xdf::loadDictionary()
 {
     //loop through the eventMap
-    for (auto &entry : eventMap)
+    for (auto const &entry : eventMap)
     {
         //search the dictionary to see whether an event is already in it
         auto it = std::find(dictionary.begin(),dictionary.end(),entry.first.first);
