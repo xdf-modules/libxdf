@@ -102,6 +102,9 @@ public:
     std::vector<float> offsets;         /*!< Offsets of each channel after using subtractMean() function */
 
     std::string fileHeader;             /*!< Raw XML of the file header. */
+    int userAddedStream { 0 };            /*!< For Sigviewer only: if user manually added events in Sigviewer,
+                                          * the events will be stored in a new stream after all current streams. */
+    std::vector<std::pair<std::string, double> > userCreatedEvents;/*!< User created events in Sigviewer. */
 
     //=============================================================================================
 
@@ -247,12 +250,20 @@ public:
      *
      * \sa offsets
      */
-    void subtractMean();
+    void detrend();
 
     /*!
      * \brief calcEffectiveSrate
      */
     void calcEffectiveSrate();
+
+    /*!
+     * \brief writeEventsToXDF
+     *
+     * If user added some markups and events in Sigviewer, this function can
+     * store those user created events back to the XDF file in a new stream
+     */
+    int writeEventsToXDF(std::string file_path);
 };
 
 #endif // XDF_H
