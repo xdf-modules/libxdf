@@ -2,24 +2,28 @@
 
 ## *A static C++ library for loading [XDF](https://github.com/sccn/xdf/wiki/Specifications) files*
 
-Libxdf requires [Qt 5.7 MinGW 5.3](https://www.qt.io/download-open-source/#section-2) to build.
+
+Libxdf requires [Qt 5.8 MinGW 5.3](https://www.qt.io/download-open-source/#section-2) to build.
 
 Other Qt 5 versions with a MinGW compiler might work, but is not guaranteed.
+
+Pre-built binaries can be downloaded directly from the [release](https://github.com/Yida-Lin/libxdf/releases) page.
+
 
 
 ### How to use in conjunction with [Sigviewer](https://github.com/cbrnr/sigviewer):
 
-1. Clone the repo and build with [Qt 5.7 MinGW 5.3](https://www.qt.io/download-open-source/#section-2)
+1. Download `xdf.h` and `libxdf.a` from the [release](https://github.com/Yida-Lin/libxdf/releases) page.
 
-2. Once complete, copy `xdf.h` into `sigviewer/external/include`
+2. Copy `xdf.h` into `sigviewer/external/include`
 
-3. Copy debug or release version of `libxdf.a` into `sigviewer/external/lib`
+3. Copy `libxdf.a` into `sigviewer/external/lib`
 
 4. Build and run Sigviewer!
 
 ### How to use in other C++ applications:
 
-1. Clone the repo and build with [Qt 5.7 MinGW 5.3](https://www.qt.io/download-open-source/#section-2)
+1. Clone the repo and build with [Qt 5.8 MinGW 5.3](https://www.qt.io/download-open-source/#section-2), or use the pre-built version.
 
 2. Instantiate an object of `Xdf` class and call the load_xdf() method.
 
@@ -36,8 +40,7 @@ If you would like to resample the signals, call:
 
 ```C++
 
-int desiredSampleRate = 100;			//choose any sample rate you would like
-XDFdata.resampleXDF(desiredSampleRate);	//resamples the data to the desired sample rate
+XDFdata.resample(100);	//resample to 100Hz
 
 ```
 
@@ -50,7 +53,7 @@ The recommended order is shown as following. Only `load_xdf()` is mandatory.
 XDFdata.load_xdf(std::string filepath);
 XDFdata.subtractMean();
 XDFdata.createLabels();
-XDFdata.resampleXDF(int sampleRate);
+XDFdata.resample(int sampleRate);
 XDFdata.freeUpTimeStamps();
 ```
 
