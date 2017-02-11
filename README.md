@@ -7,11 +7,11 @@ Libxdf requires [Qt 5.8 MinGW 5.3](https://www.qt.io/download-open-source/#secti
 
 Other Qt 5 versions with a MinGW compiler might work, but is not guaranteed.
 
-Pre-built binaries can be downloaded directly from the [release](https://github.com/Yida-Lin/libxdf/releases) page.
+Pre-built binaries can be downloaded from the [release](https://github.com/Yida-Lin/libxdf/releases) page.
 
 
 
-### How to use in conjunction with [Sigviewer](https://github.com/cbrnr/sigviewer):
+### How to use in conjunction with [SigViewer](https://github.com/cbrnr/sigviewer):
 
 1. Download `xdf.h` and `libxdf.a` from the [release](https://github.com/Yida-Lin/libxdf/releases) page.
 
@@ -19,7 +19,13 @@ Pre-built binaries can be downloaded directly from the [release](https://github.
 
 3. Copy `libxdf.a` into `sigviewer/external/lib`
 
-4. Build and run Sigviewer!
+4. Choose [Qt 5.8 MinGW 5.3](https://www.qt.io/download-open-source/#section-2) as the toolkit to configure SigViewer.
+
+5. Build and run Sigviewer!
+
+![SigViewer using _libxdf_ to display signals in XDF files](docs/Example.png)
+
+Example: SigViewer using _libxdf_ to display signals in an XDF file.
 
 ### How to use in other C++ applications:
 
