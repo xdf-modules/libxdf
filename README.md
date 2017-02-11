@@ -1,17 +1,42 @@
 # libxdf
 
-## *A static C++ library for loading [XDF](https://github.com/sccn/xdf/wiki/Specifications) files*
-
-
-Libxdf requires [Qt 5.8 MinGW 5.3](https://www.qt.io/download-open-source/#section-2) to build.
-
-Other Qt 5 versions with a MinGW compiler might work, but is not guaranteed.
-
-Pre-built binaries can be downloaded from the [release](https://github.com/Yida-Lin/libxdf/releases) page.
+## *A static C++ library for loading [XDF](https://github.com/sccn/xdf/wiki/Specifications "Extensible Data Format") files*
 
 
 
-### How to use in conjunction with [SigViewer](https://github.com/cbrnr/sigviewer):
+* [Introduction](#intro)
+
+* [Download](#download)
+
+* [Quick-Start Guide](#quick)
+
+* [Documentation](#doc)
+
+* [Support](#support)
+
+
+## <a name="intro"></a>Introduction
+
+Libxdf is a cross-platform C++ library for loading multimodal, multi-rate signals stored in [XDF](https://github.com/sccn/xdf/wiki/Specifications  "Extensible Data Format") files. 
+Libxdf is a core component of bio-signal viewing application [SigViewer](https://github.com/cbrnr/sigviewer). It can also be integrated into other 
+C++ applications. 
+
+Libxdf is open-source, free, and actively maintained.
+
+
+## <a name="download"></a>Download
+
+[Source code (zip)](https://github.com/Yida-Lin/libxdf/archive/v0.9.zip)
+
+[Source code (tar.gz)](https://github.com/Yida-Lin/libxdf/archive/v0.9.tar.gz)
+
+[Pre-built release](https://github.com/Yida-Lin/libxdf/releases)
+
+## <a name="quick"></a>Quick-Start Guide
+
+### Use in conjunction with [SigViewer](https://github.com/cbrnr/sigviewer):
+
+Libxdf is a built-in component of [SigViewer](https://github.com/cbrnr/sigviewer). If you wish to build SigViewer from source, follow these steps:
 
 1. Download `xdf.h` and `libxdf.a` from the [release](https://github.com/Yida-Lin/libxdf/releases) page.
 
@@ -23,13 +48,14 @@ Pre-built binaries can be downloaded from the [release](https://github.com/Yida-
 
 5. Build and run Sigviewer!
 
+
 ![SigViewer using _libxdf_ to display signals in XDF files](docs/Example.png)
 
 Example: SigViewer using _libxdf_ to display signals in an XDF file.
 
-### How to use in other C++ applications:
+### Use in other C++ applications:
 
-1. Clone the repo and build with [Qt 5.8 MinGW 5.3](https://www.qt.io/download-open-source/#section-2), or use the pre-built version.
+1. Clone the repo and build with [Qt 5.8 MinGW 5.3](https://www.qt.io/download-open-source/#section-2), or use the pre-built binary release.
 
 2. Instantiate an object of `Xdf` class and call the load_xdf() method.
 
@@ -65,4 +91,9 @@ XDFdata.freeUpTimeStamps();
 
 Libxdf depends on third party libraries [Pugixml v1.8](http://pugixml.org/) for XML parsing and [Smarc](http://audio-smarc.sourceforge.net/) for resampling.
 
-Detailed documentation was generated via [**Doxygen**](http://www.stack.nl/~dimitri/doxygen/index.html).
+## <a name="doc"></a> Documentation
+Detailed documentation was generated via [Doxygen](http://www.stack.nl/~dimitri/doxygen/index.html) and is available [**here**](docs/html/class_xdf.html).
+
+## <a name="support"></a>Support
+
+[Email author](mailto:ital_fazioli@hotmail.com "ital_fazioli@hotmail")
