@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['readlength',['readLength',['../class_xdf.html#a4d1f84c1b3fe71d51aaac68e7f6a3117',1,'Xdf']]],
-  ['resamplexdf',['resampleXDF',['../class_xdf.html#aa567b1eb5305cf6238bbee71b71143ab',1,'Xdf']]]
+  ['load_5fxdf',['load_xdf',['../class_xdf.html#a993e94535d6d9e544a64ffbbb2bb4e8c',1,'Xdf']]],
+  ['loaddictionary',['loadDictionary',['../class_xdf.html#af974c90eba795912af5b9987e1dc9798',1,'Xdf']]],
+  ['loadsampleratemap',['loadSampleRateMap',['../class_xdf.html#a51d7fd7cf8f70354f36a83b6d610832f',1,'Xdf']]]
 ];
