@@ -34,7 +34,6 @@
 
 #include "remez_lp.h"
 #include <math.h>
-#include <malloc.h>
 #include <stdlib.h>
 #include <stdio.h>
 
