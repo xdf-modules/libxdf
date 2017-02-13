@@ -30,7 +30,6 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-#include "malloc.h"
 
 #include "remez_lp.h"
 

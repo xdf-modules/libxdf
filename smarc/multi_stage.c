@@ -24,7 +24,6 @@
 
 
 #include "multi_stage.h"
-#include "malloc.h"
 #include "string.h"
 #include "stdlib.h"
 #include "stdio.h"
