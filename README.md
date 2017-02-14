@@ -30,7 +30,7 @@ Libxdf is open-source, free, and actively maintained.
 
 [Source code (tar.gz)](https://github.com/Yida-Lin/libxdf/archive/v0.9.tar.gz)
 
-[Pre-built release](https://github.com/Yida-Lin/libxdf/releases)
+[Pre-built package](https://github.com/Yida-Lin/libxdf/releases)
 
 ## <a name="quick"></a>Quick-Start Guide
 
