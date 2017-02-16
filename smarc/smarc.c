@@ -26,6 +26,7 @@
 #include "stage_impl.h"
 #include "multi_stage.h"
 #include "polyfilt.h"
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>

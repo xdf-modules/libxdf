@@ -1,10 +1,4 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2016-12-03T22:30:55
-#
-#-------------------------------------------------
-
-QT       -= gui
+QT -= gui
 
 TARGET = xdf
 TEMPLATE = lib
@@ -34,6 +28,10 @@ unix {
     INSTALLS += target
 }
 
-QMAKE_CFLAGS += -std=c99
+macx {
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
+}
 
-QMAKE_CXXFLAGS=-std=gnu++11
+#QMAKE_CFLAGS += -std=c99
+
+QMAKE_CXXFLAGS += -std=gnu++11
