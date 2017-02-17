@@ -2,7 +2,7 @@ QT -= gui
 
 TARGET = xdf
 TEMPLATE = lib
-CONFIG += staticlib
+CONFIG += staticlib c++11
 
 SOURCES += xdf.cpp \
     smarc/filtering.c \
@@ -31,7 +31,3 @@ unix {
 macx {
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
 }
-
-#QMAKE_CFLAGS += -std=c99
-
-QMAKE_CXXFLAGS += -std=gnu++11
