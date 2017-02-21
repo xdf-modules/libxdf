@@ -40,6 +40,7 @@ public:
     //! Default constructor with no parameter.
     Xdf();
 
+    //subclass for single streams
     /*! \class Stream
      *
      * XDF files uses stream as the unit to store data. An XDF file usually
@@ -82,7 +83,7 @@ public:
         std::vector<double> clock_values;/*!< Vector of clock values from clock offset chunk (Tag 4). */
     };
 
-    //===============================================================================================
+    //XDF properties=================================================================================
 
     std::vector<Stream> streams; /*!< A vector to store all the streams of the current XDF file. */
     float version;  /*!< The version of XDF file */
@@ -125,7 +126,32 @@ public:
                                           * The index will be userAddedStream.  */
     std::vector<std::pair<std::string, double> > userCreatedEvents;/*!< User created events in Sigviewer. */
 
-    //=============================================================================================
+    //Public Functions==============================================================================================
+
+    /*!
+     * \brief Adjust `totalLen` to avoid possible deviation
+     *
+     * `totalLen` is calculated by multiplying the difference between max time
+     * stamp and minimal time stamp by the `majSR` (major sample rate).
+     * However, this can be inaccurate. In case any channel is longer than
+     * `totalLen`, this function will make `totalLen` match the length of
+     * that channel.
+     *
+     * \sa totalLen, majSR, calcTotalLength()
+     */
+    void adjustTotalLength();
+
+    /*!
+     * \brief Calculate the globle length (in samples).
+     *
+     * This is calculated by multiplying the rage from the earliest
+     * time stamp to the last time stamp across all channels by the
+     * parameter sampleRate.
+     *
+     * \param sampleRate is the sample rate you wish to use to calculate the
+     * total length.
+     */
+    void calcTotalLength(int sampleRate);
 
     /*!
      * \brief Create labels for each channel and store them in _labels_ vector.
@@ -134,11 +160,30 @@ public:
     void createLabels();
 
     /*!
-     * \brief Copy all unique types of events from _eventMap_ to
-     * _dictionary_ with no repeats.
-     * \sa dictionary, eventMap
+     * \brief Subtract the entire channel by its mean.
+     *
+     * Sigviewer displays both the channel signals as well as the zero baseline.
+     * Thus when the mean of a channel is too high or too low it would be very
+     * hard to see the fluctuation. Subtract the entire channel by its mean
+     * will make the signal fluctuate around the zero baseline, and has better
+     * visual effect. The mean of each channel times `-1` will be stored in
+     * member vector `offsets`
+     *
+     * \sa offsets
      */
-    void loadDictionary();
+    void detrend();
+
+    /*!
+     * \brief Delete the time stamps vectors when no longer needed to
+     * release some memory.
+     *
+     * Sigviewer doesn't demand time stamps to display signals except
+     * irregular sample rate channels, events, and the first time stamp
+     * of each channel (used to decide where does a channel start when
+     * putting all streams together). In this case we can delete the time
+     * stamps when no longer needed to free up some memory.
+     */
+    void freeUpTimeStamps();
 
     /*!
      * \brief The main function of loading an XDF file.
@@ -154,26 +199,38 @@ public:
      */
     void resample(int userSrate);
 
-    //! This function will get the length of the upcoming chunk, or the number of samples.
     /*!
-     * \brief While loading XDF file there are 2 cases where this function will be
-     * needed. One is to get the length of each chunk, one is to get the
-     * number of samples when loading the time series (Chunk tag 3).
-     * \param file is the XDF file that is being loaded in the type of `std::ifstream`.
-     * \return The length of the upcoming chunk (in bytes).
-     */
-    uint64_t readLength(std::ifstream &file);
-
-    /*!
-     * \brief Find the minimal and maximal time stamps across all streams.
+     * \brief writeEventsToXDF
      *
-     * The results will be stored in member variables `minTS` and `maxTS` respectively.
-     * \sa  minTS, maxTS, calcTotalLength(int sampleRate);
+     * If user added some markups and events in Sigviewer, this function can
+     * store those user created events back to the XDF file in a new stream
      */
-    void findMinMax();
+    int writeEventsToXDF(std::string file_path);
 
-    //! Find the sample rate that has the most channels.
+    //Private Functions: Not intended to be used by external programs======================================
+
+private:
+
     /*!
+     * \brief calcEffectiveSrate
+     */
+    void calcEffectiveSrate();
+
+    /*!
+     * \brief Calculate the total channel count and store the result
+     * in `totalCh`.
+     *
+     * Channels of both regular and irregular sample rates are included.
+     * The streams with the channel format `string` are excluded, and are
+     * stored in `eventMap` instead.
+     *
+     * \sa totalCh, eventMap
+     */
+    void calcTotalChannel();
+
+    /*!
+     * \brief Find the sample rate that has the most channels.
+     *
      * XDF format supports different sample rates across streams, but
      * Sigviewer needs to display all channels in a unified sample rate.
      * Thus if there are more than one sample rate in the file, some channels
@@ -194,53 +251,12 @@ public:
     void findMajSR();
 
     /*!
-     * \brief Calculate the total channel count and store the result
-     * in `totalCh`.
+     * \brief Find the minimal and maximal time stamps across all streams.
      *
-     * Channels of both regular and irregular sample rates are included.
-     * The streams with the channel format `string` are excluded, and are
-     * stored in `eventMap` instead.
-     *
-     * \sa totalCh, eventMap
+     * The results will be stored in member variables `minTS` and `maxTS` respectively.
+     * \sa  minTS, maxTS, calcTotalLength(int sampleRate);
      */
-    void calcTotalChannel();
-
-    /*!
-     * \brief Calculate the globle length (in samples).
-     *
-     * This is calculated by multiplying the rage from the earliest
-     * time stamp to the last time stamp across all channels by the
-     * parameter sampleRate.
-     *
-     * \param sampleRate is the sample rate you wish to use to calculate the
-     * total length.
-     */
-    void calcTotalLength(int sampleRate);
-
-    /*!
-     * \brief Delete the time stamps vectors when no longer needed to
-     * release some memory.
-     *
-     * Sigviewer doesn't demand time stamps to display signals except
-     * irregular sample rate channels, events, and the first time stamp
-     * of each channel (used to decide where does a channel start when
-     * putting all streams together). In this case we can delete the time
-     * stamps when no longer needed to free up some memory.
-     */
-    void freeUpTimeStamps();
-
-    /*!
-     * \brief Adjust `totalLen` to avoid possible deviation
-     *
-     * `totalLen` is calculated by multiplying the difference between max time
-     * stamp and minimal time stamp by the `majSR` (major sample rate).
-     * However, this can be inaccurate. In case any channel is longer than
-     * `totalLen`, this function will make `totalLen` match the length of
-     * that channel.
-     *
-     * \sa totalLen, majSR, calcTotalLength()
-     */
-    void adjustTotalLength();
+    void findMinMax();
 
     /*!
      * \brief Get the highest sample rate of all streams and store
@@ -251,6 +267,13 @@ public:
     void getHighestSampleRate();
 
     /*!
+     * \brief Copy all unique types of events from _eventMap_ to
+     * _dictionary_ with no repeats.
+     * \sa dictionary, eventMap
+     */
+    void loadDictionary();
+
+    /*!
      * \brief Load every sample rate appeared in the current file into
      * member variable `sampleRateMap`.
      * \sa sampleRateMap
@@ -258,31 +281,15 @@ public:
     void loadSampleRateMap();
 
     /*!
-     * \brief Subtract the entire channel by its mean.
+     * \brief This function will get the length of the upcoming chunk, or the number of samples.
      *
-     * Sigviewer displays both the channel signals as well as the zero baseline.
-     * Thus when the mean of a channel is too high or too low it would be very
-     * hard to see the fluctuation. Subtract the entire channel by its mean
-     * will make the signal fluctuate around the zero baseline, and has better
-     * visual effect. The mean of each channel times `-1` will be stored in
-     * member vector `offsets`
-     *
-     * \sa offsets
+     * While loading XDF file there are 2 cases where this function will be
+     * needed. One is to get the length of each chunk, one is to get the
+     * number of samples when loading the time series (Chunk tag 3).
+     * \param file is the XDF file that is being loaded in the type of `std::ifstream`.
+     * \return The length of the upcoming chunk (in bytes).
      */
-    void detrend();
-
-    /*!
-     * \brief calcEffectiveSrate
-     */
-    void calcEffectiveSrate();
-
-    /*!
-     * \brief writeEventsToXDF
-     *
-     * If user added some markups and events in Sigviewer, this function can
-     * store those user created events back to the XDF file in a new stream
-     */
-    int writeEventsToXDF(std::string file_path);
+    uint64_t readLength(std::ifstream &file);
 };
 
 #endif // XDF_H
