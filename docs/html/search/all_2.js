@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['calceffectivesrate',['calcEffectiveSrate',['../class_xdf.html#ae177253f14305bb0fba13036faa3ef51',1,'Xdf']]],
-  ['calctotalchannel',['calcTotalChannel',['../class_xdf.html#a73a50d4da780ee5f5d652b0e416e8ce6',1,'Xdf']]],
   ['calctotallength',['calcTotalLength',['../class_xdf.html#a75ef15a72071fe0d36ef6311214518fe',1,'Xdf']]],
   ['channel_5fcount',['channel_count',['../struct_xdf_1_1_stream.html#ab8fb7c3d645305e84f90d919f698082c',1,'Xdf::Stream']]],
   ['channel_5fformat',['channel_format',['../struct_xdf_1_1_stream.html#ad7b61b077e247ba57a18c182e285d0ad',1,'Xdf::Stream']]],

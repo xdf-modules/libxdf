@@ -29,9 +29,9 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">libxdf
-   &#160;<span id="projectnumber">0.9</span>
+   &#160;<span id="projectnumber">0.92</span>
    </div>
-   <div id="projectbrief">A static library for loading XDF files</div>
+   <div id="projectbrief">A static C++ library for loading XDF files</div>
   </td>
  </tr>
  </tbody>
@@ -113,51 +113,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7900b5a4f3792b9d59a5d43db821607e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a7900b5a4f3792b9d59a5d43db821607e">Xdf</a> ()</td></tr>
 <tr class="memdesc:a7900b5a4f3792b9d59a5d43db821607e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor with no parameter.  <a href="#a7900b5a4f3792b9d59a5d43db821607e">More...</a><br /></td></tr>
 <tr class="separator:a7900b5a4f3792b9d59a5d43db821607e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7dc1ef8c04216d703604bf868146428"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#aa7dc1ef8c04216d703604bf868146428">adjustTotalLength</a> ()</td></tr>
+<tr class="memdesc:aa7dc1ef8c04216d703604bf868146428"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjust <code>totalLen</code> to avoid possible deviation.  <a href="#aa7dc1ef8c04216d703604bf868146428">More...</a><br /></td></tr>
+<tr class="separator:aa7dc1ef8c04216d703604bf868146428"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75ef15a72071fe0d36ef6311214518fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a75ef15a72071fe0d36ef6311214518fe">calcTotalLength</a> (int sampleRate)</td></tr>
+<tr class="memdesc:a75ef15a72071fe0d36ef6311214518fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the globle length (in samples).  <a href="#a75ef15a72071fe0d36ef6311214518fe">More...</a><br /></td></tr>
+<tr class="separator:a75ef15a72071fe0d36ef6311214518fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad98829202c9ae64505c9ecc7796c8ddc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#ad98829202c9ae64505c9ecc7796c8ddc">createLabels</a> ()</td></tr>
 <tr class="memdesc:ad98829202c9ae64505c9ecc7796c8ddc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create labels for each channel and store them in <em>labels</em> vector.  <a href="#ad98829202c9ae64505c9ecc7796c8ddc">More...</a><br /></td></tr>
 <tr class="separator:ad98829202c9ae64505c9ecc7796c8ddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af974c90eba795912af5b9987e1dc9798"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#af974c90eba795912af5b9987e1dc9798">loadDictionary</a> ()</td></tr>
-<tr class="memdesc:af974c90eba795912af5b9987e1dc9798"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy all unique types of events from <em>eventMap</em> to <em>dictionary</em> with no repeats.  <a href="#af974c90eba795912af5b9987e1dc9798">More...</a><br /></td></tr>
-<tr class="separator:af974c90eba795912af5b9987e1dc9798"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d2c5859af84542a15a80c906465f4e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a4d2c5859af84542a15a80c906465f4e3">detrend</a> ()</td></tr>
+<tr class="memdesc:a4d2c5859af84542a15a80c906465f4e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtract the entire channel by its mean.  <a href="#a4d2c5859af84542a15a80c906465f4e3">More...</a><br /></td></tr>
+<tr class="separator:a4d2c5859af84542a15a80c906465f4e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12332c25006e2c6d71883c368c3c1f61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a12332c25006e2c6d71883c368c3c1f61">freeUpTimeStamps</a> ()</td></tr>
+<tr class="memdesc:a12332c25006e2c6d71883c368c3c1f61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete the time stamps vectors when no longer needed to release some memory.  <a href="#a12332c25006e2c6d71883c368c3c1f61">More...</a><br /></td></tr>
+<tr class="separator:a12332c25006e2c6d71883c368c3c1f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a993e94535d6d9e544a64ffbbb2bb4e8c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a993e94535d6d9e544a64ffbbb2bb4e8c">load_xdf</a> (std::string filename)</td></tr>
 <tr class="memdesc:a993e94535d6d9e544a64ffbbb2bb4e8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main function of loading an XDF file.  <a href="#a993e94535d6d9e544a64ffbbb2bb4e8c">More...</a><br /></td></tr>
 <tr class="separator:a993e94535d6d9e544a64ffbbb2bb4e8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67c5890ac84f257e91bdb93dcbe958ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a67c5890ac84f257e91bdb93dcbe958ae">resample</a> (int userSrate)</td></tr>
 <tr class="memdesc:a67c5890ac84f257e91bdb93dcbe958ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resample all streams and channel to a chosen sample rate.  <a href="#a67c5890ac84f257e91bdb93dcbe958ae">More...</a><br /></td></tr>
 <tr class="separator:a67c5890ac84f257e91bdb93dcbe958ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d1f84c1b3fe71d51aaac68e7f6a3117"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a4d1f84c1b3fe71d51aaac68e7f6a3117">readLength</a> (std::ifstream &amp;file)</td></tr>
-<tr class="memdesc:a4d1f84c1b3fe71d51aaac68e7f6a3117"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will get the length of the upcoming chunk, or the number of samples.  <a href="#a4d1f84c1b3fe71d51aaac68e7f6a3117">More...</a><br /></td></tr>
-<tr class="separator:a4d1f84c1b3fe71d51aaac68e7f6a3117"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ec719b7cd1d634b0540f705e082e930"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a6ec719b7cd1d634b0540f705e082e930">findMinMax</a> ()</td></tr>
-<tr class="memdesc:a6ec719b7cd1d634b0540f705e082e930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the minimal and maximal time stamps across all streams.  <a href="#a6ec719b7cd1d634b0540f705e082e930">More...</a><br /></td></tr>
-<tr class="separator:a6ec719b7cd1d634b0540f705e082e930"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37ba74f27e4b611159e85d7658f19ae0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a37ba74f27e4b611159e85d7658f19ae0">findMajSR</a> ()</td></tr>
-<tr class="memdesc:a37ba74f27e4b611159e85d7658f19ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the sample rate that has the most channels.  <a href="#a37ba74f27e4b611159e85d7658f19ae0">More...</a><br /></td></tr>
-<tr class="separator:a37ba74f27e4b611159e85d7658f19ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73a50d4da780ee5f5d652b0e416e8ce6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a73a50d4da780ee5f5d652b0e416e8ce6">calcTotalChannel</a> ()</td></tr>
-<tr class="memdesc:a73a50d4da780ee5f5d652b0e416e8ce6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the total channel count and store the result in <code>totalCh</code>.  <a href="#a73a50d4da780ee5f5d652b0e416e8ce6">More...</a><br /></td></tr>
-<tr class="separator:a73a50d4da780ee5f5d652b0e416e8ce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75ef15a72071fe0d36ef6311214518fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a75ef15a72071fe0d36ef6311214518fe">calcTotalLength</a> (int sampleRate)</td></tr>
-<tr class="memdesc:a75ef15a72071fe0d36ef6311214518fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the globle length (in samples).  <a href="#a75ef15a72071fe0d36ef6311214518fe">More...</a><br /></td></tr>
-<tr class="separator:a75ef15a72071fe0d36ef6311214518fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12332c25006e2c6d71883c368c3c1f61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a12332c25006e2c6d71883c368c3c1f61">freeUpTimeStamps</a> ()</td></tr>
-<tr class="memdesc:a12332c25006e2c6d71883c368c3c1f61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete the time stamps vectors when no longer needed to release some memory.  <a href="#a12332c25006e2c6d71883c368c3c1f61">More...</a><br /></td></tr>
-<tr class="separator:a12332c25006e2c6d71883c368c3c1f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7dc1ef8c04216d703604bf868146428"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#aa7dc1ef8c04216d703604bf868146428">adjustTotalLength</a> ()</td></tr>
-<tr class="memdesc:aa7dc1ef8c04216d703604bf868146428"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjust <code>totalLen</code> to avoid possible deviation.  <a href="#aa7dc1ef8c04216d703604bf868146428">More...</a><br /></td></tr>
-<tr class="separator:aa7dc1ef8c04216d703604bf868146428"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf011f04f0d3636ba32c0496a3dcff85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#adf011f04f0d3636ba32c0496a3dcff85">getHighestSampleRate</a> ()</td></tr>
-<tr class="memdesc:adf011f04f0d3636ba32c0496a3dcff85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the highest sample rate of all streams and store it in <code>maxSR</code>.  <a href="#adf011f04f0d3636ba32c0496a3dcff85">More...</a><br /></td></tr>
-<tr class="separator:adf011f04f0d3636ba32c0496a3dcff85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51d7fd7cf8f70354f36a83b6d610832f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a51d7fd7cf8f70354f36a83b6d610832f">loadSampleRateMap</a> ()</td></tr>
-<tr class="memdesc:a51d7fd7cf8f70354f36a83b6d610832f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load every sample rate appeared in the current file into member variable <code>sampleRateMap</code>.  <a href="#a51d7fd7cf8f70354f36a83b6d610832f">More...</a><br /></td></tr>
-<tr class="separator:a51d7fd7cf8f70354f36a83b6d610832f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d2c5859af84542a15a80c906465f4e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a4d2c5859af84542a15a80c906465f4e3">detrend</a> ()</td></tr>
-<tr class="memdesc:a4d2c5859af84542a15a80c906465f4e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtract the entire channel by its mean.  <a href="#a4d2c5859af84542a15a80c906465f4e3">More...</a><br /></td></tr>
-<tr class="separator:a4d2c5859af84542a15a80c906465f4e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae177253f14305bb0fba13036faa3ef51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#ae177253f14305bb0fba13036faa3ef51">calcEffectiveSrate</a> ()</td></tr>
-<tr class="memdesc:ae177253f14305bb0fba13036faa3ef51"><td class="mdescLeft">&#160;</td><td class="mdescRight">calcEffectiveSrate  <a href="#ae177253f14305bb0fba13036faa3ef51">More...</a><br /></td></tr>
-<tr class="separator:ae177253f14305bb0fba13036faa3ef51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a072e657d7620d61080a15a215c691210"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xdf.html#a072e657d7620d61080a15a215c691210">writeEventsToXDF</a> (std::string file_path)</td></tr>
 <tr class="memdesc:a072e657d7620d61080a15a215c691210"><td class="mdescLeft">&#160;</td><td class="mdescRight">writeEventsToXDF  <a href="#a072e657d7620d61080a15a215c691210">More...</a><br /></td></tr>
 <tr class="separator:a072e657d7620d61080a15a215c691210"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -280,46 +256,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae177253f14305bb0fba13036faa3ef51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae177253f14305bb0fba13036faa3ef51">&sect;&nbsp;</a></span>calcEffectiveSrate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Xdf::calcEffectiveSrate </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>calcEffectiveSrate </p>
-
-</div>
-</div>
-<a id="a73a50d4da780ee5f5d652b0e416e8ce6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73a50d4da780ee5f5d652b0e416e8ce6">&sect;&nbsp;</a></span>calcTotalChannel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Xdf::calcTotalChannel </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Calculate the total channel count and store the result in <code>totalCh</code>. </p>
-<p>Channels of both regular and irregular sample rates are included. The streams with the channel format <code>string</code> are excluded, and are stored in <code>eventMap</code> instead.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_xdf.html#a9b4fc485a140ba5020a48ca5fa2e45ea">totalCh</a>, <a class="el" href="class_xdf.html#a45004fc495cad33768fae80b996a68db">eventMap</a> </dd></dl>
-
-</div>
-</div>
 <a id="a75ef15a72071fe0d36ef6311214518fe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a75ef15a72071fe0d36ef6311214518fe">&sect;&nbsp;</a></span>calcTotalLength()</h2>
 
@@ -388,49 +324,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a37ba74f27e4b611159e85d7658f19ae0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37ba74f27e4b611159e85d7658f19ae0">&sect;&nbsp;</a></span>findMajSR()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Xdf::findMajSR </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Find the sample rate that has the most channels. </p>
-<p>XDF format supports different sample rates across streams, but Sigviewer needs to display all channels in a unified sample rate. Thus if there are more than one sample rate in the file, some channels need to be resampled in order to be displayed.</p>
-<p>Libxdf uses third party <em>smarc</em> library to do the resampling task. While <em>smarc</em> library is powerful in the sense that it can resample signals to almost any sample rate, it's fairly slow, and for performance reason it's better to minimize the resampling process.</p>
-<p><a class="el" href="class_xdf.html#a37ba74f27e4b611159e85d7658f19ae0" title="Find the sample rate that has the most channels. ">findMajSR()</a> will find which sample rate currently has the most channels in the file. If only those channels with a different sample rate are to be resampled, the resampling process will be finished in the shortest possible period.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_xdf.html#ac65175994e0e2eeec4dd2f4688cd2040">majSR</a>, <a class="el" href="class_xdf.html#a67c5890ac84f257e91bdb93dcbe958ae" title="Resample all streams and channel to a chosen sample rate. ">resample(int userSrate)</a> </dd></dl>
-
-</div>
-</div>
-<a id="a6ec719b7cd1d634b0540f705e082e930"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ec719b7cd1d634b0540f705e082e930">&sect;&nbsp;</a></span>findMinMax()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Xdf::findMinMax </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Find the minimal and maximal time stamps across all streams. </p>
-<p>The results will be stored in member variables <code>minTS</code> and <code>maxTS</code> respectively. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_xdf.html#a44da046e191b2ae90b9bfe4de8d58ea3">minTS</a>, <a class="el" href="class_xdf.html#a6874a847c980f296ebbcf703fa48096a">maxTS</a>, <a class="el" href="class_xdf.html#a75ef15a72071fe0d36ef6311214518fe" title="Calculate the globle length (in samples). ">calcTotalLength(int sampleRate)</a>; </dd></dl>
-
-</div>
-</div>
 <a id="a12332c25006e2c6d71883c368c3c1f61"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a12332c25006e2c6d71883c368c3c1f61">&sect;&nbsp;</a></span>freeUpTimeStamps()</h2>
 
@@ -448,26 +341,6 @@ Public Attributes</h2></td></tr>
 
 <p>Delete the time stamps vectors when no longer needed to release some memory. </p>
 <p>Sigviewer doesn't demand time stamps to display signals except irregular sample rate channels, events, and the first time stamp of each channel (used to decide where does a channel start when putting all streams together). In this case we can delete the time stamps when no longer needed to free up some memory. </p>
-
-</div>
-</div>
-<a id="adf011f04f0d3636ba32c0496a3dcff85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf011f04f0d3636ba32c0496a3dcff85">&sect;&nbsp;</a></span>getHighestSampleRate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Xdf::getHighestSampleRate </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get the highest sample rate of all streams and store it in <code>maxSR</code>. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_xdf.html#a3cb480731a20caa480e3e6744acb562c">maxSR</a> </dd></dl>
 
 </div>
 </div>
@@ -494,73 +367,6 @@ Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="af974c90eba795912af5b9987e1dc9798"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af974c90eba795912af5b9987e1dc9798">&sect;&nbsp;</a></span>loadDictionary()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Xdf::loadDictionary </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Copy all unique types of events from <em>eventMap</em> to <em>dictionary</em> with no repeats. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_xdf.html#a26a2b517f020dc9f188c2277c76add85">dictionary</a>, <a class="el" href="class_xdf.html#a45004fc495cad33768fae80b996a68db">eventMap</a> </dd></dl>
-
-</div>
-</div>
-<a id="a51d7fd7cf8f70354f36a83b6d610832f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51d7fd7cf8f70354f36a83b6d610832f">&sect;&nbsp;</a></span>loadSampleRateMap()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Xdf::loadSampleRateMap </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Load every sample rate appeared in the current file into member variable <code>sampleRateMap</code>. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_xdf.html#add8aceaf68ad49b708f4df29f439778d">sampleRateMap</a> </dd></dl>
-
-</div>
-</div>
-<a id="a4d1f84c1b3fe71d51aaac68e7f6a3117"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d1f84c1b3fe71d51aaac68e7f6a3117">&sect;&nbsp;</a></span>readLength()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t Xdf::readLength </td>
-          <td>(</td>
-          <td class="paramtype">std::ifstream &amp;&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This function will get the length of the upcoming chunk, or the number of samples. </p>
-<p>While loading XDF file there are 2 cases where this function will be needed. One is to get the length of each chunk, one is to get the number of samples when loading the time series (Chunk tag 3). </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">file</td><td>is the XDF file that is being loaded in the type of <code>std::ifstream</code>. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The length of the upcoming chunk (in bytes). </dd></dl>
 
 </div>
 </div>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gethighestsamplerate',['getHighestSampleRate',['../class_xdf.html#adf011f04f0d3636ba32c0496a3dcff85',1,'Xdf']]]
+  ['load_5fxdf',['load_xdf',['../class_xdf.html#a993e94535d6d9e544a64ffbbb2bb4e8c',1,'Xdf']]]
 ];

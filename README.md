@@ -96,4 +96,4 @@ Detailed documentation was generated via [Doxygen](http://www.stack.nl/~dimitri/
 
 ## <a name="support"></a>Support
 
-[Email author](mailto:ital_fazioli@hotmail.com "ital_fazioli@hotmail")
+[Email author](mailto:ital_fazioli@hotmail.com "yida.lin@outlook.com")
