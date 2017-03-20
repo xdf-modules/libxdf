@@ -4,6 +4,8 @@ TARGET = xdf
 TEMPLATE = lib
 CONFIG += staticlib c++11
 
+QMAKE_CFLAGS += -std=c99
+
 SOURCES += xdf.cpp \
     smarc/filtering.c \
     smarc/multi_stage.c \
