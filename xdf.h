@@ -77,8 +77,8 @@ public:
             double effective_sample_rate;/*!< Effective sample rate. */
         } info; /*!< Meta-data from the stream header of the current stream. */
 
-        float last_timestamp{ 0 };  /*!< For temporary use while loading the vector */
-        float sampling_interval;    /*!< If srate > 0, sampling_interval = 1/srate; otherwise 0 */
+        double last_timestamp{ 0 };  /*!< For temporary use while loading the vector */
+        double sampling_interval;    /*!< If srate > 0, sampling_interval = 1/srate; otherwise 0 */
         std::vector<double> clock_times;/*!< Vector of clock times from clock offset chunk (Tag 4). */
         std::vector<double> clock_values;/*!< Vector of clock values from clock offset chunk (Tag 4). */
     };

@@ -188,17 +188,21 @@ int Xdf::load_xdf(std::string filename)
                         //read or deduce time stamp
                         uint8_t tsBytes;
                         file.read(reinterpret_cast<char *>(&tsBytes), 1);
+
+                        double ts;  //temporary time stamp
+
                         if (tsBytes == 8)
                         {
-                            double ts;
                             file.read((char*)&ts, 8);
                             streams[index].time_stamps.emplace_back(ts);
                         }
                         else
                         {
-                            double ts = streams[index].last_timestamp + streams[index].sampling_interval;
+                            ts = streams[index].last_timestamp + streams[index].sampling_interval;
                             streams[index].time_stamps.emplace_back(ts);
                         }
+
+                        streams[index].last_timestamp = ts;
 
                         //read the data
                         for (int v = 0; v < streams[index].info.channel_count; ++v)
@@ -221,17 +225,21 @@ int Xdf::load_xdf(std::string filename)
                         //read or deduce time stamp
                         uint8_t tsBytes;
                         file.read(reinterpret_cast<char *>(&tsBytes), 1);
+
+                        double ts;  //temporary time stamp
+
                         if (tsBytes == 8)
                         {
-                            double ts;
                             file.read((char*)&ts, 8);
                             streams[index].time_stamps.emplace_back(ts);
                         }
                         else
                         {
-                            double ts = streams[index].last_timestamp + streams[index].sampling_interval;
+                            ts = streams[index].last_timestamp + streams[index].sampling_interval;
                             streams[index].time_stamps.emplace_back(ts);
                         }
+
+                        streams[index].last_timestamp = ts;
 
                         //read the data
                         for (int v = 0; v < streams[index].info.channel_count; ++v)
@@ -254,17 +262,21 @@ int Xdf::load_xdf(std::string filename)
                         //read or deduce time stamp
                         uint8_t tsBytes;
                         file.read(reinterpret_cast<char *>(&tsBytes), 1);
+
+                        double ts;  //temporary time stamp
+
                         if (tsBytes == 8)
                         {
-                            double ts;
                             file.read((char*)&ts, 8);
                             streams[index].time_stamps.emplace_back(ts);
                         }
                         else
                         {
-                            double ts = streams[index].last_timestamp + streams[index].sampling_interval;
+                            ts = streams[index].last_timestamp + streams[index].sampling_interval;
                             streams[index].time_stamps.emplace_back(ts);
                         }
+
+                        streams[index].last_timestamp = ts;
 
                         //read the data
                         for (int v = 0; v < streams[index].info.channel_count; ++v)
@@ -287,17 +299,21 @@ int Xdf::load_xdf(std::string filename)
                         //read or deduce time stamp
                         uint8_t tsBytes;
                         file.read(reinterpret_cast<char *>(&tsBytes), 1);
+
+                        double ts;  //temporary time stamp
+
                         if (tsBytes == 8)
                         {
-                            double ts;
                             file.read((char*)&ts, 8);
                             streams[index].time_stamps.emplace_back(ts);
                         }
                         else
                         {
-                            double ts = streams[index].last_timestamp + streams[index].sampling_interval;
+                            ts = streams[index].last_timestamp + streams[index].sampling_interval;
                             streams[index].time_stamps.emplace_back(ts);
                         }
+
+                        streams[index].last_timestamp = ts;
 
                         //read the data
                         for (int v = 0; v < streams[index].info.channel_count; ++v)
@@ -320,17 +336,21 @@ int Xdf::load_xdf(std::string filename)
                         //read or deduce time stamp
                         uint8_t tsBytes;
                         file.read(reinterpret_cast<char *>(&tsBytes), 1);
+
+                        double ts;  //temporary time stamp
+
                         if (tsBytes == 8)
                         {
-                            double ts;
                             file.read((char*)&ts, 8);
                             streams[index].time_stamps.emplace_back(ts);
                         }
                         else
                         {
-                            double ts = streams[index].last_timestamp + streams[index].sampling_interval;
+                            ts = streams[index].last_timestamp + streams[index].sampling_interval;
                             streams[index].time_stamps.emplace_back(ts);
                         }
+
+                        streams[index].last_timestamp = ts;
 
                         //read the data
                         for (int v = 0; v < streams[index].info.channel_count; ++v)
@@ -353,17 +373,21 @@ int Xdf::load_xdf(std::string filename)
                         //read or deduce time stamp
                         uint8_t tsBytes;
                         file.read(reinterpret_cast<char *>(&tsBytes), 1);
+
+                        double ts;  //temporary time stamp
+
                         if (tsBytes == 8)
                         {
-                            double ts;
                             file.read((char*)&ts, 8);
                             streams[index].time_stamps.emplace_back(ts);
                         }
                         else
                         {
-                            double ts = streams[index].last_timestamp + streams[index].sampling_interval;
+                            ts = streams[index].last_timestamp + streams[index].sampling_interval;
                             streams[index].time_stamps.emplace_back(ts);
                         }
+
+                        streams[index].last_timestamp = ts;
 
                         //read the data
                         for (int v = 0; v < streams[index].info.channel_count; ++v)
@@ -382,7 +406,9 @@ int Xdf::load_xdf(std::string filename)
                         //read or deduce time stamp
                         uint8_t tsBytes;
                         file.read(reinterpret_cast<char *>(&tsBytes), 1);
-                        double ts;
+
+                        double ts;  //temporary time stamp
+
                         if (tsBytes == 8)
                             file.read((char*)&ts, 8);
                         else
