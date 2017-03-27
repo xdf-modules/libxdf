@@ -54,7 +54,7 @@ public:
     {
         //! A 2D vector which stores the time series of a stream. Each row represents a channel.
         std::vector<std::vector<float> > time_series;
-        std::vector<float> time_stamps; /*!< A vector to store time stamps. */
+        std::vector<double> time_stamps; /*!< A vector to store time stamps. */
         std::string streamHeader;   /*!< Raw XDF of stream header chunk. */
         std::string streamFooter;   /*!< Raw XDF of stream footer chunk. */
 
@@ -91,8 +91,8 @@ public:
     uint64_t totalLen = 0;  /*!< The total length is the product of the range between the smallest
                              *time stamp and the largest multiplied by the major sample rate. */
 
-    float minTS = 0;        /*!< The smallest time stamp across all streams. */
-    float maxTS = 0;        /*!< The largest time stamp across all streams. */
+    double minTS = 0;        /*!< The smallest time stamp across all streams. */
+    double maxTS = 0;        /*!< The largest time stamp across all streams. */
     size_t totalCh = 0;     /*!< The total number of channel count. */
     int majSR = 0;          /*!< The sample rate that has the most channels across all streams. */
     int maxSR = 0;          /*!< Highest sample rate across all streams. */

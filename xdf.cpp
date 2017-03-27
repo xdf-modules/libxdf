@@ -103,7 +103,7 @@ int Xdf::load_xdf(std::string filename)
 
                 delete[] buffer;
             }
-            break;
+                break;
             case 2: //read [StreamHeader] chunk
             {
                 //read [StreamID]
@@ -154,7 +154,7 @@ int Xdf::load_xdf(std::string filename)
 
                 delete[] buffer;
             }
-            break;
+                break;
             case 3: //read [Samples] chunk
             {
                 //read [StreamID]
@@ -452,7 +452,7 @@ int Xdf::load_xdf(std::string filename)
                     }
                 }
             }
-            break;
+                break;
             case 4: //read [ClockOffset] chunk
             {
                 int streamID;
@@ -478,7 +478,7 @@ int Xdf::load_xdf(std::string filename)
                 streams[index].clock_times.emplace_back(collectionTime);
                 streams[index].clock_values.emplace_back(offsetValue);
             }
-            break;
+                break;
             case 6: //read [StreamFooter] chunk
             {
                 pugi::xml_document doc;
@@ -512,7 +512,7 @@ int Xdf::load_xdf(std::string filename)
                 streams[index].info.sample_count = info.child("sample_count").text().as_int();
                 delete[] buffer;
             }
-            break;
+                break;
             case 5:	//skip other chunk types (Boundary, ...)
                 file.seekg(ChLen - 2, file.cur);
                 break;
@@ -691,37 +691,23 @@ void Xdf::findMinMax()
     //find the smallest timestamp of all streams
     for (auto const &stream : streams)
     {
-        if (!stream.time_stamps.empty())
+        if (stream.info.first_timestamp != -1)
         {
-            minTS = stream.time_stamps.front();
+            minTS = stream.info.first_timestamp;
             break;
         }
     }
     for (auto const &stream : streams)
     {
-        if (!stream.time_stamps.empty() && stream.time_stamps.front() < minTS)
-            minTS = stream.time_stamps.front();
-    }
-
-    //including the timestamps of the events as well
-    for (auto const &elem : eventMap)
-    {
-        if (minTS > elem.first.second)
-            minTS = elem.first.second;
+        if (stream.info.first_timestamp != -1 && stream.info.first_timestamp < minTS)
+            minTS = stream.info.first_timestamp;
     }
 
     //find the max timestamp of all streams
     for (auto const &stream : streams)
     {
-        if (!stream.time_stamps.empty() && stream.time_stamps.back() > maxTS)
-            maxTS = stream.time_stamps.back();
-    }
-
-    //including the timestamps of the events as well
-    for (auto const &elem : eventMap)
-    {
-        if (maxTS < elem.first.second)
-            maxTS = elem.first.second;
+        if (stream.info.last_timestamp != 0 && stream.info.last_timestamp > maxTS)
+            maxTS = stream.info.last_timestamp;
     }
 }
 
@@ -791,7 +777,7 @@ void Xdf::freeUpTimeStamps()
         //we don't need to keep all the time stamps unless it's a stream with irregular samples
         if (stream.info.nominal_srate != 0 && !stream.time_stamps.empty())
         {
-            std::vector<float> nothing;
+            std::vector<double> nothing;
             //however we still need to keep the first time stamp of each stream to decide at which position the signal should start
             nothing.emplace_back(stream.time_stamps.front());
             stream.time_stamps.swap(nothing);
