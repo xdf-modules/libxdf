@@ -74,7 +74,7 @@ public:
             double last_timestamp;  /*!< Last time stamp of the stream. */
             int sample_count;       /*!< Sample count of the stream. */
             double measured_srate;  /*!< Measured sample rate of the stream. */
-            double effective_sample_rate;/*!< Effective sample rate. */
+            double effective_sample_rate = 0;/*!< Effective sample rate. */
         } info; /*!< Meta-data from the stream header of the current stream. */
 
         double last_timestamp{ 0 };  /*!< For temporary use while loading the vector */
