@@ -110,7 +110,7 @@ public:
      * in eventMap.
      * \sa eventMap
      */
-    typedef float eventTimeStamp;
+    typedef double eventTimeStamp;
 
     std::vector<std::pair<std::pair<eventName, eventTimeStamp>, int> > eventMap;/*!< The vector to store all the events across all streams.
                                                                                  * The format is <<events, timestamps>, streamNum>. */
