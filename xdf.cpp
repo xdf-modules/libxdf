@@ -775,7 +775,8 @@ void Xdf::freeUpTimeStamps()
     for (auto &stream : streams)
     {
         //we don't need to keep all the time stamps unless it's a stream with irregular samples
-        if (stream.info.nominal_srate != 0 && !stream.time_stamps.empty())
+        //filter irregular streams and string streams
+        if (stream.info.nominal_srate != 0 && !stream.time_stamps.empty() && stream.info.channel_format.compare("string"))
         {
             std::vector<double> nothing;
             //however we still need to keep the first time stamp of each stream to decide at which position the signal should start
