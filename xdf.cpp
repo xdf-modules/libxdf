@@ -952,18 +952,18 @@ int Xdf::writeEventsToXDF(std::string file_path)
 
 void Xdf::createLabels()
 {
-    int channelCount = 0;
+    size_t channelCount = 0;
 
-    for (auto const &stream : streams)
+    for (size_t st = 0; st < streams.size(); st++)
     {
-        if (stream.info.channels.size())
+        if (streams[st].info.channels.size())
         {
-            for (auto const &channelItem : stream.info.channels)
+            for (size_t ch = 0; ch < streams[st].info.channels.size(); ch++)
             {
-                std::string label = std::to_string(channelCount) + " - Stream " + std::to_string(streamMap[channelCount])
-                        + " - " + std::to_string((int)stream.info.nominal_srate) + " Hz\n";
+                std::string label = "Stream " + std::to_string(st) + " - Channel " + std::to_string(ch)
+                        + " - " + std::to_string((int)streams[st].info.nominal_srate) + " Hz\n";
 
-                for (auto const &entry : channelItem)
+                for (auto const &entry : streams[st].info.channels[ch])
                 {
                     if (entry.second != "")
                         label += entry.first + " : " + entry.second + '\n';
@@ -976,17 +976,18 @@ void Xdf::createLabels()
                         label.append("baseline ").append(std::to_string(offsets[channelCount]));
                 }
                 labels.emplace_back(label);
+
                 channelCount++;
             }
         }
         else
         {
-            for (size_t i = 0; i < stream.time_series.size(); i++)
+            for (size_t ch = 0; ch < streams[st].time_series.size(); ch++)
             {
-                std::string label = std::to_string(channelCount) +
-                        " - Stream " + std::to_string(streamMap[channelCount]) +
-                        " - " + std::to_string((int)stream.info.nominal_srate) +
-                        " Hz\n" + stream.info.name + '\n' + stream.info.type + '\n';
+                std::string label = "Stream " + std::to_string(st) +
+                        " - Channel " + std::to_string(ch) + " - " +
+                        std::to_string((int)streams[st].info.nominal_srate) +
+                        " Hz\n" + streams[st].info.name + '\n' + streams[st].info.type + '\n';
 
                 if (offsets.size())
                 {
@@ -997,6 +998,7 @@ void Xdf::createLabels()
                 }
 
                 labels.emplace_back(label);
+
                 channelCount++;
             }
         }
