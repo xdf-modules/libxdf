@@ -960,7 +960,8 @@ void Xdf::createLabels()
         {
             for (size_t ch = 0; ch < streams[st].info.channels.size(); ch++)
             {
-                std::string label = "Stream " + std::to_string(st) + " - Channel " + std::to_string(ch)
+                // +1 for 1 based numbers; for user convenience only. The internal computation is still 0 based
+                std::string label = "Stream " + std::to_string(st + 1) + " - Channel " + std::to_string(ch + 1)
                         + " - " + std::to_string((int)streams[st].info.nominal_srate) + " Hz\n";
 
                 for (auto const &entry : streams[st].info.channels[ch])
@@ -984,8 +985,9 @@ void Xdf::createLabels()
         {
             for (size_t ch = 0; ch < streams[st].time_series.size(); ch++)
             {
-                std::string label = "Stream " + std::to_string(st) +
-                        " - Channel " + std::to_string(ch) + " - " +
+                // +1 for 1 based numbers; for user convenience only. The internal computation is still 0 based
+                std::string label = "Stream " + std::to_string(st + 1) +
+                        " - Channel " + std::to_string(ch + 1) + " - " +
                         std::to_string((int)streams[st].info.nominal_srate) +
                         " Hz\n" + streams[st].info.name + '\n' + streams[st].info.type + '\n';
 
