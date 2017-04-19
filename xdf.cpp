@@ -95,7 +95,7 @@ int Xdf::load_xdf(std::string filename)
 
                 pugi::xml_document doc;
 
-                pugi::xml_parse_result result = doc.load_buffer_inplace(buffer, ChLen - 2);
+                doc.load_buffer_inplace(buffer, ChLen - 2);
 
                 pugi::xml_node info = doc.child("info");
 
@@ -128,7 +128,7 @@ int Xdf::load_xdf(std::string filename)
                 file.read(buffer, ChLen - 6);
                 streams[index].streamHeader = buffer;
 
-                pugi::xml_parse_result result = doc.load_buffer_inplace(buffer, ChLen - 6);
+                doc.load_buffer_inplace(buffer, ChLen - 6);
 
                 pugi::xml_node info = doc.child("info");
                 pugi::xml_node desc = info.child("desc");
@@ -502,7 +502,7 @@ int Xdf::load_xdf(std::string filename)
                 file.read(buffer, ChLen - 6);
                 streams[index].streamFooter = buffer;
 
-                pugi::xml_parse_result result = doc.load_buffer_inplace(buffer, ChLen - 6);
+                doc.load_buffer_inplace(buffer, ChLen - 6);
 
                 pugi::xml_node info = doc.child("info");
 
@@ -595,7 +595,6 @@ void Xdf::resample(int userSrate)
                 // initialize buffers
                 int read = 0;
                 int written = 0;
-                const int IN_BUF_SIZE = BUF_SIZE;
                 const int OUT_BUF_SIZE = (int) smarc_get_output_buffer_size(pfilt, row.size());
                 double* inbuf = new double[row.size()];
                 double* outbuf = new double[OUT_BUF_SIZE];
@@ -840,7 +839,7 @@ void Xdf::calcEffectiveSrate()
                         (stream.info.last_timestamp - stream.info.first_timestamp);
 
                 pugi::xml_document doc;
-                pugi::xml_parse_result result = doc.load_string(stream.streamFooter.c_str());
+                doc.load_string(stream.streamFooter.c_str());
                 pugi::xml_node sampleCount = doc.child("info").child("sample_count");
                 pugi::xml_node effectiveSampleRate
                         = doc.child("info").insert_child_after("effective_sample_rate", sampleCount);
