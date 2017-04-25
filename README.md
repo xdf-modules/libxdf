@@ -81,4 +81,4 @@ Detailed documentation was generated via [Doxygen](http://www.stack.nl/~dimitri/
 
 ## <a name="support"></a>Support
 
-[Email author](mailto:ital_fazioli@hotmail.com) or report a new [issue](https://github.com/Yida-Lin/libxdf/issues).
+[Email author](mailto:yida.lin@outlook.com) or report a new [issue](https://github.com/Yida-Lin/libxdf/issues).
