@@ -963,6 +963,8 @@ void Xdf::createLabels()
                 std::string label = "Stream " + std::to_string(st + 1) + " - Channel " + std::to_string(ch + 1)
                         + " - " + std::to_string((int)streams[st].info.nominal_srate) + " Hz\n";
 
+                label += streams[st].info.name + '\n';
+
                 for (auto const &entry : streams[st].info.channels[ch])
                 {
                     if (entry.second != "")
@@ -989,6 +991,8 @@ void Xdf::createLabels()
                         " - Channel " + std::to_string(ch + 1) + " - " +
                         std::to_string((int)streams[st].info.nominal_srate) +
                         " Hz\n" + streams[st].info.name + '\n' + streams[st].info.type + '\n';
+
+                label += streams[st].info.name + '\n';
 
                 if (offsets.size())
                 {
