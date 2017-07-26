@@ -2,7 +2,7 @@ QT -= gui
 
 TARGET = xdf
 TEMPLATE = lib
-CONFIG += staticlib c++11
+CONFIG += c++11
 
 QMAKE_CFLAGS += -std=c99
 
