@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.7)
 
 project(libxdf)
 
-add_library(xdfStatic STATIC
+set(SOURCES
     xdf.h
     xdf.cpp
     pugixml/pugiconfig.hpp
@@ -22,28 +22,11 @@ add_library(xdfStatic STATIC
     smarc/stage_impl.c
 )
 
-add_library(xdf SHARED
-    xdf.h
-    xdf.cpp
-    pugixml/pugiconfig.hpp
-    pugixml/pugixml.hpp
-    pugixml/pugixml.cpp
-    smarc/filtering.h
-    smarc/filtering.c
-    smarc/multi_stage.h
-    smarc/multi_stage.c
-    smarc/polyfilt.h
-    smarc/polyfilt.c
-    smarc/remez_lp.h
-    smarc/remez_lp.c
-    smarc/smarc.h
-    smarc/smarc.c
-    smarc/stage_impl.h
-    smarc/stage_impl.c
-)
+add_library(xdf-static STATIC ${SOURCES})
 
-set_property(TARGET xdf PROPERTY CXX_STANDARD 11)
-set_property(TARGET xdf PROPERTY C_STANDARD 99)
+add_library(xdf-shared SHARED ${SOURCES})
 
-set_property(TARGET xdfStatic PROPERTY CXX_STANDARD 11)
-set_property(TARGET xdfStatic PROPERTY C_STANDARD 99)
+set_property(TARGET xdf-static xdf-shared PROPERTY CXX_STANDARD 11)
+set_property(TARGET xdf-static xdf-shared PROPERTY C_STANDARD 99)
+set_target_properties(xdf-static PROPERTIES OUTPUT_NAME xdf)
+set_target_properties(xdf-shared PROPERTIES OUTPUT_NAME xdf)
