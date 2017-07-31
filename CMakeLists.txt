@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
+set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
 
 project(libxdf)
 
@@ -23,7 +24,6 @@ set(SOURCES
 )
 
 add_library(xdf-static STATIC ${SOURCES})
-
 add_library(xdf-shared SHARED ${SOURCES})
 
 set_property(TARGET xdf-static xdf-shared PROPERTY CXX_STANDARD 11)
