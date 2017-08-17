@@ -1,0 +1,16 @@
+<Updates>
+ <ApplicationName>SigViewer</ApplicationName>
+ <ApplicationVersion>0.6.1</ApplicationVersion>
+ <Checksum>true</Checksum>
+ <PackageUpdate>
+  <Name>SigViewer</Name>
+  <DisplayName>SigViewer</DisplayName>
+  <Description>A Biosignal Visualization Software</Description>
+  <Version>0.6.1</Version>
+  <ReleaseDate>2017-08-16</ReleaseDate>
+  <Default>true</Default>
+  <UpdateFile OS="Any" CompressedSize="13660557" UncompressedSize="49325080"/>
+  <DownloadableArchives>iconengines.7z,imageformats.7z,platforms.7z,translations.7z,content.7z</DownloadableArchives>
+  <SHA1>fd5b2de4c434ef82fa0f38829e91aa93971b636c</SHA1>
+ </PackageUpdate>
+</Updates>
