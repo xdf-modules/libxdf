@@ -13,7 +13,7 @@
 
 //You should have received a copy of the GNU General Public License
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//If you have questions, contact author at ITAL_FAZIOLI@hotmail.com
+//If you have questions, contact author at yida.lin@outlook.com
 
 
 #include "xdf.h"
