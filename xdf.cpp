@@ -27,6 +27,7 @@
 #include <time.h>       /* clock_t, clock, CLOCKS_PER_SEC */
 #include <numeric>      //std::accumulate
 #include <functional>   // bind2nd
+#include <cmath>
 
 Xdf::Xdf()
 {
