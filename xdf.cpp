@@ -535,6 +535,8 @@ int Xdf::load_xdf(std::string filename)
         //=============find the min and max time stamps=============
         //==========================================================
 
+        syncTimeStamps();
+
         findMinMax();
 
         findMajSR();
@@ -559,6 +561,96 @@ int Xdf::load_xdf(std::string filename)
     }
 
     return 0;
+}
+
+void Xdf::syncTimeStamps()
+{
+    // Sync time stamps
+    for (auto &stream : this->streams)
+    {
+        if (!stream.clock_times.empty())
+        {
+            size_t m = 0;   // index iterating through stream.time_stamps
+            size_t n = 0;   // index iterating through stream.clock_times
+
+            while (m < stream.time_stamps.size())
+            {
+                if (stream.clock_times[n] < stream.time_stamps[m])
+                {
+                    while (n < stream.clock_times.size() - 1 && stream.clock_times[n+1] < stream.time_stamps[m])
+                    {
+                        n++;
+                    }
+                    stream.time_stamps[m] += stream.clock_values[n];
+                }
+                else if (n == 0)
+                {
+                    stream.time_stamps[m] += stream.clock_values[n];
+                }
+                m++;
+            }
+        }
+    }
+
+    // Sync event time stamps
+    for (auto &elem : this->eventMap)
+    {
+        if (!this->streams[elem.second].clock_times.empty())
+        {
+            size_t k = 0;   // index iterating through streams[elem.second].clock_times
+
+            while (k < this->streams[elem.second].clock_times.size() - 1)
+            {
+                if (this->streams[elem.second].clock_times[k+1] < elem.first.second)
+                {
+                    k++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (this->streams[elem.second].clock_times[k] < elem.first.second)
+            {
+                elem.first.second += this->streams[elem.second].clock_values[k];
+            }
+        }
+    }
+
+    // Update first and last time stamps in stream footer
+    for (size_t k = 0; k < this->streams.size(); k++)
+    {
+        if (streams[k].info.channel_format.compare("string") == 0)
+        {
+            double min = NAN;
+            double max = NAN;
+
+            for (auto const &elem : this->eventMap)
+            {
+                if (elem.second == (int)k)
+                {
+                    if (std::isnan(min) || elem.first.second < min)
+                    {
+                        min = elem.first.second;
+                    }
+
+                    if (std::isnan(max) || elem.first.second > max)
+                    {
+                        max = elem.first.second;
+                    }
+                }
+            }
+
+            streams[k].info.first_timestamp = min;
+            streams[k].info.last_timestamp = max;
+        }
+        else
+        {
+            streams[k].info.first_timestamp = streams[k].time_stamps.front();
+            streams[k].info.last_timestamp = streams[k].time_stamps.back();
+        }
+    }
 }
 
 void Xdf::resample(int userSrate)
