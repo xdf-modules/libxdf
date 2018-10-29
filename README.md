@@ -84,4 +84,4 @@ SigViewer Online Repository is [here](repository/Updates.xml).
 
 ## <a name="support"></a>Support
 
-[Email author](mailto:yida.lin@outlook.com) or report a new [issue](https://github.com/Yida-Lin/libxdf/issues).
+[Email author](mailto:yl3842@columbia.edu) or report a new [issue](https://github.com/Yida-Lin/libxdf/issues).
