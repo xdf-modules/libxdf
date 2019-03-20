@@ -612,10 +612,7 @@ void Xdf::syncTimeStamps()
                 }
             }
 
-            if (this->streams[elem.second].clock_times[k] < elem.first.second)
-            {
-                elem.first.second += this->streams[elem.second].clock_values[k];
-            }
+            elem.first.second += this->streams[elem.second].clock_values[k]; // apply the last offset value to the timestamp; if there hasn't yet been an ofset value take the first recorded one
         }
     }
 
@@ -833,14 +830,14 @@ void Xdf::findMajSR()
     }
 
     if(srateMap.size() > 0){
-    //search the srateMap to see which sample rate has the most channels
-    int index (std::distance(srateMap.begin(),
-                             std::max_element(srateMap.begin(),srateMap.end(),
-                                            [] (const std::pair<sampRate, numChannel> &largest,
-                                            const std::pair<sampRate, numChannel> &first)
-                                            { return largest.second < first.second; })));
+        //search the srateMap to see which sample rate has the most channels
+        int index (std::distance(srateMap.begin(),
+                                 std::max_element(srateMap.begin(),srateMap.end(),
+                                                [] (const std::pair<sampRate, numChannel> &largest,
+                                                const std::pair<sampRate, numChannel> &first)
+                                                { return largest.second < first.second; })));
 
-    majSR = srateMap[index].first; //the sample rate that has the most channels
+        majSR = srateMap[index].first; //the sample rate that has the most channels
     } else {
         majSR = 0; //if there are no streams with a fixed sample reate
     }
