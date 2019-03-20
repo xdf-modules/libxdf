@@ -832,6 +832,7 @@ void Xdf::findMajSR()
         }
     }
 
+    if(srateMap.size() > 0){
     //search the srateMap to see which sample rate has the most channels
     int index (std::distance(srateMap.begin(),
                              std::max_element(srateMap.begin(),srateMap.end(),
@@ -840,6 +841,9 @@ void Xdf::findMajSR()
                                             { return largest.second < first.second; })));
 
     majSR = srateMap[index].first; //the sample rate that has the most channels
+    } else {
+        majSR = 0; //if there are no streams with a fixed sample reate
+    }
 }
 
 void Xdf::calcTotalChannel()
