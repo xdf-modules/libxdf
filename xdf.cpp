@@ -612,7 +612,7 @@ void Xdf::syncTimeStamps()
                 }
             }
 
-            elem.first.second += this->streams[elem.second].clock_values[k]; // apply the last offset value to the timestamp; if there hasn't yet been an ofset value take the first recorded one
+            elem.first.second += this->streams[elem.second].clock_values[k]; // apply the last offset value to the timestamp; if there hasn't yet been an offset value take the first recorded one
         }
     }
 
