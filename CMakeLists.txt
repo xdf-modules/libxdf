@@ -28,5 +28,8 @@ add_library(xdf-shared SHARED ${SOURCES})
 
 set_property(TARGET xdf-static xdf-shared PROPERTY CXX_STANDARD 11)
 set_property(TARGET xdf-static xdf-shared PROPERTY C_STANDARD 99)
-set_target_properties(xdf-static PROPERTIES OUTPUT_NAME xdf)
-set_target_properties(xdf-shared PROPERTIES OUTPUT_NAME xdf)
+set_target_properties(xdf-static xdf-shared PROPERTIES OUTPUT_NAME xdf PUBLIC_HEADER xdf.h)
+target_include_directories(xdf-shared PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
+install(TARGETS xdf-static xdf-shared
+	DESTINATION libxdf)
