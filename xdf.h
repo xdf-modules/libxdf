@@ -297,6 +297,20 @@ private:
      * \return The length of the upcoming chunk (in bytes).
      */
     uint64_t readLength(std::ifstream &file);
+
+	/*!
+     * \brief Read a binary scalar variable from an input stream.
+     *
+     * readBin is a convenience wrapper for the common
+     * file.read((char*) var, sizeof(var))
+     * operation. Examples:
+     * double foo = readBin<double>(file); // use return value
+     * readBin(file, &foo); // read directly into foo
+     * \param is an input stream to read from
+     * \param obj pointer to a variable to load the data into or nullptr
+     * \return the read data
+     */
+    template<typename T> T& readBin(std::istream& is, T* obj = nullptr);
 };
 
 #endif // XDF_H
