@@ -310,7 +310,7 @@ private:
      * \param obj pointer to a variable to load the data into or nullptr
      * \return the read data
      */
-    template<typename T> T& readBin(std::istream& is, T* obj = nullptr);
+    template<typename T> T readBin(std::istream& is, T* obj = nullptr);
 };
 
 #endif // XDF_H

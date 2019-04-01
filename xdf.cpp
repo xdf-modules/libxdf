@@ -85,7 +85,7 @@ int Xdf::load_xdf(std::string filename)
                 break;
 
             uint16_t tag;   //read tag of the chunk, 6 possibilities
-            file.read(reinterpret_cast<char *>(&tag), 2);
+            readBin(file, &tag);
 
             switch (tag)
             {
@@ -188,8 +188,7 @@ int Xdf::load_xdf(std::string filename)
                     for (size_t i = 0; i < numSamp; i++)
                     {
                         //read or deduce time stamp
-                        uint8_t tsBytes;
-                        file.read(reinterpret_cast<char *>(&tsBytes), 1);
+                        auto tsBytes = readBin<uint8_t>(file);
 
                         double ts;  //temporary time stamp
 
@@ -225,8 +224,7 @@ int Xdf::load_xdf(std::string filename)
                     for (size_t i = 0; i < numSamp; i++)
                     {
                         //read or deduce time stamp
-                        uint8_t tsBytes;
-                        file.read(reinterpret_cast<char *>(&tsBytes), 1);
+                        auto tsBytes = readBin<uint8_t>(file);
 
                         double ts;  //temporary time stamp
 
@@ -262,8 +260,7 @@ int Xdf::load_xdf(std::string filename)
                     for (size_t i = 0; i < numSamp; i++)
                     {
                         //read or deduce time stamp
-                        uint8_t tsBytes;
-                        file.read(reinterpret_cast<char *>(&tsBytes), 1);
+                        auto tsBytes = readBin<uint8_t>(file);
 
                         double ts;  //temporary time stamp
 
@@ -299,8 +296,7 @@ int Xdf::load_xdf(std::string filename)
                     for (size_t i = 0; i < numSamp; i++)
                     {
                         //read or deduce time stamp
-                        uint8_t tsBytes;
-                        file.read(reinterpret_cast<char *>(&tsBytes), 1);
+                        auto tsBytes = readBin<uint8_t>(file);
 
                         double ts;  //temporary time stamp
 
@@ -336,8 +332,7 @@ int Xdf::load_xdf(std::string filename)
                     for (size_t i = 0; i < numSamp; i++)
                     {
                         //read or deduce time stamp
-                        uint8_t tsBytes;
-                        file.read(reinterpret_cast<char *>(&tsBytes), 1);
+                        auto tsBytes = readBin<uint8_t>(file);
 
                         double ts;  //temporary time stamp
 
@@ -373,8 +368,7 @@ int Xdf::load_xdf(std::string filename)
                     for (size_t i = 0; i < numSamp; i++)
                     {
                         //read or deduce time stamp
-                        uint8_t tsBytes;
-                        file.read(reinterpret_cast<char *>(&tsBytes), 1);
+                        auto tsBytes = readBin<uint8_t>(file);
 
                         double ts;  //temporary time stamp
 
@@ -406,8 +400,7 @@ int Xdf::load_xdf(std::string filename)
                     for (size_t i = 0; i < numSamp; i++)
                     {
                         //read or deduce time stamp
-                        uint8_t tsBytes;
-                        file.read(reinterpret_cast<char *>(&tsBytes), 1);
+                        auto tsBytes = readBin<uint8_t>(file);
 
                         double ts;  //temporary time stamp
 
@@ -448,8 +441,8 @@ int Xdf::load_xdf(std::string filename)
                 double collectionTime;
                 double offsetValue;
 
-                file.read((char*)&collectionTime, 8);
-                file.read((char*)&offsetValue, 8);
+                Xdf::readBin(file, &collectionTime);
+                Xdf::readBin(file, &offsetValue);
 
                 streams[index].clock_times.emplace_back(collectionTime);
                 streams[index].clock_values.emplace_back(offsetValue);
@@ -721,31 +714,18 @@ uint64_t Xdf::readLength(std::ifstream &file)
 {
     uint8_t bytes;
     Xdf::readBin(file, &bytes);
-    uint64_t length = 0;
 
     switch (bytes)
     {
     case 1:
-    {
-        uint8_t buffer = 0;
-        file.read(reinterpret_cast<char *>(&buffer), 1);
-        length = buffer;
-        return length;
-    }
+		return readBin<uint8_t>(file);
     case 4:
-    {
-        uint32_t buffer = 0;
-        file.read(reinterpret_cast<char *>(&buffer), 4);
-        length = buffer;
-        return length;
-    }
+        return readBin<uint32_t>(file);
     case 8:
-    {
-        file.read(reinterpret_cast<char *>(&length), 8);
-        return length;
-    }
+        return readBin<uint64_t>(file);
     default:
-        std::cout << "Invalid variable-length integer encountered.\n";
+        std::cout << "Invalid variable-length integer length ("
+				  << static_cast<int>(bytes) << ") encountered.\n";
         return 0;
     }
 }
@@ -1101,7 +1081,7 @@ void Xdf::loadDictionary()
     }
 }
 
-template<typename T> T& Xdf::readBin(std::istream& is, T* obj) {
+template<typename T> T Xdf::readBin(std::istream& is, T* obj) {
 	T dummy;
 	if(!obj) obj = &dummy;
 	is.read(reinterpret_cast<char*>(obj), sizeof(T));
