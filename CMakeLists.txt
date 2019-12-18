@@ -23,13 +23,16 @@ set(SOURCES
     smarc/stage_impl.c
 )
 
-add_library(xdf-static STATIC ${SOURCES})
-add_library(xdf-shared SHARED ${SOURCES})
+add_library(xdf ${SOURCES})
 
-set_property(TARGET xdf-static xdf-shared PROPERTY CXX_STANDARD 11)
-set_property(TARGET xdf-static xdf-shared PROPERTY C_STANDARD 99)
-set_target_properties(xdf-static xdf-shared PROPERTIES OUTPUT_NAME xdf PUBLIC_HEADER xdf.h)
-target_include_directories(xdf-shared PUBLIC
+target_compile_features(xdf PUBLIC cxx_std_11)
+set_target_properties(xdf PROPERTIES OUTPUT_NAME xdf PUBLIC_HEADER xdf.h)
+target_include_directories(xdf PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
-install(TARGETS xdf-static xdf-shared
-	DESTINATION libxdf)
+install(TARGETS xdf
+	EXPORT "${PROJECT_NAME}Config"
+)
+install(EXPORT "${PROJECT_NAME}Config"
+	COMPONENT ${PROJECT_NAME}
+	NAMESPACE "XDF::"
+	DESTINATION "share/")
