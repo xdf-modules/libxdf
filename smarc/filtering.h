@@ -25,6 +25,12 @@
 #ifndef FILTER_H_
 #define FILTER_H_
 
-double filter(const double* restrict filt, const double* restrict signal, const int K);
+#ifdef _MSC_VER
+#define SMARC_RESTRICT __restrict
+#else
+#define SMARC_RESTRICT restrict
+#endif
+
+double filter(const double* SMARC_RESTRICT filt, const double* SMARC_RESTRICT signal, const int K);
 
 #endif /* FILTER_H_ */

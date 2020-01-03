@@ -71,8 +71,8 @@ void polyfiltLM(struct PSFilter* pfilt, struct PSState* pstate,
 
 
 void polyfiltM(struct PSFilter* pfilt, struct PSState* pstate,
-		const double* restrict signal, const int signalLen, int* restrict nbConsume,
-		double* restrict output, const int outputLen, int* restrict nbWritten) {
+		const double* SMARC_RESTRICT signal, const int signalLen, int* SMARC_RESTRICT nbConsume,
+		double* SMARC_RESTRICT output, const int outputLen, int* SMARC_RESTRICT nbWritten) {
 	const int M = pfilt->M;
 	const int K = pfilt->K;
 	const double* filt = pfilt->filters;
