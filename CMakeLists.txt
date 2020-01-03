@@ -28,7 +28,9 @@ add_library(xdf ${SOURCES})
 target_compile_features(xdf PUBLIC cxx_std_11)
 set_target_properties(xdf PROPERTIES OUTPUT_NAME xdf PUBLIC_HEADER xdf.h)
 target_include_directories(xdf PUBLIC
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
+	$<INSTALL_INTERFACE:include>
+)
 install(TARGETS xdf
 	EXPORT "${PROJECT_NAME}Config"
 	ARCHIVE DESTINATION lib
