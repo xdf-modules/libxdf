@@ -28,6 +28,11 @@ Libxdf is open-source, free, and actively maintained.
 ### Building libxdf
 Libxdf can be conveniently built either using `qmake` or `cmake`. Configuration files for both build tools are included with the source.
 
+`cmake` builds a static library by default, but you can build a shared library
+by setting the
+[`BUILD_SHARED_LIBS`](https://cmake.org/cmake/help/latest/variable/BUILD_SHARED_LIBS.html)
+variable (e.g. `-DBUILD_SHARED_LIBS=ON`).
+
 ### Use in conjunction with [SigViewer](https://github.com/cbrnr/sigviewer)
 
 Libxdf is a built-in component of [SigViewer](https://github.com/cbrnr/sigviewer). If you wish to build SigViewer from source, follow these steps:

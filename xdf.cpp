@@ -869,7 +869,7 @@ void Xdf::detrend()
         {
             long double init = 0.0;
             long double mean = std::accumulate(row.begin(), row.end(), init) / row.size();
-            std::transform(row.begin(), row.end(), row.begin(), bind2nd(std::minus<double>(), mean));
+	    for(auto &val: row) val -= mean;
             offsets.emplace_back(mean);
         }
     }

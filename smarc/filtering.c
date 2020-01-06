@@ -26,7 +26,7 @@
 
 #ifndef __SSE2__
 
-double filter(const double* restrict filt, const double* restrict signal, const int K)
+double filter(const double* SMARC_RESTRICT filt, const double* SMARC_RESTRICT signal, const int K)
 {
 	register double v = 0.0;
 	for (int k=0;k<K;++k)
@@ -38,7 +38,7 @@ double filter(const double* restrict filt, const double* restrict signal, const 
 
 #include <emmintrin.h>
 
-double basic_filter(const double* restrict filt, const double* restrict signal, const int K)
+double basic_filter(const double* SMARC_RESTRICT filt, const double* SMARC_RESTRICT signal, const int K)
 {
 //	printf("basic filter for K=%i\n",K);
 	register double v = 0.0;
@@ -47,7 +47,7 @@ double basic_filter(const double* restrict filt, const double* restrict signal, 
 	return v;
 }
 
-double sse_filtering_aligned(const double* restrict filt, const double* restrict signal, const int K) {
+double sse_filtering_aligned(const double* SMARC_RESTRICT filt, const double* SMARC_RESTRICT signal, const int K) {
 //	printf("sse_filtering filt=%p signal=%p K=%i\n",filt,signal,K);
 	// filt and signal are 16 byte aligned, K % 2 = 0
 	__m128d v = _mm_setzero_pd();
@@ -65,7 +65,7 @@ double sse_filtering_aligned(const double* restrict filt, const double* restrict
 	return tmp[0] + tmp[1] + filt[k]*signal[k];
 }
 
-double sse_filtering_misaligned(const double* restrict filt, const double* restrict signal, const int K) {
+double sse_filtering_misaligned(const double* SMARC_RESTRICT filt, const double* SMARC_RESTRICT signal, const int K) {
 //	printf("sse_filtering_misaligned filt=%p signal=%p K=%i\n",filt,signal,K);
 	__m128d v = _mm_setzero_pd();
 	__m128d s = _mm_load1_pd(signal);
@@ -87,7 +87,7 @@ double sse_filtering_misaligned(const double* restrict filt, const double* restr
 	return tmp[0] + tmp[1];
 }
 
-double filter(const double* restrict filt, const double* restrict signal, int K)
+double filter(const double* SMARC_RESTRICT filt, const double* SMARC_RESTRICT signal, int K)
 {
 	if (K<8)
 		return basic_filter(filt,signal,K);

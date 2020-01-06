@@ -41,8 +41,8 @@
  * - w [IN]: workspace to use for temporary results.
  */
 void polyfiltLM(struct PSFilter* pfilt, struct PSState* pstate,
-		const double* restrict signal, const int signalLen, int* nbConsume,
-		double* restrict output, const int outputLen, int* nbWritten);
+		const double* SMARC_RESTRICT signal, const int signalLen, int* nbConsume,
+		double* SMARC_RESTRICT output, const int outputLen, int* nbWritten);
 
 /**
  * Filter signal with a decimation filter (interpolation factor L is 1)
@@ -57,8 +57,8 @@ void polyfiltLM(struct PSFilter* pfilt, struct PSState* pstate,
  * - w [IN]: workspace to use for temporary results.
  */
 void polyfiltM(struct PSFilter* pfilt, struct PSState* pstate,
-		const double* restrict signal, const int signalLen, int* restrict nbConsume,
-		double* restrict output, const int outputLen, int* restrict nbWritten);
+		const double* SMARC_RESTRICT signal, const int signalLen, int* SMARC_RESTRICT nbConsume,
+		double* SMARC_RESTRICT output, const int outputLen, int* SMARC_RESTRICT nbWritten);
 
 /**
  * Filter signal with a interpolation filter (decimation factor M is 1)
@@ -73,7 +73,7 @@ void polyfiltM(struct PSFilter* pfilt, struct PSState* pstate,
  * - w [IN]: workspace to use for temporary results.
  */
 void polyfiltL(struct PSFilter* pfilt, struct PSState* pstate,
-		const double* restrict signal, const int signalLen, int* restrict nbConsume,
-		double* restrict output, const int outputLen, int* restrict nbWritten);
+		const double* SMARC_RESTRICT signal, const int signalLen, int* SMARC_RESTRICT nbConsume,
+		double* SMARC_RESTRICT output, const int outputLen, int* SMARC_RESTRICT nbWritten);
 
 #endif /* POLYFILTLM_H_ */
