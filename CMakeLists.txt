@@ -3,12 +3,11 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
 
 project(libxdf)
 
+option(XDF_NO_SYSTEM_PUGIXML "Force use of bundled pugixml" OFF)
+
 set(SOURCES
     xdf.h
     xdf.cpp
-    pugixml/pugiconfig.hpp
-    pugixml/pugixml.hpp
-    pugixml/pugixml.cpp
     smarc/filtering.h
     smarc/filtering.c
     smarc/multi_stage.h
@@ -24,6 +23,16 @@ set(SOURCES
 )
 
 add_library(xdf ${SOURCES})
+
+find_package(pugixml QUIET)
+if(TARGET pugixml AND NOT XDF_NO_SYSTEM_PUGIXML)
+	message(STATUS "Using system pugixml")
+	target_link_libraries(xdf PRIVATE pugixml)
+else()
+	message(STATUS "Using bundled pugixml")
+	target_sources(xdf PRIVATE pugixml/pugixml.cpp)
+	target_include_directories(xdf PRIVATE pugixml)
+endif()
 
 target_compile_features(xdf PUBLIC cxx_std_11)
 set_target_properties(xdf PROPERTIES OUTPUT_NAME xdf PUBLIC_HEADER xdf.h)
