@@ -714,20 +714,26 @@ uint64_t Xdf::readLength(std::ifstream &file)
 {
     uint8_t bytes;
     Xdf::readBin(file, &bytes);
+    uint64_t length = 0;
 
     switch (bytes)
     {
     case 1:
-		return readBin<uint8_t>(file);
+        length = readBin<uint8_t>(file);
+        break;
     case 4:
-        return readBin<uint32_t>(file);
+        length = readBin<uint32_t>(file);
+        break;
     case 8:
-        return readBin<uint64_t>(file);
+        length = readBin<uint64_t>(file);
+        break;
     default:
         std::cout << "Invalid variable-length integer length ("
-				  << static_cast<int>(bytes) << ") encountered.\n";
+                  << static_cast<int>(bytes) << ") encountered.\n";
         return 0;
     }
+
+    return length;
 }
 
 void Xdf::findMinMax()
