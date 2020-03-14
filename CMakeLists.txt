@@ -24,6 +24,8 @@ set(SOURCES
 )
 
 add_library(xdf ${SOURCES})
+add_executable(loadtest test.cpp)
+target_link_libraries(loadtest PRIVATE xdf)
 
 target_compile_features(xdf PUBLIC cxx_std_11)
 set_target_properties(xdf PROPERTIES OUTPUT_NAME xdf PUBLIC_HEADER xdf.h)
