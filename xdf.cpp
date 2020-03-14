@@ -735,7 +735,7 @@ void Xdf::findMinMax()
     //find the smallest timestamp of all streams
     for (auto const &stream : streams)
     {
-        if (stream.info.first_timestamp != -1)
+        if (!std::isnan(stream.info.first_timestamp) && stream.info.first_timestamp != -1)
         {
             minTS = stream.info.first_timestamp;
             break;
@@ -743,14 +743,14 @@ void Xdf::findMinMax()
     }
     for (auto const &stream : streams)
     {
-        if (stream.info.first_timestamp != -1 && stream.info.first_timestamp < minTS)
+        if (!std::isnan(stream.info.first_timestamp) && stream.info.first_timestamp != -1 && stream.info.first_timestamp < minTS)
             minTS = stream.info.first_timestamp;
     }
 
     //find the max timestamp of all streams
     for (auto const &stream : streams)
     {
-        if (stream.info.last_timestamp != 0 && stream.info.last_timestamp > maxTS)
+        if (!std::isnan(stream.info.last_timestamp) && stream.info.last_timestamp != 0 && stream.info.last_timestamp > maxTS)
             maxTS = stream.info.last_timestamp;
     }
 }
