@@ -24,7 +24,7 @@ set(SOURCES
 
 add_library(xdf ${SOURCES})
 
-find_package(pugixml QUIET)
+find_package(pugixml 1.9 QUIET)
 if(TARGET pugixml AND NOT XDF_NO_SYSTEM_PUGIXML)
 	message(STATUS "Using system pugixml")
 	target_link_libraries(xdf PRIVATE pugixml)
