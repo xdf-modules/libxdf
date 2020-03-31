@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "pugixml/pugixml.hpp"  //pugi XML parser
+#include <pugixml.hpp>  //pugi XML parser
 #include <sstream>
 #include <algorithm>
 #include "smarc/smarc.h"      //resampling library
