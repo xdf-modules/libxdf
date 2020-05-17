@@ -63,8 +63,7 @@ int Xdf::load_xdf(std::string filename) {
         std::string magic_number;
         for (char c; file >> c;) {
             magic_number.push_back(c);
-            if (magic_number.size() == 4)
-                break;
+            if (magic_number.size() == 4) break;
         }
 
         if (magic_number.compare("XDF:")) {
@@ -673,14 +672,16 @@ void Xdf::find_min_max_time_stamps() {
         }
     }
     for (auto const &stream : streams_) {
-        if (!std::isnan(stream.info.first_timestamp) && stream.info.first_timestamp < min_timestamp_)
+        if (!std::isnan(stream.info.first_timestamp) && stream.info.first_timestamp < min_timestamp_) {
             min_timestamp_ = stream.info.first_timestamp;
+        }
     }
 
     //find the max timestamp of all streams
     for (auto const &stream : streams_) {
-        if (!std::isnan(stream.info.last_timestamp) && stream.info.last_timestamp > max_timestamp_)
+        if (!std::isnan(stream.info.last_timestamp) && stream.info.last_timestamp > max_timestamp_) {
             max_timestamp_ = stream.info.last_timestamp;
+        }
     }
 }
 
@@ -695,12 +696,12 @@ void Xdf::find_major_sampling_rate() {
     for (auto const &stream : streams_) {
         if (stream.info.nominal_srate != 0) {
             std::vector<std::pair<SamplingRate, ChannelCount> >::iterator it {std::find_if(sampling_rate_map.begin(), sampling_rate_map.end(),
-                                                                                     [&](const std::pair<SamplingRate, ChannelCount> &element)
+                                                                                           [&](const std::pair<SamplingRate, ChannelCount> &element)
                 {return element.first == stream.info.nominal_srate; })} ;
             //if it doesn't, add it here
             if (it == sampling_rate_map.end()) {
                 sampling_rate_map.emplace_back(stream.info.nominal_srate, stream.info.channel_count);
-            //if it already exists, add additional channel numbers to that sample rate
+                //if it already exists, add additional channel numbers to that sample rate
             }
             else {
                 int index (std::distance(sampling_rate_map.begin(),it)) ;
@@ -755,7 +756,7 @@ void Xdf::free_up_timestamps() {
 
 void Xdf::adjust_total_length() {
     for (auto const &stream : streams_) {
-        if(!stream.time_series.empty()) {
+        if (!stream.time_series.empty()) {
             if (total_len_ < stream.time_series.front().size()) {
                 total_len_ = stream.time_series.front().size();
             }
