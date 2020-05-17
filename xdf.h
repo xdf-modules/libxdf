@@ -29,9 +29,9 @@
 
 /*! \class Xdf
  *
- * Xdf class stores the data of an entire XDF file. It contains methods to
- * read XDF files and containers to store the data, as well as additional
- * methods such as resampling etc.
+ * Xdf class stores the data of an XDF file. It contains methods to read
+ * XDF files, store the data, and additional functionalities such as
+ * resampling etc.
  */
 
 class Xdf
@@ -44,13 +44,13 @@ public:
      *
      * XDF files uses stream as the unit to store data. An XDF file usually
      * contains multiple streams, each of which may contain one or more
-     * channels. The Stream struct provides a way to store meta-data, time-series,
-     * time-stamps and all other information of a single stream from an XDF file.
+     * channels. The Stream struct stores meta-data, time series, timetamps
+     * and other information of a stream.
      */
     struct Stream
     {
-        std::vector<std::vector<float>> time_series; /*!< 2D vector that stores the time series of a stream. Each row represents a channel.*/
-        std::vector<double> time_stamps;    /*!< Stores the time stamps. */
+        std::vector<std::vector<float>> time_series;    /*!< Stores the time series of a stream. Each row represents a channel.*/
+        std::vector<double> timestamps;     /*!< Stores the timestamps. */
         std::string stream_header;          /*!< Raw XML of stream header chunk. */
         std::string stream_footer;          /*!< Raw XML of stream footer chunk. */
 
@@ -62,12 +62,11 @@ public:
             std::string type;               /*!< The type of the current stream. */
             std::string channel_format;     /*!< The channel format of the current stream. */
 
-            std::vector<std::map<std::string, std::string> > channels; /*!< Stores the meta-data of the channels of the current stream. */
-
+            std::vector<std::map<std::string, std::string>> channels;   /*!< Stores the metadata of the channels of the current stream. */
             std::vector<std::pair<double, double> > clock_offsets;  /*!< Stores the clock offsets from the ClockOffset chunk. */
 
-            double first_timestamp;         /*!< First time stamp of the stream. */
-            double last_timestamp;          /*!< Last time stamp of the stream. */
+            double first_timestamp;         /*!< First timestamp of the stream. */
+            double last_timestamp;          /*!< Last timestamp of the stream. */
             int sample_count;               /*!< Sample count of the stream. */
             double measured_sampling_rate;  /*!< Measured sampling rate of the stream. */
             double effective_sampling_rate = 0; /*!< Effective sampling rate. */
@@ -82,16 +81,16 @@ public:
     std::vector<Stream> streams_;           /*!< Stores all streams of the current XDF file. */
     float version_;                         /*!< The version of the XDF file. */
 
-    uint64_t total_len_ = 0;                /*!< The total length is the product of the range between the smallest time stamp and the largest multiplied by major_sampling_rate_. */
+    uint64_t total_len_ = 0;                /*!< The total length is the product of the range between the min timestamp and the max timestamp multiplied by major_sampling_rate_. */
 
-    double min_timestamp_ = 0;              /*!< The min time stamp across all streams. */
-    double max_timestamp_ = 0;              /*!< The max time stamp across all streams. */
+    double min_timestamp_ = 0;              /*!< The min timestamp across all streams. */
+    double max_timestamp_ = 0;              /*!< The max timestamp across all streams. */
     size_t channel_count_ = 0;              /*!< The total number of channels. */
     int major_sampling_rate_ = 0;           /*!< The sampling rate that was used by the most channels across all streams. */
     int max_sampling_rate_ = 0;             /*!< Max sampling rate across all streams. */
     std::vector<double> effective_sampling_rates_;  /*!< Effective sampling rates of streams. */
     double file_effective_sampling_rate_ = 0;   /*!< If effective_sampling_rates_ in all the streams are the same, this is the value. */
-    std::vector<int> stream_map_;           /*!< Indexes which channels belong to which stream. The index is the same as channel number; the actual content is the stream number. */
+    std::vector<int> stream_map_;           /*!< Indexes which channels belong to which stream. The keys are channel numbers, the values are stream numbers. */
 
     /*!
      * \brief An alias of std::string type used on event names.
@@ -105,14 +104,14 @@ public:
     typedef double event_timestamp_;
 
     std::vector<std::pair<std::pair<event_name_, event_timestamp_>, int>> event_map_;   /*!< Stores all events across all streams. */
-    std::vector<std::string> dictionary_;   /*!< Stores unique event types with no repetitions. \sa eventMap */
-    std::vector<uint16_t> event_type_;      /*!< Stores events by their indices in the dictionary.\sa dictionary, eventMap */
+    std::vector<std::string> dictionary_;   /*!< Stores unique event types with no repetitions. \sa event_map_ */
+    std::vector<uint16_t> event_type_;      /*!< Stores events by their indices in the dictionary.\sa dictionary_, event_map_ */
     std::vector<std::string> labels_;       /*!< Stores descriptive labels of each channel. */
     std::set<double> sampling_rate_map_;    /*!< Stores sampling rates of all the streams. */
-    std::vector<float> offsets_;            /*!< Offsets of each channel after using SubtractMean() method. */
+    std::vector<float> offsets_;            /*!< Offsets of each channel after using the `detrend` method. \sa detrend() */
 
     std::string file_header_;               /*!< Raw XML of the file header. */
-    int user_added_stream_{0};              /*!< Used by SigViewer only: if user manually added events in SigViewer, the events will be stored in a new stream after all current streams with index user_added_stream_. */
+    int user_added_stream_{0};              /*!< Used by SigViewer only: if user manually added events in SigViewer, the events will be stored in a new stream after all current streams with index `user_added_stream_`. */
     std::vector<std::pair<std::string, double> > user_created_events_;  /*!< Events created by user in SigViewer. */
 
     /*!
@@ -124,12 +123,12 @@ public:
      * `total_len_`, this function will make `total_len_` match the length
      * of that channel.
      *
-     * \sa total_len_, major_sampling_rate_, CalculateTotalLength()
+     * \sa total_len_, major_sampling_rate_, calculate_total_length()
      */
-    void AdjustTotalLength();
+    void adjust_total_length();
 
     /*!
-     * \brief Calculates the globle length (in samples).
+     * \brief Calculates the global length (in samples).
      *
      * This is calculated by multiplying the rage from `min_timestamp_`
      * to `max_timestamp_` across all channels by `sampling_rate`.
@@ -137,13 +136,13 @@ public:
      * \param sampling_rate The sampling rate used to calculate the total
      * length.
      */
-    void CalculateTotalLength(int sampling_rate);
+    void calculate_total_length(int sampling_rate);
 
     /*!
      * \brief Creates labels for each channel and stores them in `labels_`.
      * \sa labels_, offsets_
      */
-    void CreateLabels();
+    void create_labels();
 
     /*!
      * \brief Subtracts all data in a channel by the mean.
@@ -156,7 +155,7 @@ public:
      *
      * \sa offsets_
      */
-    void Detrend();
+    void detrend();
 
     /*!
      * \brief Deletes `Stream::time_stamps` when no longer needed (to release
@@ -168,39 +167,39 @@ public:
      * together). Hence `Stream::time_stamps` can be deleted when no longer
      * needed to free up the memory.
      */
-    void FreeUpTimeStamps();
+    void free_up_timestamps();
 
     /*!
      * \brief Loads an XDF file.
      * \param filename The complete path to the target file.
      */
-    int LoadXdf(std::string filename);
+    int load_xdf(std::string filename);
 
     /*!
      * \brief Resamples all streams and channels to `sampling_rate`.
      * \param `sampling_rate` in general should be between 1 and the highest
      * sampling rate of the current file.
      */
-    void Resample(int sampling_rate);
+    void resample(int sampling_rate);
 
     /*!
      * \brief Sync the timestamps.
      */
-    void SyncTimeStamps();
+    void sync_timestamps();
 
     /*!
      * \brief Writes events to the XDF file. Used when user added markups
      * and/or events in SigViewer, this method stores the newly created events
      * to the XDF file in a new stream.
      */
-    int WriteEventsToXdf(std::string file_path);
+    int write_events_to_xdf(std::string file_path);
 
 private:
 
     /*!
      * \brief Calculates the effective sampling rate.
      */
-    void CalculateEffectiveSamplingRate();
+    void calculate_effective_sampling_rate();
 
     /*!
      * \brief Calculates the channel count and stores the result in
@@ -210,7 +209,7 @@ private:
      *
      * \sa channel_count_, event_map_
      */
-    void CalculateChannelCount();
+    void calculate_channel_count();
 
     /*!
      * \brief Finds the sampling rate that is used by the most channels.
@@ -222,37 +221,38 @@ private:
      * rate that was used by the most channels thus minimizing the number
      * of channels to be resampled.
      *
-     * \sa major_sampling_rate_, Resample(int sampling_rate)
+     * \sa major_sampling_rate_, resample(int sampling_rate)
      */
-    void FindMajorSamplingRate();
+    void find_major_sampling_rate();
 
     /*!
      * \brief Finds the max sampling rate of all streams and store it in `max_sampling_rate_`.
      *
      * \sa max_sampling_rate_
      */
-    void FindMaxSampleRate();
+    void find_max_sampling_rate();
 
     /*!
      * \brief Finds the min and max timestamps across all streams. The
      * results are stored in `min_timestamp_` and `max_timestamp_`.
-     * \sa  min_timestamp_, max_timestamp_, CalculateTotalLength(int sampling_rate);
+     *
+     * \sa  min_timestamp_, max_timestamp_, calculate_total_length(int sampling_rate);
      */
-    void FindMinMaxTimeStamps();
+    void find_min_max_time_stamps();
 
     /*!
      * \brief Copies all unique types of events from `event_map_` to
      * `dictionary_` excluding duplicates.
      * \sa event_map_, dictionary_
      */
-    void LoadDictionary();
+    void load_dictionary();
 
     /*!
      * \brief Loads every sampling rate that appeared in the current file
      * into `sampling_rate_map_`.
      * \sa sampling_rate_map_
      */
-    void LoadSamplingRateMap();
+    void load_sampling_rate_map();
 
     /*!
      * \brief Gets the length of the upcoming chunk, or the number of samples.
@@ -264,7 +264,7 @@ private:
      * \param file The XDF file that is being loaded in the type of `std::ifstream`.
      * \return The length of the upcoming chunk (in bytes).
      */
-    uint64_t ReadLength(std::ifstream &file);
+    uint64_t read_length(std::ifstream &file);
 
     /*!
      * \brief Reads a binary scalar variable from an input stream.
@@ -281,7 +281,7 @@ private:
      * \param obj Pointer to a variable to load the data into or nullptr.
      * \return The read data.
      */
-    template<typename T> T ReadBin(std::istream& is, T* obj = nullptr);
+    template<typename T> T read_bin(std::istream& is, T* obj = nullptr);
 };
 
 #endif // XDF_H
