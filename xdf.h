@@ -34,8 +34,7 @@
  * resampling etc.
  */
 
-class Xdf
-{  
+class Xdf {
 public:
     //! Default constructor with no parameter.
     Xdf();
@@ -47,15 +46,13 @@ public:
      * channels. The Stream struct stores meta-data, time series, timetamps
      * and other information of a stream.
      */
-    struct Stream
-    {
+    struct Stream {
         std::vector<std::vector<float>> time_series;    /*!< Stores the time series of a stream. Each row represents a channel.*/
         std::vector<double> timestamps;     /*!< Stores the timestamps. */
         std::string stream_header;          /*!< Raw XML of stream header chunk. */
         std::string stream_footer;          /*!< Raw XML of stream footer chunk. */
 
-        struct
-        {
+        struct {
             int channel_count;              /*!< Number of channels in the current stream */
             double nominal_srate;           /*!< The nominal sampling rate of the current stream. */
             std::string name;               /*!< The name of the current stream. */
