@@ -1,0 +1,174 @@
+\hypertarget{struct_xdf_1_1_stream}{}\doxysection{Xdf\+::Stream Class Reference}
+\label{struct_xdf_1_1_stream}\index{Xdf::Stream@{Xdf::Stream}}
+
+
+{\ttfamily \#include $<$xdf.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::vector$<$ float $>$ $>$ \mbox{\hyperlink{struct_xdf_1_1_stream_adfdeb5f6220da9fe671d3f37e27ed0bb}{time\+\_\+series}}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{struct_xdf_1_1_stream_a20a2258af3bdffb13c6001a73da12428}{timestamps}}
+\item 
+std\+::string \mbox{\hyperlink{struct_xdf_1_1_stream_a2fcba64fefd7c3e4d4768b9f9130399f}{stream\+\_\+header}}
+\item 
+std\+::string \mbox{\hyperlink{struct_xdf_1_1_stream_a9f3e86932b7937d1ebeaa896bc7b6a12}{stream\+\_\+footer}}
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>int \mbox{\hyperlink{struct_xdf_1_1_stream_ab8fb7c3d645305e84f90d919f698082c}{channel\_count}}\\
+\>double \mbox{\hyperlink{struct_xdf_1_1_stream_a17696fc2ee37c1d79601fac1736deb35}{nominal\_srate}}\\
+\>std::string \mbox{\hyperlink{struct_xdf_1_1_stream_a112e1dcc0e4b7f9583755366da8c3c64}{name}}\\
+\>std::string \mbox{\hyperlink{struct_xdf_1_1_stream_a7e5aa085e48de871ea6661651b28e097}{type}}\\
+\>std::string \mbox{\hyperlink{struct_xdf_1_1_stream_ad7b61b077e247ba57a18c182e285d0ad}{channel\_format}}\\
+\>std::vector$<$ std::map$<$ std::string, std::string $>$ $>$ \mbox{\hyperlink{struct_xdf_1_1_stream_a71d987a538d0819cdbd58120d1a79ef5}{channels}}\\
+\>std::vector$<$ std::pair$<$ double, double $>$ $>$ \mbox{\hyperlink{struct_xdf_1_1_stream_a6f6328f0746591a3a471048b6b9bd258}{clock\_offsets}}\\
+\>double \mbox{\hyperlink{struct_xdf_1_1_stream_a22a44cb3cd533ea668f9bb20dbc299de}{first\_timestamp}}\\
+\>double \mbox{\hyperlink{struct_xdf_1_1_stream_a9e05df342a36187ae492c75f10fc7713}{last\_timestamp}}\\
+\>int \mbox{\hyperlink{struct_xdf_1_1_stream_a329234a46df00cd51a67a7f4f637c08a}{sample\_count}}\\
+\>double \mbox{\hyperlink{struct_xdf_1_1_stream_abd08634894478bb304c209e5bbdcabb4}{measured\_sampling\_rate}}\\
+\>double \mbox{\hyperlink{struct_xdf_1_1_stream_a97a11401e85fd9f64a5601b15bbc7820}{effective\_sampling\_rate}} = 0\\
+\} \mbox{\hyperlink{struct_xdf_1_1_stream_adb53bf4089d3169c9ea89a9767b4ad11}{info}}\\
+
+\end{tabbing}\item 
+double \mbox{\hyperlink{struct_xdf_1_1_stream_a1cac0dbcbe6756cd02b662feae416ba1}{sampling\+\_\+interval}}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{struct_xdf_1_1_stream_a6bc91dcf23e551a9adbc415b562f3a79}{clock\+\_\+times}}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{struct_xdf_1_1_stream_a988989603854812cb693e56ff352a753}{clock\+\_\+values}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+X\+DF files uses stream as the unit to store data. An X\+DF file usually contains multiple streams, each of which may contain one or more channels. The \mbox{\hyperlink{struct_xdf_1_1_stream}{Stream}} struct stores meta-\/data, time series, timetamps and other information of a stream. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_xdf_1_1_stream_ab8fb7c3d645305e84f90d919f698082c}\label{struct_xdf_1_1_stream_ab8fb7c3d645305e84f90d919f698082c}} 
+\index{Xdf::Stream@{Xdf::Stream}!channel\_count@{channel\_count}}
+\index{channel\_count@{channel\_count}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{channel\_count}{channel\_count}}
+{\footnotesize\ttfamily int Xdf\+::\+Stream\+::channel\+\_\+count}
+
+Number of channels in the current stream \mbox{\Hypertarget{struct_xdf_1_1_stream_ad7b61b077e247ba57a18c182e285d0ad}\label{struct_xdf_1_1_stream_ad7b61b077e247ba57a18c182e285d0ad}} 
+\index{Xdf::Stream@{Xdf::Stream}!channel\_format@{channel\_format}}
+\index{channel\_format@{channel\_format}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{channel\_format}{channel\_format}}
+{\footnotesize\ttfamily std\+::string Xdf\+::\+Stream\+::channel\+\_\+format}
+
+The channel format of the current stream. \mbox{\Hypertarget{struct_xdf_1_1_stream_a71d987a538d0819cdbd58120d1a79ef5}\label{struct_xdf_1_1_stream_a71d987a538d0819cdbd58120d1a79ef5}} 
+\index{Xdf::Stream@{Xdf::Stream}!channels@{channels}}
+\index{channels@{channels}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{channels}{channels}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::map$<$std\+::string, std\+::string$>$ $>$ Xdf\+::\+Stream\+::channels}
+
+Stores the metadata of the channels of the current stream. \mbox{\Hypertarget{struct_xdf_1_1_stream_a6f6328f0746591a3a471048b6b9bd258}\label{struct_xdf_1_1_stream_a6f6328f0746591a3a471048b6b9bd258}} 
+\index{Xdf::Stream@{Xdf::Stream}!clock\_offsets@{clock\_offsets}}
+\index{clock\_offsets@{clock\_offsets}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{clock\_offsets}{clock\_offsets}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::pair$<$double, double$>$ $>$ Xdf\+::\+Stream\+::clock\+\_\+offsets}
+
+Stores the clock offsets from the Clock\+Offset chunk. \mbox{\Hypertarget{struct_xdf_1_1_stream_a6bc91dcf23e551a9adbc415b562f3a79}\label{struct_xdf_1_1_stream_a6bc91dcf23e551a9adbc415b562f3a79}} 
+\index{Xdf::Stream@{Xdf::Stream}!clock\_times@{clock\_times}}
+\index{clock\_times@{clock\_times}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{clock\_times}{clock\_times}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Xdf\+::\+Stream\+::clock\+\_\+times}
+
+Stores the clock times from clock offset chunks. \mbox{\Hypertarget{struct_xdf_1_1_stream_a988989603854812cb693e56ff352a753}\label{struct_xdf_1_1_stream_a988989603854812cb693e56ff352a753}} 
+\index{Xdf::Stream@{Xdf::Stream}!clock\_values@{clock\_values}}
+\index{clock\_values@{clock\_values}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{clock\_values}{clock\_values}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Xdf\+::\+Stream\+::clock\+\_\+values}
+
+Stores the clock values from clock offset chunks. \mbox{\Hypertarget{struct_xdf_1_1_stream_a97a11401e85fd9f64a5601b15bbc7820}\label{struct_xdf_1_1_stream_a97a11401e85fd9f64a5601b15bbc7820}} 
+\index{Xdf::Stream@{Xdf::Stream}!effective\_sampling\_rate@{effective\_sampling\_rate}}
+\index{effective\_sampling\_rate@{effective\_sampling\_rate}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{effective\_sampling\_rate}{effective\_sampling\_rate}}
+{\footnotesize\ttfamily double Xdf\+::\+Stream\+::effective\+\_\+sampling\+\_\+rate = 0}
+
+Effective sampling rate. \mbox{\Hypertarget{struct_xdf_1_1_stream_a22a44cb3cd533ea668f9bb20dbc299de}\label{struct_xdf_1_1_stream_a22a44cb3cd533ea668f9bb20dbc299de}} 
+\index{Xdf::Stream@{Xdf::Stream}!first\_timestamp@{first\_timestamp}}
+\index{first\_timestamp@{first\_timestamp}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{first\_timestamp}{first\_timestamp}}
+{\footnotesize\ttfamily double Xdf\+::\+Stream\+::first\+\_\+timestamp}
+
+First timestamp of the stream. \mbox{\Hypertarget{struct_xdf_1_1_stream_adb53bf4089d3169c9ea89a9767b4ad11}\label{struct_xdf_1_1_stream_adb53bf4089d3169c9ea89a9767b4ad11}} 
+\index{Xdf::Stream@{Xdf::Stream}!info@{info}}
+\index{info@{info}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{info}{info}}
+{\footnotesize\ttfamily struct \{ ... \}  Xdf\+::\+Stream\+::info}
+
+Meta-\/data from the stream header of the current stream. \mbox{\Hypertarget{struct_xdf_1_1_stream_a9e05df342a36187ae492c75f10fc7713}\label{struct_xdf_1_1_stream_a9e05df342a36187ae492c75f10fc7713}} 
+\index{Xdf::Stream@{Xdf::Stream}!last\_timestamp@{last\_timestamp}}
+\index{last\_timestamp@{last\_timestamp}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{last\_timestamp}{last\_timestamp}}
+{\footnotesize\ttfamily double Xdf\+::\+Stream\+::last\+\_\+timestamp \{0\}}
+
+Last timestamp of the stream.
+
+For temporary use while loading the vector \mbox{\Hypertarget{struct_xdf_1_1_stream_abd08634894478bb304c209e5bbdcabb4}\label{struct_xdf_1_1_stream_abd08634894478bb304c209e5bbdcabb4}} 
+\index{Xdf::Stream@{Xdf::Stream}!measured\_sampling\_rate@{measured\_sampling\_rate}}
+\index{measured\_sampling\_rate@{measured\_sampling\_rate}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{measured\_sampling\_rate}{measured\_sampling\_rate}}
+{\footnotesize\ttfamily double Xdf\+::\+Stream\+::measured\+\_\+sampling\+\_\+rate}
+
+Measured sampling rate of the stream. \mbox{\Hypertarget{struct_xdf_1_1_stream_a112e1dcc0e4b7f9583755366da8c3c64}\label{struct_xdf_1_1_stream_a112e1dcc0e4b7f9583755366da8c3c64}} 
+\index{Xdf::Stream@{Xdf::Stream}!name@{name}}
+\index{name@{name}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily std\+::string Xdf\+::\+Stream\+::name}
+
+The name of the current stream. \mbox{\Hypertarget{struct_xdf_1_1_stream_a17696fc2ee37c1d79601fac1736deb35}\label{struct_xdf_1_1_stream_a17696fc2ee37c1d79601fac1736deb35}} 
+\index{Xdf::Stream@{Xdf::Stream}!nominal\_srate@{nominal\_srate}}
+\index{nominal\_srate@{nominal\_srate}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{nominal\_srate}{nominal\_srate}}
+{\footnotesize\ttfamily double Xdf\+::\+Stream\+::nominal\+\_\+srate}
+
+The nominal sampling rate of the current stream. \mbox{\Hypertarget{struct_xdf_1_1_stream_a329234a46df00cd51a67a7f4f637c08a}\label{struct_xdf_1_1_stream_a329234a46df00cd51a67a7f4f637c08a}} 
+\index{Xdf::Stream@{Xdf::Stream}!sample\_count@{sample\_count}}
+\index{sample\_count@{sample\_count}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{sample\_count}{sample\_count}}
+{\footnotesize\ttfamily int Xdf\+::\+Stream\+::sample\+\_\+count}
+
+Sample count of the stream. \mbox{\Hypertarget{struct_xdf_1_1_stream_a1cac0dbcbe6756cd02b662feae416ba1}\label{struct_xdf_1_1_stream_a1cac0dbcbe6756cd02b662feae416ba1}} 
+\index{Xdf::Stream@{Xdf::Stream}!sampling\_interval@{sampling\_interval}}
+\index{sampling\_interval@{sampling\_interval}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{sampling\_interval}{sampling\_interval}}
+{\footnotesize\ttfamily double Xdf\+::\+Stream\+::sampling\+\_\+interval}
+
+sampling\+\_\+interval = 1/sampling\+\_\+rate if sampling\+\_\+rate $>$ 0, otherwise 0 \mbox{\Hypertarget{struct_xdf_1_1_stream_a9f3e86932b7937d1ebeaa896bc7b6a12}\label{struct_xdf_1_1_stream_a9f3e86932b7937d1ebeaa896bc7b6a12}} 
+\index{Xdf::Stream@{Xdf::Stream}!stream\_footer@{stream\_footer}}
+\index{stream\_footer@{stream\_footer}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{stream\_footer}{stream\_footer}}
+{\footnotesize\ttfamily std\+::string Xdf\+::\+Stream\+::stream\+\_\+footer}
+
+Raw X\+ML of stream footer chunk. \mbox{\Hypertarget{struct_xdf_1_1_stream_a2fcba64fefd7c3e4d4768b9f9130399f}\label{struct_xdf_1_1_stream_a2fcba64fefd7c3e4d4768b9f9130399f}} 
+\index{Xdf::Stream@{Xdf::Stream}!stream\_header@{stream\_header}}
+\index{stream\_header@{stream\_header}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{stream\_header}{stream\_header}}
+{\footnotesize\ttfamily std\+::string Xdf\+::\+Stream\+::stream\+\_\+header}
+
+Raw X\+ML of stream header chunk. \mbox{\Hypertarget{struct_xdf_1_1_stream_adfdeb5f6220da9fe671d3f37e27ed0bb}\label{struct_xdf_1_1_stream_adfdeb5f6220da9fe671d3f37e27ed0bb}} 
+\index{Xdf::Stream@{Xdf::Stream}!time\_series@{time\_series}}
+\index{time\_series@{time\_series}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{time\_series}{time\_series}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::vector$<$float$>$ $>$ Xdf\+::\+Stream\+::time\+\_\+series}
+
+Stores the time series of a stream. Each row represents a channel. \mbox{\Hypertarget{struct_xdf_1_1_stream_a20a2258af3bdffb13c6001a73da12428}\label{struct_xdf_1_1_stream_a20a2258af3bdffb13c6001a73da12428}} 
+\index{Xdf::Stream@{Xdf::Stream}!timestamps@{timestamps}}
+\index{timestamps@{timestamps}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{timestamps}{timestamps}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Xdf\+::\+Stream\+::timestamps}
+
+Stores the timestamps. \mbox{\Hypertarget{struct_xdf_1_1_stream_a7e5aa085e48de871ea6661651b28e097}\label{struct_xdf_1_1_stream_a7e5aa085e48de871ea6661651b28e097}} 
+\index{Xdf::Stream@{Xdf::Stream}!type@{type}}
+\index{type@{type}!Xdf::Stream@{Xdf::Stream}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily std\+::string Xdf\+::\+Stream\+::type}
+
+The type of the current stream. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{xdf_8h}{xdf.\+h}}\end{DoxyCompactItemize}

@@ -1,13 +1,12 @@
 var indexSectionsWithContent =
 {
-  0: "abcdefilmnorstuvwx",
+  0: "acdefilmnorstuvwx",
   1: "sx",
-  2: "rx",
-  3: "acdflrwx",
+  2: "x",
+  3: "acdflrswx",
   4: "cdefilmnostuv",
   5: "e",
-  6: "b",
-  7: "l"
+  6: "l"
 };
 
 var indexSectionNames =
@@ -18,8 +17,7 @@ var indexSectionNames =
   3: "functions",
   4: "variables",
   5: "typedefs",
-  6: "defines",
-  7: "pages"
+  6: "pages"
 };
 
 var indexSectionLabels =
@@ -30,7 +28,6 @@ var indexSectionLabels =
   3: "Functions",
   4: "Variables",
   5: "Typedefs",
-  6: "Macros",
-  7: "Pages"
+  6: "Pages"
 };
 

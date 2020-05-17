@@ -1,0 +1,360 @@
+\hypertarget{class_xdf}{}\doxysection{Xdf Class Reference}
+\label{class_xdf}\index{Xdf@{Xdf}}
+
+
+{\ttfamily \#include $<$xdf.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{struct_xdf_1_1_stream}{Stream}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::string \mbox{\hyperlink{class_xdf_a57eb7fdd01251b7613a7d106625ff019}{event\+\_\+name\+\_\+}}
+\begin{DoxyCompactList}\small\item\em An alias of std\+::string type used on event names. \end{DoxyCompactList}\item 
+typedef double \mbox{\hyperlink{class_xdf_a4cf524f9428b9438b70cb17ea3f2d547}{event\+\_\+timestamp\+\_\+}}
+\begin{DoxyCompactList}\small\item\em An alias of double type used on event timestamps. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_xdf_a7900b5a4f3792b9d59a5d43db821607e}\label{class_xdf_a7900b5a4f3792b9d59a5d43db821607e}} 
+\mbox{\hyperlink{class_xdf_a7900b5a4f3792b9d59a5d43db821607e}{Xdf}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor with no parameter. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_xdf_ae19b9ae0ee92b8c93fc3fd5be2d2d97f}{adjust\+\_\+total\+\_\+length}} ()
+\begin{DoxyCompactList}\small\item\em Adjusts {\ttfamily total\+\_\+len\+\_\+} to avoid possible deviation. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_xdf_a72175fdbb081994f05b388e5ba92c903}{calculate\+\_\+total\+\_\+length}} (int sampling\+\_\+rate)
+\begin{DoxyCompactList}\small\item\em Calculates the global length (in samples). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_xdf_ab81f7f275ab38269d76be6ad0fdc9e29}{create\+\_\+labels}} ()
+\begin{DoxyCompactList}\small\item\em Creates labels for each channel and stores them in {\ttfamily labels\+\_\+}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_xdf_a4d2c5859af84542a15a80c906465f4e3}{detrend}} ()
+\begin{DoxyCompactList}\small\item\em Subtracts all data in a channel by the mean. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_xdf_a957461547bca42a5314dafaaf307c1ee}{free\+\_\+up\+\_\+timestamps}} ()
+\begin{DoxyCompactList}\small\item\em Deletes {\ttfamily Stream\+::time\+\_\+stamps} when no longer needed (to release memory). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_xdf_a993e94535d6d9e544a64ffbbb2bb4e8c}{load\+\_\+xdf}} (std\+::string filename)
+\begin{DoxyCompactList}\small\item\em Loads an X\+DF file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_xdf_a4ef5de06800e56726b6ce4a50ffdb0b4}{resample}} (int sampling\+\_\+rate)
+\begin{DoxyCompactList}\small\item\em Resamples all streams and channels to {\ttfamily sampling\+\_\+rate}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_xdf_a0b5e111d11282d4ff30020ca35446bd8}\label{class_xdf_a0b5e111d11282d4ff30020ca35446bd8}} 
+void \mbox{\hyperlink{class_xdf_a0b5e111d11282d4ff30020ca35446bd8}{sync\+\_\+timestamps}} ()
+\begin{DoxyCompactList}\small\item\em Sync the timestamps. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_xdf_a991b6c33acf78389826b123a53e106a0}\label{class_xdf_a991b6c33acf78389826b123a53e106a0}} 
+int \mbox{\hyperlink{class_xdf_a991b6c33acf78389826b123a53e106a0}{write\+\_\+events\+\_\+to\+\_\+xdf}} (std\+::string file\+\_\+path)
+\begin{DoxyCompactList}\small\item\em Writes events to the X\+DF file. Used when user added markups and/or events in Sig\+Viewer, this method stores the newly created events to the X\+DF file in a new stream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{struct_xdf_1_1_stream}{Stream}} $>$ \mbox{\hyperlink{class_xdf_adeff1db8c45308d12d7786805eeaad9b}{streams\+\_\+}}
+\item 
+float \mbox{\hyperlink{class_xdf_a0d6728f813bab52c7c325d211b6e521f}{version\+\_\+}}
+\item 
+uint64\+\_\+t \mbox{\hyperlink{class_xdf_a46c39c451c44431846046a5bcc354787}{total\+\_\+len\+\_\+}} = 0
+\item 
+double \mbox{\hyperlink{class_xdf_a2f24970506cdd71c7de9b1f01162d36c}{min\+\_\+timestamp\+\_\+}} = 0
+\item 
+double \mbox{\hyperlink{class_xdf_abda66058170e3fdae48b28339bbad2a6}{max\+\_\+timestamp\+\_\+}} = 0
+\item 
+size\+\_\+t \mbox{\hyperlink{class_xdf_afb6d47c75ebc215eb14aaf9e80133a7f}{channel\+\_\+count\+\_\+}} = 0
+\item 
+int \mbox{\hyperlink{class_xdf_a89b8115372c91f34e985acd673d502da}{major\+\_\+sampling\+\_\+rate\+\_\+}} = 0
+\item 
+int \mbox{\hyperlink{class_xdf_a73ea312db24b43eff063c4d223f15d5d}{max\+\_\+sampling\+\_\+rate\+\_\+}} = 0
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{class_xdf_a21852b079ed18afa0117d67755a2c68d}{effective\+\_\+sampling\+\_\+rates\+\_\+}}
+\item 
+double \mbox{\hyperlink{class_xdf_a4e36c1e1588711d7d09d2aa26f800f2c}{file\+\_\+effective\+\_\+sampling\+\_\+rate\+\_\+}} = 0
+\item 
+std\+::vector$<$ int $>$ \mbox{\hyperlink{class_xdf_a4a3b1aadac1f7fa4def94e9eae31fbd7}{stream\+\_\+map\+\_\+}}
+\item 
+std\+::vector$<$ std\+::pair$<$ std\+::pair$<$ \mbox{\hyperlink{class_xdf_a57eb7fdd01251b7613a7d106625ff019}{event\+\_\+name\+\_\+}}, \mbox{\hyperlink{class_xdf_a4cf524f9428b9438b70cb17ea3f2d547}{event\+\_\+timestamp\+\_\+}} $>$, int $>$ $>$ \mbox{\hyperlink{class_xdf_ad92266c3c43f6a508d43040090479726}{event\+\_\+map\+\_\+}}
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{class_xdf_a37903ef2145466774f7bb57dd72fb428}{dictionary\+\_\+}}
+\item 
+std\+::vector$<$ uint16\+\_\+t $>$ \mbox{\hyperlink{class_xdf_a6a98e5d14a159cc9b24460f2441d6b4e}{event\+\_\+type\+\_\+}}
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{class_xdf_a3a41f6cf908b5e6aa4e83f801b5d245d}{labels\+\_\+}}
+\item 
+std\+::set$<$ double $>$ \mbox{\hyperlink{class_xdf_ae6086c443d6ea7b8940f652edb20aaef}{sampling\+\_\+rate\+\_\+map\+\_\+}}
+\item 
+std\+::vector$<$ float $>$ \mbox{\hyperlink{class_xdf_a640243fd0bf0ed9f80ca8cd6c2c447f1}{offsets\+\_\+}}
+\item 
+std\+::string \mbox{\hyperlink{class_xdf_abb8518a32a84995d60648d1c0fdd6428}{file\+\_\+header\+\_\+}}
+\item 
+int \mbox{\hyperlink{class_xdf_ad90637b4ad2bdb13ecabac25fab44836}{user\+\_\+added\+\_\+stream\+\_\+}} \{0\}
+\item 
+std\+::vector$<$ std\+::pair$<$ std\+::string, double $>$ $>$ \mbox{\hyperlink{class_xdf_aa420a5824343786c9602a7bac77d1e28}{user\+\_\+created\+\_\+events\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{class_xdf}{Xdf}} class stores the data of an X\+DF file. It contains methods to read X\+DF files, store the data, and additional functionalities such as resampling etc. 
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_xdf_a57eb7fdd01251b7613a7d106625ff019}\label{class_xdf_a57eb7fdd01251b7613a7d106625ff019}} 
+\index{Xdf@{Xdf}!event\_name\_@{event\_name\_}}
+\index{event\_name\_@{event\_name\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{event\_name\_}{event\_name\_}}
+{\footnotesize\ttfamily typedef std\+::string \mbox{\hyperlink{class_xdf_a57eb7fdd01251b7613a7d106625ff019}{Xdf\+::event\+\_\+name\+\_\+}}}
+
+
+
+An alias of std\+::string type used on event names. 
+
+\begin{DoxySeeAlso}{See also}
+event\+Map 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{class_xdf_a4cf524f9428b9438b70cb17ea3f2d547}\label{class_xdf_a4cf524f9428b9438b70cb17ea3f2d547}} 
+\index{Xdf@{Xdf}!event\_timestamp\_@{event\_timestamp\_}}
+\index{event\_timestamp\_@{event\_timestamp\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{event\_timestamp\_}{event\_timestamp\_}}
+{\footnotesize\ttfamily typedef double \mbox{\hyperlink{class_xdf_a4cf524f9428b9438b70cb17ea3f2d547}{Xdf\+::event\+\_\+timestamp\+\_\+}}}
+
+
+
+An alias of double type used on event timestamps. 
+
+\begin{DoxySeeAlso}{See also}
+event\+Map 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_xdf_ae19b9ae0ee92b8c93fc3fd5be2d2d97f}\label{class_xdf_ae19b9ae0ee92b8c93fc3fd5be2d2d97f}} 
+\index{Xdf@{Xdf}!adjust\_total\_length@{adjust\_total\_length}}
+\index{adjust\_total\_length@{adjust\_total\_length}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{adjust\_total\_length()}{adjust\_total\_length()}}
+{\footnotesize\ttfamily void Xdf\+::adjust\+\_\+total\+\_\+length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Adjusts {\ttfamily total\+\_\+len\+\_\+} to avoid possible deviation. 
+
+{\ttfamily total\+\_\+len\+\_\+} is calculated by multiplying the difference between {\ttfamily max\+\_\+timestamp\+\_\+} and {\ttfamily min\+\_\+timestamp\+\_\+} by {\ttfamily major\+\_\+sampling\+\_\+rate\+\_\+}. However, this can be inaccurate. In case any channel is longer than {\ttfamily total\+\_\+len\+\_\+}, this function will make {\ttfamily total\+\_\+len\+\_\+} match the length of that channel.
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{class_xdf_a46c39c451c44431846046a5bcc354787}{total\+\_\+len\+\_\+}}, \mbox{\hyperlink{class_xdf_a89b8115372c91f34e985acd673d502da}{major\+\_\+sampling\+\_\+rate\+\_\+}}, \mbox{\hyperlink{class_xdf_a72175fdbb081994f05b388e5ba92c903}{calculate\+\_\+total\+\_\+length()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{class_xdf_a72175fdbb081994f05b388e5ba92c903}\label{class_xdf_a72175fdbb081994f05b388e5ba92c903}} 
+\index{Xdf@{Xdf}!calculate\_total\_length@{calculate\_total\_length}}
+\index{calculate\_total\_length@{calculate\_total\_length}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{calculate\_total\_length()}{calculate\_total\_length()}}
+{\footnotesize\ttfamily void Xdf\+::calculate\+\_\+total\+\_\+length (\begin{DoxyParamCaption}\item[{int}]{sampling\+\_\+rate }\end{DoxyParamCaption})}
+
+
+
+Calculates the global length (in samples). 
+
+This is calculated by multiplying the rage from {\ttfamily min\+\_\+timestamp\+\_\+} to {\ttfamily max\+\_\+timestamp\+\_\+} across all channels by {\ttfamily sampling\+\_\+rate}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sampling\+\_\+rate} & The sampling rate used to calculate the total length. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_xdf_ab81f7f275ab38269d76be6ad0fdc9e29}\label{class_xdf_ab81f7f275ab38269d76be6ad0fdc9e29}} 
+\index{Xdf@{Xdf}!create\_labels@{create\_labels}}
+\index{create\_labels@{create\_labels}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{create\_labels()}{create\_labels()}}
+{\footnotesize\ttfamily void Xdf\+::create\+\_\+labels (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Creates labels for each channel and stores them in {\ttfamily labels\+\_\+}. 
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{class_xdf_a3a41f6cf908b5e6aa4e83f801b5d245d}{labels\+\_\+}}, \mbox{\hyperlink{class_xdf_a640243fd0bf0ed9f80ca8cd6c2c447f1}{offsets\+\_\+}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{class_xdf_a4d2c5859af84542a15a80c906465f4e3}\label{class_xdf_a4d2c5859af84542a15a80c906465f4e3}} 
+\index{Xdf@{Xdf}!detrend@{detrend}}
+\index{detrend@{detrend}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{detrend()}{detrend()}}
+{\footnotesize\ttfamily void Xdf\+::detrend (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Subtracts all data in a channel by the mean. 
+
+Sig\+Viewer displays both the channel signals as well as the zero baseline. When the mean of a channel is too high or too low it becomes difficult to see the fluctuation. Subtracting the entire channel by its mean makes the signals fluctuate around the zero baseline, thus having better visual effect. The mean of each channel times {\ttfamily -\/1} is stored in {\ttfamily offsets\+\_\+}.
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{class_xdf_a640243fd0bf0ed9f80ca8cd6c2c447f1}{offsets\+\_\+}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{class_xdf_a957461547bca42a5314dafaaf307c1ee}\label{class_xdf_a957461547bca42a5314dafaaf307c1ee}} 
+\index{Xdf@{Xdf}!free\_up\_timestamps@{free\_up\_timestamps}}
+\index{free\_up\_timestamps@{free\_up\_timestamps}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{free\_up\_timestamps()}{free\_up\_timestamps()}}
+{\footnotesize\ttfamily void Xdf\+::free\+\_\+up\+\_\+timestamps (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Deletes {\ttfamily Stream\+::time\+\_\+stamps} when no longer needed (to release memory). 
+
+Sig\+Viewer doesn\textquotesingle{}t demand time stamps to display signals except irregular sampling rate channels, events, and the min timestamp of each channel (used to determine where does a channel start when putting all streams together). Hence {\ttfamily Stream\+::time\+\_\+stamps} can be deleted when no longer needed to free up the memory. \mbox{\Hypertarget{class_xdf_a993e94535d6d9e544a64ffbbb2bb4e8c}\label{class_xdf_a993e94535d6d9e544a64ffbbb2bb4e8c}} 
+\index{Xdf@{Xdf}!load\_xdf@{load\_xdf}}
+\index{load\_xdf@{load\_xdf}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{load\_xdf()}{load\_xdf()}}
+{\footnotesize\ttfamily int Xdf\+::load\+\_\+xdf (\begin{DoxyParamCaption}\item[{std\+::string}]{filename }\end{DoxyParamCaption})}
+
+
+
+Loads an X\+DF file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The complete path to the target file. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_xdf_a4ef5de06800e56726b6ce4a50ffdb0b4}\label{class_xdf_a4ef5de06800e56726b6ce4a50ffdb0b4}} 
+\index{Xdf@{Xdf}!resample@{resample}}
+\index{resample@{resample}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{resample()}{resample()}}
+{\footnotesize\ttfamily void Xdf\+::resample (\begin{DoxyParamCaption}\item[{int}]{sampling\+\_\+rate }\end{DoxyParamCaption})}
+
+
+
+Resamples all streams and channels to {\ttfamily sampling\+\_\+rate}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em $<$tt$>$sampling\+\_\+rate$<$/tt$>$} & in general should be between 1 and the highest sampling rate of the current file. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_xdf_afb6d47c75ebc215eb14aaf9e80133a7f}\label{class_xdf_afb6d47c75ebc215eb14aaf9e80133a7f}} 
+\index{Xdf@{Xdf}!channel\_count\_@{channel\_count\_}}
+\index{channel\_count\_@{channel\_count\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{channel\_count\_}{channel\_count\_}}
+{\footnotesize\ttfamily size\+\_\+t Xdf\+::channel\+\_\+count\+\_\+ = 0}
+
+The total number of channels. \mbox{\Hypertarget{class_xdf_a37903ef2145466774f7bb57dd72fb428}\label{class_xdf_a37903ef2145466774f7bb57dd72fb428}} 
+\index{Xdf@{Xdf}!dictionary\_@{dictionary\_}}
+\index{dictionary\_@{dictionary\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{dictionary\_}{dictionary\_}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ Xdf\+::dictionary\+\_\+}
+
+Stores unique event types with no repetitions. \begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{class_xdf_ad92266c3c43f6a508d43040090479726}{event\+\_\+map\+\_\+}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{class_xdf_a21852b079ed18afa0117d67755a2c68d}\label{class_xdf_a21852b079ed18afa0117d67755a2c68d}} 
+\index{Xdf@{Xdf}!effective\_sampling\_rates\_@{effective\_sampling\_rates\_}}
+\index{effective\_sampling\_rates\_@{effective\_sampling\_rates\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{effective\_sampling\_rates\_}{effective\_sampling\_rates\_}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Xdf\+::effective\+\_\+sampling\+\_\+rates\+\_\+}
+
+Effective sampling rates of streams. \mbox{\Hypertarget{class_xdf_ad92266c3c43f6a508d43040090479726}\label{class_xdf_ad92266c3c43f6a508d43040090479726}} 
+\index{Xdf@{Xdf}!event\_map\_@{event\_map\_}}
+\index{event\_map\_@{event\_map\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{event\_map\_}{event\_map\_}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::pair$<$std\+::pair$<$\mbox{\hyperlink{class_xdf_a57eb7fdd01251b7613a7d106625ff019}{event\+\_\+name\+\_\+}}, \mbox{\hyperlink{class_xdf_a4cf524f9428b9438b70cb17ea3f2d547}{event\+\_\+timestamp\+\_\+}}$>$, int$>$ $>$ Xdf\+::event\+\_\+map\+\_\+}
+
+Stores all events across all streams. \mbox{\Hypertarget{class_xdf_a6a98e5d14a159cc9b24460f2441d6b4e}\label{class_xdf_a6a98e5d14a159cc9b24460f2441d6b4e}} 
+\index{Xdf@{Xdf}!event\_type\_@{event\_type\_}}
+\index{event\_type\_@{event\_type\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{event\_type\_}{event\_type\_}}
+{\footnotesize\ttfamily std\+::vector$<$uint16\+\_\+t$>$ Xdf\+::event\+\_\+type\+\_\+}
+
+Stores events by their indices in the dictionary.\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{class_xdf_a37903ef2145466774f7bb57dd72fb428}{dictionary\+\_\+}}, \mbox{\hyperlink{class_xdf_ad92266c3c43f6a508d43040090479726}{event\+\_\+map\+\_\+}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{class_xdf_a4e36c1e1588711d7d09d2aa26f800f2c}\label{class_xdf_a4e36c1e1588711d7d09d2aa26f800f2c}} 
+\index{Xdf@{Xdf}!file\_effective\_sampling\_rate\_@{file\_effective\_sampling\_rate\_}}
+\index{file\_effective\_sampling\_rate\_@{file\_effective\_sampling\_rate\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{file\_effective\_sampling\_rate\_}{file\_effective\_sampling\_rate\_}}
+{\footnotesize\ttfamily double Xdf\+::file\+\_\+effective\+\_\+sampling\+\_\+rate\+\_\+ = 0}
+
+If effective\+\_\+sampling\+\_\+rates\+\_\+ in all the streams are the same, this is the value. \mbox{\Hypertarget{class_xdf_abb8518a32a84995d60648d1c0fdd6428}\label{class_xdf_abb8518a32a84995d60648d1c0fdd6428}} 
+\index{Xdf@{Xdf}!file\_header\_@{file\_header\_}}
+\index{file\_header\_@{file\_header\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{file\_header\_}{file\_header\_}}
+{\footnotesize\ttfamily std\+::string Xdf\+::file\+\_\+header\+\_\+}
+
+Raw X\+ML of the file header. \mbox{\Hypertarget{class_xdf_a3a41f6cf908b5e6aa4e83f801b5d245d}\label{class_xdf_a3a41f6cf908b5e6aa4e83f801b5d245d}} 
+\index{Xdf@{Xdf}!labels\_@{labels\_}}
+\index{labels\_@{labels\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{labels\_}{labels\_}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ Xdf\+::labels\+\_\+}
+
+Stores descriptive labels of each channel. \mbox{\Hypertarget{class_xdf_a89b8115372c91f34e985acd673d502da}\label{class_xdf_a89b8115372c91f34e985acd673d502da}} 
+\index{Xdf@{Xdf}!major\_sampling\_rate\_@{major\_sampling\_rate\_}}
+\index{major\_sampling\_rate\_@{major\_sampling\_rate\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{major\_sampling\_rate\_}{major\_sampling\_rate\_}}
+{\footnotesize\ttfamily int Xdf\+::major\+\_\+sampling\+\_\+rate\+\_\+ = 0}
+
+The sampling rate that was used by the most channels across all streams. \mbox{\Hypertarget{class_xdf_a73ea312db24b43eff063c4d223f15d5d}\label{class_xdf_a73ea312db24b43eff063c4d223f15d5d}} 
+\index{Xdf@{Xdf}!max\_sampling\_rate\_@{max\_sampling\_rate\_}}
+\index{max\_sampling\_rate\_@{max\_sampling\_rate\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{max\_sampling\_rate\_}{max\_sampling\_rate\_}}
+{\footnotesize\ttfamily int Xdf\+::max\+\_\+sampling\+\_\+rate\+\_\+ = 0}
+
+Max sampling rate across all streams. \mbox{\Hypertarget{class_xdf_abda66058170e3fdae48b28339bbad2a6}\label{class_xdf_abda66058170e3fdae48b28339bbad2a6}} 
+\index{Xdf@{Xdf}!max\_timestamp\_@{max\_timestamp\_}}
+\index{max\_timestamp\_@{max\_timestamp\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{max\_timestamp\_}{max\_timestamp\_}}
+{\footnotesize\ttfamily double Xdf\+::max\+\_\+timestamp\+\_\+ = 0}
+
+The max timestamp across all streams. \mbox{\Hypertarget{class_xdf_a2f24970506cdd71c7de9b1f01162d36c}\label{class_xdf_a2f24970506cdd71c7de9b1f01162d36c}} 
+\index{Xdf@{Xdf}!min\_timestamp\_@{min\_timestamp\_}}
+\index{min\_timestamp\_@{min\_timestamp\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{min\_timestamp\_}{min\_timestamp\_}}
+{\footnotesize\ttfamily double Xdf\+::min\+\_\+timestamp\+\_\+ = 0}
+
+The min timestamp across all streams. \mbox{\Hypertarget{class_xdf_a640243fd0bf0ed9f80ca8cd6c2c447f1}\label{class_xdf_a640243fd0bf0ed9f80ca8cd6c2c447f1}} 
+\index{Xdf@{Xdf}!offsets\_@{offsets\_}}
+\index{offsets\_@{offsets\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{offsets\_}{offsets\_}}
+{\footnotesize\ttfamily std\+::vector$<$float$>$ Xdf\+::offsets\+\_\+}
+
+Offsets of each channel after using the {\ttfamily detrend} method. \begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{class_xdf_a4d2c5859af84542a15a80c906465f4e3}{detrend()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{class_xdf_ae6086c443d6ea7b8940f652edb20aaef}\label{class_xdf_ae6086c443d6ea7b8940f652edb20aaef}} 
+\index{Xdf@{Xdf}!sampling\_rate\_map\_@{sampling\_rate\_map\_}}
+\index{sampling\_rate\_map\_@{sampling\_rate\_map\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{sampling\_rate\_map\_}{sampling\_rate\_map\_}}
+{\footnotesize\ttfamily std\+::set$<$double$>$ Xdf\+::sampling\+\_\+rate\+\_\+map\+\_\+}
+
+Stores sampling rates of all the streams. \mbox{\Hypertarget{class_xdf_a4a3b1aadac1f7fa4def94e9eae31fbd7}\label{class_xdf_a4a3b1aadac1f7fa4def94e9eae31fbd7}} 
+\index{Xdf@{Xdf}!stream\_map\_@{stream\_map\_}}
+\index{stream\_map\_@{stream\_map\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{stream\_map\_}{stream\_map\_}}
+{\footnotesize\ttfamily std\+::vector$<$int$>$ Xdf\+::stream\+\_\+map\+\_\+}
+
+Indexes which channels belong to which stream. The keys are channel numbers, the values are stream numbers. \mbox{\Hypertarget{class_xdf_adeff1db8c45308d12d7786805eeaad9b}\label{class_xdf_adeff1db8c45308d12d7786805eeaad9b}} 
+\index{Xdf@{Xdf}!streams\_@{streams\_}}
+\index{streams\_@{streams\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{streams\_}{streams\_}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{struct_xdf_1_1_stream}{Stream}}$>$ Xdf\+::streams\+\_\+}
+
+Stores all streams of the current X\+DF file. \mbox{\Hypertarget{class_xdf_a46c39c451c44431846046a5bcc354787}\label{class_xdf_a46c39c451c44431846046a5bcc354787}} 
+\index{Xdf@{Xdf}!total\_len\_@{total\_len\_}}
+\index{total\_len\_@{total\_len\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{total\_len\_}{total\_len\_}}
+{\footnotesize\ttfamily uint64\+\_\+t Xdf\+::total\+\_\+len\+\_\+ = 0}
+
+The total length is the product of the range between the min timestamp and the max timestamp multiplied by major\+\_\+sampling\+\_\+rate\+\_\+. \mbox{\Hypertarget{class_xdf_ad90637b4ad2bdb13ecabac25fab44836}\label{class_xdf_ad90637b4ad2bdb13ecabac25fab44836}} 
+\index{Xdf@{Xdf}!user\_added\_stream\_@{user\_added\_stream\_}}
+\index{user\_added\_stream\_@{user\_added\_stream\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{user\_added\_stream\_}{user\_added\_stream\_}}
+{\footnotesize\ttfamily int Xdf\+::user\+\_\+added\+\_\+stream\+\_\+ \{0\}}
+
+Used by Sig\+Viewer only\+: if user manually added events in Sig\+Viewer, the events will be stored in a new stream after all current streams with index {\ttfamily user\+\_\+added\+\_\+stream\+\_\+}. \mbox{\Hypertarget{class_xdf_aa420a5824343786c9602a7bac77d1e28}\label{class_xdf_aa420a5824343786c9602a7bac77d1e28}} 
+\index{Xdf@{Xdf}!user\_created\_events\_@{user\_created\_events\_}}
+\index{user\_created\_events\_@{user\_created\_events\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{user\_created\_events\_}{user\_created\_events\_}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::pair$<$std\+::string, double$>$ $>$ Xdf\+::user\+\_\+created\+\_\+events\+\_\+}
+
+Events created by user in Sig\+Viewer. \mbox{\Hypertarget{class_xdf_a0d6728f813bab52c7c325d211b6e521f}\label{class_xdf_a0d6728f813bab52c7c325d211b6e521f}} 
+\index{Xdf@{Xdf}!version\_@{version\_}}
+\index{version\_@{version\_}!Xdf@{Xdf}}
+\doxysubsubsection{\texorpdfstring{version\_}{version\_}}
+{\footnotesize\ttfamily float Xdf\+::version\+\_\+}
+
+The version of the X\+DF file. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{xdf_8h}{xdf.\+h}}\item 
+xdf.\+cpp\end{DoxyCompactItemize}

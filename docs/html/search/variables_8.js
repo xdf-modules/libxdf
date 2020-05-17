@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['offsets',['offsets',['../class_xdf.html#a1a2b080f29080a5c521de907769d9419',1,'Xdf']]]
+  ['offsets_5f_93',['offsets_',['../class_xdf.html#a640243fd0bf0ed9f80ca8cd6c2c447f1',1,'Xdf']]]
 ];

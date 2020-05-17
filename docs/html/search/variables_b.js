@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['useraddedstream',['userAddedStream',['../class_xdf.html#a83d5309d854b1052fa575b539a69c58d',1,'Xdf']]],
-  ['usercreatedevents',['userCreatedEvents',['../class_xdf.html#a7b1496a8667d67b90836696a1e2da618',1,'Xdf']]]
+  ['user_5fadded_5fstream_5f_105',['user_added_stream_',['../class_xdf.html#ad90637b4ad2bdb13ecabac25fab44836',1,'Xdf']]],
+  ['user_5fcreated_5fevents_5f_106',['user_created_events_',['../class_xdf.html#aa420a5824343786c9602a7bac77d1e28',1,'Xdf']]]
 ];

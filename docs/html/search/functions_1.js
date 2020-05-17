@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['calctotallength',['calcTotalLength',['../class_xdf.html#a75ef15a72071fe0d36ef6311214518fe',1,'Xdf']]],
-  ['createlabels',['createLabels',['../class_xdf.html#ad98829202c9ae64505c9ecc7796c8ddc',1,'Xdf']]]
+  ['calculate_5ftotal_5flength_59',['calculate_total_length',['../class_xdf.html#a72175fdbb081994f05b388e5ba92c903',1,'Xdf']]],
+  ['create_5flabels_60',['create_labels',['../class_xdf.html#ab81f7f275ab38269d76be6ad0fdc9e29',1,'Xdf']]]
 ];

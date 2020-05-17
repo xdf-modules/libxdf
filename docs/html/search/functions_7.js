@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xdf',['Xdf',['../class_xdf.html#a7900b5a4f3792b9d59a5d43db821607e',1,'Xdf']]]
+  ['write_5fevents_5fto_5fxdf_66',['write_events_to_xdf',['../class_xdf.html#a991b6c33acf78389826b123a53e106a0',1,'Xdf']]]
 ];

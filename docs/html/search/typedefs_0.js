@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['eventname',['eventName',['../class_xdf.html#a4e3322abfe4d533d6b7a96cbbea7271a',1,'Xdf']]],
-  ['eventtimestamp',['eventTimeStamp',['../class_xdf.html#a1fbf3d641262cc1daade33eca1789990',1,'Xdf']]]
+  ['event_5fname_5f_108',['event_name_',['../class_xdf.html#a57eb7fdd01251b7613a7d106625ff019',1,'Xdf']]],
+  ['event_5ftimestamp_5f_109',['event_timestamp_',['../class_xdf.html#a4cf524f9428b9438b70cb17ea3f2d547',1,'Xdf']]]
 ];
