@@ -10,7 +10,7 @@
 
 ## <a name="intro"></a>Introduction
 
-Libxdf is a cross-platform C++ library for loading multimodal, multi-rate signals stored in [XDF](https://github.com/sccn/xdf/wiki/Specifications  "Extensible Data Format") files.
+Libxdf is a cross-platform C++ library for loading multi-modal, multi-rate signals stored in [XDF](https://github.com/sccn/xdf/wiki/Specifications  "Extensible Data Format") files.
 Libxdf is used in the  biosignal viewing application [SigViewer](https://github.com/cbrnr/sigviewer). It can also be integrated into other
 C++ applications.
 
@@ -57,35 +57,32 @@ Example:
 ```C++
 #include "xdf.h"
 
-Xdf XDFdata;
-XDFdata.load_xdf("C:/example.xdf");
+Xdf xdf;
+xdf.load_xdf("C:/example.xdf");
 ```
 
-To resample the signals to e.g. 100Hz:
+To resample the signals, e.g. to 100Hz:
 
 ```C++
-XDFdata.resample(100);
+xdf.resample(100);
 ```
 
-The functions in libxdf must be called following a certain order. For instance, if you call the `subtractMean` function before you load any data, it will cause undefined behavior.
+The methods in libxdf must be called following a certain order. For instance, if you call the `detrend` method before you load any data, it will cause undefined behavior.
 
 The recommended order is shown here. Only `load_xdf` is mandatory.
 
 ```C++
-XDFdata.load_xdf(std::string filepath);
-XDFdata.subtractMean();
-XDFdata.createLabels();
-XDFdata.resample(int sampleRate);
-XDFdata.freeUpTimeStamps();
+xdf.load_xdf(std::string filepath);
+xdf.detrend();
+xdf.create_labels();
+xdf.resample(int sampling_rate);
+xdf.free_up_time_stamps();
 ```
 
 Libxdf depends on third party libraries [Pugixml v1.8](http://pugixml.org/) for XML parsing and [Smarc](http://audio-smarc.sourceforge.net/) for resampling.
 
 ## <a name="doc"></a> Documentation
-Detailed documentation was generated via [Doxygen](http://www.stack.nl/~dimitri/doxygen/index.html) and is available [here](docs/html/class_xdf.html).
-
-## <a name="SigViewer"></a> SigViewer Online Repo
-SigViewer Online Repository is [here](repository/Updates.xml).
+[Documentation](docs/html/class_xdf.html) was generated via [Doxygen](http://www.stack.nl/~dimitri/doxygen/index.html).
 
 ## <a name="support"></a>Support
 
