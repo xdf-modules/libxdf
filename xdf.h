@@ -93,14 +93,14 @@ public:
      * \brief An alias of std::string type used on event names.
      * \sa eventMap
      */
-    typedef std::string event_name_;
+    typedef std::string EventName;
     /*!
      * \brief An alias of double type used on event timestamps.
      * \sa eventMap
      */
-    typedef double event_timestamp_;
+    typedef double EventTimestamp;
 
-    std::vector<std::pair<std::pair<event_name_, event_timestamp_>, int>> event_map_;   /*!< Stores all events across all streams. */
+    std::vector<std::pair<std::pair<EventName, EventTimestamp>, int>> event_map_;   /*!< Stores all events across all streams. */
     std::vector<std::string> dictionary_;   /*!< Stores unique event types with no repetitions. \sa event_map_ */
     std::vector<uint16_t> event_type_;      /*!< Stores events by their indices in the dictionary.\sa dictionary_, event_map_ */
     std::vector<std::string> labels_;       /*!< Stores descriptive labels of each channel. */

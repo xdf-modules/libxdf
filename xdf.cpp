@@ -59,7 +59,7 @@ int Xdf::load_xdf(std::string filename) {
     std::ifstream file(filename, std::ios::in | std::ios::binary);
 
     if (file.is_open()) {
-        //read [MagicCode]
+        // read [MagicCode]
         std::string magic_number;
         for (char c; file >> c;) {
             magic_number.push_back(c);
