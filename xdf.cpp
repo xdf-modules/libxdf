@@ -33,6 +33,102 @@ Xdf::Xdf() {
 
 }
 
+void Xdf::adjust_total_length() {
+    for (auto const &stream : streams_) {
+        if (!stream.time_series.empty()) {
+            if (total_len_ < stream.time_series.front().size()) {
+                total_len_ = stream.time_series.front().size();
+            }
+        }
+    }
+}
+
+void Xdf::calculate_total_length(int sampling_rate) {
+    total_len_ = (max_timestamp_ - min_timestamp_) * sampling_rate;
+}
+
+void Xdf::create_labels() {
+    size_t channel_count = 0;
+
+    for (size_t st = 0; st < streams_.size(); st++) {
+        if (streams_[st].info.channels.size()) {
+            for (size_t ch = 0; ch < streams_[st].info.channels.size(); ch++) {
+                // +1 for 1 based numbers; for user convenience only. The internal computation is still 0 based
+                std::string label = "Stream " + std::to_string(st + 1) + " - Channel " + std::to_string(ch + 1)
+                        + " - " + std::to_string((int)streams_[st].info.nominal_srate) + " Hz\n";
+
+                label += streams_[st].info.name + '\n';
+
+                for (auto const &entry : streams_[st].info.channels[ch]) {
+                    if (entry.second != "") {
+                        label += entry.first + " : " + entry.second + '\n';
+                    }
+                }
+                if (offsets_.size()) {
+                    if (offsets_[channel_count] >= 0) {
+                        label.append("baseline +").append(std::to_string(offsets_[channel_count]));
+                    }
+                    else {
+                        label.append("baseline ").append(std::to_string(offsets_[channel_count]));
+                    }
+                }
+                labels_.emplace_back(label);
+
+                channel_count++;
+            }
+        }
+        else {
+            for (size_t ch = 0; ch < streams_[st].time_series.size(); ch++) {
+                // +1 for 1 based numbers; for user convenience only. The internal computation is still 0 based
+                std::string label = "Stream " + std::to_string(st + 1) +
+                        " - Channel " + std::to_string(ch + 1) + " - " +
+                        std::to_string((int)streams_[st].info.nominal_srate) +
+                        " Hz\n" + streams_[st].info.name + '\n' + streams_[st].info.type + '\n';
+
+                label += streams_[st].info.name + '\n';
+
+                if (offsets_.size()) {
+                    if (offsets_[channel_count] >= 0) {
+                        label.append("baseline +").append(std::to_string(offsets_[channel_count]));
+                    }
+                    else {
+                        label.append("baseline ").append(std::to_string(offsets_[channel_count]));
+                    }
+                }
+
+                labels_.emplace_back(label);
+
+                channel_count++;
+            }
+        }
+    }
+}
+
+void Xdf::detrend() {
+    for (auto &stream : streams_) {
+        for (auto &row : stream.time_series) {
+            long double init = 0.0;
+            long double mean = std::accumulate(row.begin(), row.end(), init) / row.size();
+            for(auto &val: row) val -= mean;
+            offsets_.emplace_back(mean);
+        }
+    }
+}
+
+void Xdf::free_up_timestamps() {
+    //free up as much memory as possible
+    for (auto &stream : streams_) {
+        //we don't need to keep all the time stamps unless it's a stream with irregular samples
+        //filter irregular streams and string streams
+        if (stream.info.nominal_srate != 0 && !stream.timestamps.empty() && stream.info.channel_format.compare("string")) {
+            std::vector<double> nothing;
+            //however we still need to keep the first time stamp of each stream to decide at which position the signal should start
+            nothing.emplace_back(stream.timestamps.front());
+            stream.timestamps.swap(nothing);
+        }
+    }
+}
+
 int Xdf::load_xdf(std::string filename) {
     clock_t time;
     time = clock();
@@ -488,74 +584,6 @@ int Xdf::load_xdf(std::string filename) {
     return 0;
 }
 
-void Xdf::sync_timestamps() {
-    // Sync time stamps
-    for (auto &stream : this->streams_) {
-        if (!stream.clock_times.empty()) {
-            size_t m = 0;   // index iterating through stream.time_stamps
-            size_t n = 0;   // index iterating through stream.clock_times
-
-            while (m < stream.timestamps.size()) {
-                if (stream.clock_times[n] < stream.timestamps[m]) {
-                    while (n < stream.clock_times.size() - 1 && stream.clock_times[n+1] < stream.timestamps[m]) {
-                        n++;
-                    }
-                    stream.timestamps[m] += stream.clock_values[n];
-                }
-                else if (n == 0) {
-                    stream.timestamps[m] += stream.clock_values[n];
-                }
-                m++;
-            }
-        }
-    }
-
-    // Sync event time stamps
-    for (auto &elem : this->event_map_) {
-        if (!this->streams_[elem.second].clock_times.empty()) {
-            size_t k = 0;   // index iterating through streams[elem.second].clock_times
-
-            while (k < this->streams_[elem.second].clock_times.size() - 1) {
-                if (this->streams_[elem.second].clock_times[k+1] < elem.first.second) {
-                    k++;
-                }
-                else {
-                    break;
-                }
-            }
-
-            elem.first.second += this->streams_[elem.second].clock_values[k]; // apply the last offset value to the timestamp; if there hasn't yet been an offset value take the first recorded one
-        }
-    }
-
-    // Update first and last time stamps in stream footer
-    for (size_t k = 0; k < this->streams_.size(); k++) {
-        if (streams_[k].info.channel_format.compare("string") == 0) {
-            double min = NAN;
-            double max = NAN;
-
-            for (auto const &elem : this->event_map_) {
-                if (elem.second == (int)k) {
-                    if (std::isnan(min) || elem.first.second < min) {
-                        min = elem.first.second;
-                    }
-
-                    if (std::isnan(max) || elem.first.second > max) {
-                        max = elem.first.second;
-                    }
-                }
-            }
-
-            streams_[k].info.first_timestamp = min;
-            streams_[k].info.last_timestamp = max;
-        }
-        else {
-            streams_[k].info.first_timestamp = streams_[k].timestamps.front();
-            streams_[k].info.last_timestamp = streams_[k].timestamps.back();
-        }
-    }
-}
-
 void Xdf::resample(int sampling_rate) {
     //if user entered a preferred sample rate, we resample all the channels to that sample rate
     //Otherwise, we resample all channels to the sample rate that has the most channels
@@ -638,186 +666,70 @@ void Xdf::resample(int sampling_rate) {
               << " resampling" << std::endl;
 }
 
-//function of reading the length of each chunk
-uint64_t Xdf::read_length(std::ifstream &file) {
-    uint8_t bytes;
-    Xdf::read_bin(file, &bytes);
-    uint64_t length = 0;
+void Xdf::sync_timestamps() {
+    // Sync time stamps
+    for (auto &stream : this->streams_) {
+        if (!stream.clock_times.empty()) {
+            size_t m = 0;   // index iterating through stream.time_stamps
+            size_t n = 0;   // index iterating through stream.clock_times
 
-    switch (bytes) {
-    case 1:
-        length = read_bin<uint8_t>(file);
-        break;
-    case 4:
-        length = read_bin<uint32_t>(file);
-        break;
-    case 8:
-        length = read_bin<uint64_t>(file);
-        break;
-    default:
-        std::cout << "Invalid variable-length integer length ("
-                  << static_cast<int>(bytes) << ") encountered.\n";
-        return 0;
-    }
-
-    return length;
-}
-
-void Xdf::find_min_max_time_stamps() {
-    //find the smallest timestamp of all streams
-    for (auto const &stream : streams_) {
-        if (!std::isnan(stream.info.first_timestamp)) {
-            min_timestamp_ = stream.info.first_timestamp;
-            break;
-        }
-    }
-    for (auto const &stream : streams_) {
-        if (!std::isnan(stream.info.first_timestamp) && stream.info.first_timestamp < min_timestamp_) {
-            min_timestamp_ = stream.info.first_timestamp;
-        }
-    }
-
-    //find the max timestamp of all streams
-    for (auto const &stream : streams_) {
-        if (!std::isnan(stream.info.last_timestamp) && stream.info.last_timestamp > max_timestamp_) {
-            max_timestamp_ = stream.info.last_timestamp;
-        }
-    }
-}
-
-void Xdf::find_major_sampling_rate() {
-    // find out which sample rate has the most channels
-    typedef int SamplingRate;
-    typedef int ChannelCount;
-
-    std::vector<std::pair<SamplingRate, ChannelCount> > sampling_rate_map;
-
-    //find out whether a sample rate already exists in srateMap
-    for (auto const &stream : streams_) {
-        if (stream.info.nominal_srate != 0) {
-            std::vector<std::pair<SamplingRate, ChannelCount> >::iterator it {std::find_if(sampling_rate_map.begin(), sampling_rate_map.end(),
-                                                                                           [&](const std::pair<SamplingRate, ChannelCount> &element)
-                {return element.first == stream.info.nominal_srate; })} ;
-            //if it doesn't, add it here
-            if (it == sampling_rate_map.end()) {
-                sampling_rate_map.emplace_back(stream.info.nominal_srate, stream.info.channel_count);
-                //if it already exists, add additional channel numbers to that sample rate
-            }
-            else {
-                int index (std::distance(sampling_rate_map.begin(),it)) ;
-                sampling_rate_map[index].second += stream.info.channel_count;
-            }
-        }
-    }
-
-    if (sampling_rate_map.size() > 0) {
-        //search the srateMap to see which sample rate has the most channels
-        int index (std::distance(sampling_rate_map.begin(),
-                                 std::max_element(sampling_rate_map.begin(),sampling_rate_map.end(),
-                                                  [] (const std::pair<SamplingRate, ChannelCount> &largest,
-                                                  const std::pair<SamplingRate, ChannelCount> &first)
-        { return largest.second < first.second; })));
-
-        major_sampling_rate_ = sampling_rate_map[index].first; //the sample rate that has the most channels
-    } else {
-        major_sampling_rate_ = 0; //if there are no streams with a fixed sample reate
-    }
-}
-
-void Xdf::calculate_channel_count() {
-    //calculating total channel count, and indexing them onto streamMap
-    for (size_t c = 0; c < streams_.size(); c++) {
-        if(!streams_[c].time_series.empty()) {
-            channel_count_ += streams_[c].info.channel_count;
-
-            for (int i = 0; i < streams_[c].info.channel_count; i++)
-                stream_map_.emplace_back(c);
-        }
-    }
-}
-
-void Xdf::calculate_total_length(int sampling_rate) {
-    total_len_ = (max_timestamp_ - min_timestamp_) * sampling_rate;
-}
-
-void Xdf::free_up_timestamps() {
-    //free up as much memory as possible
-    for (auto &stream : streams_) {
-        //we don't need to keep all the time stamps unless it's a stream with irregular samples
-        //filter irregular streams and string streams
-        if (stream.info.nominal_srate != 0 && !stream.timestamps.empty() && stream.info.channel_format.compare("string")) {
-            std::vector<double> nothing;
-            //however we still need to keep the first time stamp of each stream to decide at which position the signal should start
-            nothing.emplace_back(stream.timestamps.front());
-            stream.timestamps.swap(nothing);
-        }
-    }
-}
-
-void Xdf::adjust_total_length() {
-    for (auto const &stream : streams_) {
-        if (!stream.time_series.empty()) {
-            if (total_len_ < stream.time_series.front().size()) {
-                total_len_ = stream.time_series.front().size();
-            }
-        }
-    }
-}
-
-void Xdf::find_max_sampling_rate() {
-    for (auto const &stream : streams_) {
-        if (stream.info.nominal_srate > max_sampling_rate_) {
-            max_sampling_rate_ = stream.info.nominal_srate;
-        }
-    }
-}
-
-void Xdf::load_sampling_rate_map() {
-    for (auto const &stream : streams_) {
-        sampling_rate_map_.emplace(stream.info.nominal_srate);
-    }
-}
-
-void Xdf::detrend() {
-    for (auto &stream : streams_) {
-        for (auto &row : stream.time_series) {
-            long double init = 0.0;
-            long double mean = std::accumulate(row.begin(), row.end(), init) / row.size();
-            for(auto &val: row) val -= mean;
-            offsets_.emplace_back(mean);
-        }
-    }
-}
-
-void Xdf::calculate_effective_sampling_rate() {
-    for (auto &stream : streams_) {
-        if (stream.info.nominal_srate) {
-            try {
-                stream.info.effective_sampling_rate
-                        = stream.info.sample_count /
-                        (stream.info.last_timestamp - stream.info.first_timestamp);
-
-                if (stream.info.effective_sampling_rate) {
-                    effective_sampling_rates_.emplace_back(stream.info.effective_sampling_rate);
+            while (m < stream.timestamps.size()) {
+                if (stream.clock_times[n] < stream.timestamps[m]) {
+                    while (n < stream.clock_times.size() - 1 && stream.clock_times[n+1] < stream.timestamps[m]) {
+                        n++;
+                    }
+                    stream.timestamps[m] += stream.clock_values[n];
                 }
-
-                pugi::xml_document doc;
-                doc.load_string(stream.stream_footer.c_str());
-                pugi::xml_node sampleCount = doc.child("info").child("sample_count");
-                pugi::xml_node effectiveSampleRate
-                        = doc.child("info").insert_child_after("effective_sample_rate", sampleCount);
-                effectiveSampleRate.append_child(pugi::node_pcdata)
-                        .set_value(std::to_string(stream.info.effective_sampling_rate).c_str());
-
-                std::stringstream buffer;
-                doc.save(buffer);
-
-                stream.stream_footer = buffer.str();
+                else if (n == 0) {
+                    stream.timestamps[m] += stream.clock_values[n];
+                }
+                m++;
             }
-            catch (std::exception &e) {
-                std::cerr << "Error calculating effective sample rate. "
-                          << e.what() << std::endl;
+        }
+    }
+
+    // Sync event time stamps
+    for (auto &elem : this->event_map_) {
+        if (!this->streams_[elem.second].clock_times.empty()) {
+            size_t k = 0;   // index iterating through streams[elem.second].clock_times
+
+            while (k < this->streams_[elem.second].clock_times.size() - 1) {
+                if (this->streams_[elem.second].clock_times[k+1] < elem.first.second) {
+                    k++;
+                }
+                else {
+                    break;
+                }
             }
+
+            elem.first.second += this->streams_[elem.second].clock_values[k]; // apply the last offset value to the timestamp; if there hasn't yet been an offset value take the first recorded one
+        }
+    }
+
+    // Update first and last time stamps in stream footer
+    for (size_t k = 0; k < this->streams_.size(); k++) {
+        if (streams_[k].info.channel_format.compare("string") == 0) {
+            double min = NAN;
+            double max = NAN;
+
+            for (auto const &elem : this->event_map_) {
+                if (elem.second == (int)k) {
+                    if (std::isnan(min) || elem.first.second < min) {
+                        min = elem.first.second;
+                    }
+
+                    if (std::isnan(max) || elem.first.second > max) {
+                        max = elem.first.second;
+                    }
+                }
+            }
+
+            streams_[k].info.first_timestamp = min;
+            streams_[k].info.last_timestamp = max;
+        }
+        else {
+            streams_[k].info.first_timestamp = streams_[k].timestamps.front();
+            streams_[k].info.last_timestamp = streams_[k].timestamps.back();
         }
     }
 }
@@ -906,59 +818,116 @@ int Xdf::write_events_to_xdf(std::string file_path) {
     return 0; //Success
 }
 
-void Xdf::create_labels() {
-    size_t channel_count = 0;
+void Xdf::calculate_effective_sampling_rate() {
+    for (auto &stream : streams_) {
+        if (stream.info.nominal_srate) {
+            try {
+                stream.info.effective_sampling_rate
+                        = stream.info.sample_count /
+                        (stream.info.last_timestamp - stream.info.first_timestamp);
 
-    for (size_t st = 0; st < streams_.size(); st++) {
-        if (streams_[st].info.channels.size()) {
-            for (size_t ch = 0; ch < streams_[st].info.channels.size(); ch++) {
-                // +1 for 1 based numbers; for user convenience only. The internal computation is still 0 based
-                std::string label = "Stream " + std::to_string(st + 1) + " - Channel " + std::to_string(ch + 1)
-                        + " - " + std::to_string((int)streams_[st].info.nominal_srate) + " Hz\n";
-
-                label += streams_[st].info.name + '\n';
-
-                for (auto const &entry : streams_[st].info.channels[ch]) {
-                    if (entry.second != "") {
-                        label += entry.first + " : " + entry.second + '\n';
-                    }
+                if (stream.info.effective_sampling_rate) {
+                    effective_sampling_rates_.emplace_back(stream.info.effective_sampling_rate);
                 }
-                if (offsets_.size()) {
-                    if (offsets_[channel_count] >= 0) {
-                        label.append("baseline +").append(std::to_string(offsets_[channel_count]));
-                    }
-                    else {
-                        label.append("baseline ").append(std::to_string(offsets_[channel_count]));
-                    }
-                }
-                labels_.emplace_back(label);
 
-                channel_count++;
+                pugi::xml_document doc;
+                doc.load_string(stream.stream_footer.c_str());
+                pugi::xml_node sampleCount = doc.child("info").child("sample_count");
+                pugi::xml_node effectiveSampleRate
+                        = doc.child("info").insert_child_after("effective_sample_rate", sampleCount);
+                effectiveSampleRate.append_child(pugi::node_pcdata)
+                        .set_value(std::to_string(stream.info.effective_sampling_rate).c_str());
+
+                std::stringstream buffer;
+                doc.save(buffer);
+
+                stream.stream_footer = buffer.str();
+            }
+            catch (std::exception &e) {
+                std::cerr << "Error calculating effective sample rate. "
+                          << e.what() << std::endl;
             }
         }
-        else {
-            for (size_t ch = 0; ch < streams_[st].time_series.size(); ch++) {
-                // +1 for 1 based numbers; for user convenience only. The internal computation is still 0 based
-                std::string label = "Stream " + std::to_string(st + 1) +
-                        " - Channel " + std::to_string(ch + 1) + " - " +
-                        std::to_string((int)streams_[st].info.nominal_srate) +
-                        " Hz\n" + streams_[st].info.name + '\n' + streams_[st].info.type + '\n';
+    }
+}
 
-                label += streams_[st].info.name + '\n';
+void Xdf::calculate_channel_count() {
+    //calculating total channel count, and indexing them onto streamMap
+    for (size_t c = 0; c < streams_.size(); c++) {
+        if(!streams_[c].time_series.empty()) {
+            channel_count_ += streams_[c].info.channel_count;
 
-                if (offsets_.size()) {
-                    if (offsets_[channel_count] >= 0) {
-                        label.append("baseline +").append(std::to_string(offsets_[channel_count]));
-                    }
-                    else {
-                        label.append("baseline ").append(std::to_string(offsets_[channel_count]));
-                    }
-                }
+            for (int i = 0; i < streams_[c].info.channel_count; i++)
+                stream_map_.emplace_back(c);
+        }
+    }
+}
 
-                labels_.emplace_back(label);
+void Xdf::find_major_sampling_rate() {
+    // find out which sample rate has the most channels
+    typedef int SamplingRate;
+    typedef int ChannelCount;
 
-                channel_count++;
+    std::vector<std::pair<SamplingRate, ChannelCount> > sampling_rate_map;
+
+    //find out whether a sample rate already exists in srateMap
+    for (auto const &stream : streams_) {
+        if (stream.info.nominal_srate != 0) {
+            std::vector<std::pair<SamplingRate, ChannelCount> >::iterator it {std::find_if(sampling_rate_map.begin(), sampling_rate_map.end(),
+                                                                                           [&](const std::pair<SamplingRate, ChannelCount> &element)
+                {return element.first == stream.info.nominal_srate; })} ;
+            //if it doesn't, add it here
+            if (it == sampling_rate_map.end()) {
+                sampling_rate_map.emplace_back(stream.info.nominal_srate, stream.info.channel_count);
+                //if it already exists, add additional channel numbers to that sample rate
             }
+            else {
+                int index (std::distance(sampling_rate_map.begin(),it)) ;
+                sampling_rate_map[index].second += stream.info.channel_count;
+            }
+        }
+    }
+
+    if (sampling_rate_map.size() > 0) {
+        //search the srateMap to see which sample rate has the most channels
+        int index (std::distance(sampling_rate_map.begin(),
+                                 std::max_element(sampling_rate_map.begin(),sampling_rate_map.end(),
+                                                  [] (const std::pair<SamplingRate, ChannelCount> &largest,
+                                                  const std::pair<SamplingRate, ChannelCount> &first)
+        { return largest.second < first.second; })));
+
+        major_sampling_rate_ = sampling_rate_map[index].first; //the sample rate that has the most channels
+    } else {
+        major_sampling_rate_ = 0; //if there are no streams with a fixed sample reate
+    }
+}
+
+void Xdf::find_max_sampling_rate() {
+    for (auto const &stream : streams_) {
+        if (stream.info.nominal_srate > max_sampling_rate_) {
+            max_sampling_rate_ = stream.info.nominal_srate;
+        }
+    }
+}
+
+void Xdf::find_min_max_time_stamps() {
+    //find the smallest timestamp of all streams
+    for (auto const &stream : streams_) {
+        if (!std::isnan(stream.info.first_timestamp)) {
+            min_timestamp_ = stream.info.first_timestamp;
+            break;
+        }
+    }
+    for (auto const &stream : streams_) {
+        if (!std::isnan(stream.info.first_timestamp) && stream.info.first_timestamp < min_timestamp_) {
+            min_timestamp_ = stream.info.first_timestamp;
+        }
+    }
+
+    //find the max timestamp of all streams
+    for (auto const &stream : streams_) {
+        if (!std::isnan(stream.info.last_timestamp) && stream.info.last_timestamp > max_timestamp_) {
+            max_timestamp_ = stream.info.last_timestamp;
         }
     }
 }
@@ -982,9 +951,41 @@ void Xdf::load_dictionary() {
     }
 }
 
-template<typename T> T Xdf::read_bin(std::istream& is, T* obj) {
+void Xdf::load_sampling_rate_map() {
+    for (auto const &stream : streams_) {
+        sampling_rate_map_.emplace(stream.info.nominal_srate);
+    }
+}
+
+template<typename T>
+T Xdf::read_bin(std::istream& is, T* obj) {
     T dummy;
     if(!obj) obj = &dummy;
     is.read(reinterpret_cast<char*>(obj), sizeof(T));
     return *obj;
+}
+
+//function of reading the length of each chunk
+uint64_t Xdf::read_length(std::ifstream &file) {
+    uint8_t bytes;
+    Xdf::read_bin(file, &bytes);
+    uint64_t length = 0;
+
+    switch (bytes) {
+    case 1:
+        length = read_bin<uint8_t>(file);
+        break;
+    case 4:
+        length = read_bin<uint32_t>(file);
+        break;
+    case 8:
+        length = read_bin<uint64_t>(file);
+        break;
+    default:
+        std::cout << "Invalid variable-length integer length ("
+                  << static_cast<int>(bytes) << ") encountered.\n";
+        return 0;
+    }
+
+    return length;
 }

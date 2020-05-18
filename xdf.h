@@ -252,18 +252,6 @@ private:
     void load_sampling_rate_map();
 
     /*!
-     * \brief Gets the length of the upcoming chunk, or the number of samples.
-     *
-     * While loading XDF file there are two cases where this method are needed.
-     * One is to get the length of each chunk, the other is to get the number
-     * of samples when loading the time series (Chunk tag 3).
-     *
-     * \param file The XDF file that is being loaded in the type of `std::ifstream`.
-     * \return The length of the upcoming chunk (in bytes).
-     */
-    uint64_t read_length(std::ifstream &file);
-
-    /*!
      * \brief Reads a binary scalar variable from an input stream.
      *
      * This method is a convenience wrapper for the common
@@ -278,7 +266,20 @@ private:
      * \param obj Pointer to a variable to load the data into or nullptr.
      * \return The read data.
      */
-    template<typename T> T read_bin(std::istream& is, T* obj = nullptr);
+    template<typename T>
+    T read_bin(std::istream& is, T* obj = nullptr);
+
+    /*!
+     * \brief Gets the length of the upcoming chunk, or the number of samples.
+     *
+     * While loading XDF file there are two cases where this method are needed.
+     * One is to get the length of each chunk, the other is to get the number
+     * of samples when loading the time series (Chunk tag 3).
+     *
+     * \param file The XDF file that is being loaded in the type of `std::ifstream`.
+     * \return The length of the upcoming chunk (in bytes).
+     */
+    uint64_t read_length(std::ifstream &file);
 };
 
 #endif // XDF_H
