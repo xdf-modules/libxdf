@@ -965,7 +965,6 @@ T Xdf::read_bin(std::istream& is, T* obj) {
     return *obj;
 }
 
-//function of reading the length of each chunk
 uint64_t Xdf::read_length(std::ifstream &file) {
     uint8_t bytes;
     Xdf::read_bin(file, &bytes);
