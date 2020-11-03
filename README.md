@@ -1,10 +1,13 @@
 # Libxdf - a C++ library for loading [XDF](https://github.com/sccn/xdf/wiki/Specifications "Extensible Data Format") files
 
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+[![License](https://img.shields.io/github/license/xdf-modules/libxdf)](https://opensource.org/licenses/BSD-2-Clause)
 
 * [Introduction](#intro)
 * [Download](#download)
 * [Quick-Start Guide](#quick)
 * [Documentation](#doc)
+* [Reference](#reference)
 * [Support](#support)
 
 
@@ -87,6 +90,23 @@ Detailed documentation was generated via [Doxygen](http://www.stack.nl/~dimitri/
 ## <a name="SigViewer"></a> SigViewer Online Repo
 SigViewer Online Repository is [here](repository/Updates.xml).
 
-## <a name="support"></a>Support
+## <a name="reference"></a> Reference
+If you use this code in your project, please cite:
+```
+Yida Lin, Clemens Brunner, Paul Sajda and Josef Faller. SigViewer: Visualizing Multimodal Signals Stored in XDF (Extensible Data Format) Files. The 39th Annual International Conference of the IEEE Engineering in Medicine and Biology Society.
+```
+Direct link: https://arxiv.org/abs/1708.06333
 
+Bibtex format:
+```
+@article{lin2017sigviewer,
+  title={SigViewer: visualizing multimodal signals stored in XDF (Extensible Data Format) files},
+  author={Lin, Yida and Brunner, Clemens and Sajda, Paul and Faller, Josef},
+  journal={arXiv},
+  pages={arXiv--1708},
+  year={2017}
+}
+```
+
+## <a name="support"></a>Support
 [Email author](mailto:yl3842@columbia.edu) or report a new [issue](https://github.com/Yida-Lin/libxdf/issues).
