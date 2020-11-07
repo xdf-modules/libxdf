@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['freeuptimestamps',['freeUpTimeStamps',['../class_xdf.html#a12332c25006e2c6d71883c368c3c1f61',1,'Xdf']]]
+  ['free_5fup_5ftimestamps_62',['free_up_timestamps',['../class_xdf.html#a957461547bca42a5314dafaaf307c1ee',1,'Xdf']]]
 ];

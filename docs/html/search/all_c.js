@@ -1,11 +1,7 @@
 var searchData=
 [
-  ['sample_5fcount',['sample_count',['../struct_xdf_1_1_stream.html#a329234a46df00cd51a67a7f4f637c08a',1,'Xdf::Stream']]],
-  ['sampleratemap',['sampleRateMap',['../class_xdf.html#add8aceaf68ad49b708f4df29f439778d',1,'Xdf']]],
-  ['sampling_5finterval',['sampling_interval',['../struct_xdf_1_1_stream.html#a49bbcb0c3130c3efef27ece47084b327',1,'Xdf::Stream']]],
-  ['stream',['Stream',['../struct_xdf_1_1_stream.html',1,'Xdf']]],
-  ['streamfooter',['streamFooter',['../struct_xdf_1_1_stream.html#aecd1fdf80d421e2362eeee58b31d4e11',1,'Xdf::Stream']]],
-  ['streamheader',['streamHeader',['../struct_xdf_1_1_stream.html#a2dff1924d1f7de075df08c4001201d63',1,'Xdf::Stream']]],
-  ['streammap',['streamMap',['../class_xdf.html#aa02e5a435186cdabbaf2487068c53dbc',1,'Xdf']]],
-  ['streams',['streams',['../class_xdf.html#acc12687ca26e8352afb960d459c5947a',1,'Xdf']]]
+  ['time_5fseries_45',['time_series',['../struct_xdf_1_1_stream.html#adfdeb5f6220da9fe671d3f37e27ed0bb',1,'Xdf::Stream']]],
+  ['timestamps_46',['timestamps',['../struct_xdf_1_1_stream.html#a20a2258af3bdffb13c6001a73da12428',1,'Xdf::Stream']]],
+  ['total_5flen_5f_47',['total_len_',['../class_xdf.html#a46c39c451c44431846046a5bcc354787',1,'Xdf']]],
+  ['type_48',['type',['../struct_xdf_1_1_stream.html#a7e5aa085e48de871ea6661651b28e097',1,'Xdf::Stream']]]
 ];

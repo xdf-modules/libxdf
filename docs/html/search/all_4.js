@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['effective_5fsample_5frate',['effective_sample_rate',['../struct_xdf_1_1_stream.html#abeb1d2eb26a46eac34a478f04f5143d6',1,'Xdf::Stream']]],
-  ['eventmap',['eventMap',['../class_xdf.html#a45004fc495cad33768fae80b996a68db',1,'Xdf']]],
-  ['eventname',['eventName',['../class_xdf.html#a4e3322abfe4d533d6b7a96cbbea7271a',1,'Xdf']]],
-  ['eventtimestamp',['eventTimeStamp',['../class_xdf.html#a1fbf3d641262cc1daade33eca1789990',1,'Xdf']]],
-  ['eventtype',['eventType',['../class_xdf.html#a4acb87e86380bf7266976cd6c4cb3826',1,'Xdf']]]
+  ['file_5feffective_5fsampling_5frate_5f_18',['file_effective_sampling_rate_',['../class_xdf.html#a4e36c1e1588711d7d09d2aa26f800f2c',1,'Xdf']]],
+  ['file_5fheader_5f_19',['file_header_',['../class_xdf.html#abb8518a32a84995d60648d1c0fdd6428',1,'Xdf']]],
+  ['first_5ftimestamp_20',['first_timestamp',['../struct_xdf_1_1_stream.html#a22a44cb3cd533ea668f9bb20dbc299de',1,'Xdf::Stream']]],
+  ['free_5fup_5ftimestamps_21',['free_up_timestamps',['../class_xdf.html#a957461547bca42a5314dafaaf307c1ee',1,'Xdf']]]
 ];

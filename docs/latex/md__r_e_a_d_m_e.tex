@@ -1,0 +1,79 @@
+
+\begin{DoxyItemize}
+\item \href{\#intro}{\texttt{ Introduction}}
+\item \href{\#download}{\texttt{ Download}}
+\item \href{\#quick}{\texttt{ Quick-\/\+Start Guide}}
+\item \href{\#doc}{\texttt{ Documentation}}
+\item \href{\#support}{\texttt{ Support}}
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md1}{}\doxysection{$<$a name=\char`\"{}intro\char`\"{}$>$$<$/a$>$\+Introduction}\label{md__r_e_a_d_m_e_autotoc_md1}
+Libxdf is a cross-\/platform C++ library for loading multi-\/modal, multi-\/rate signals stored in \href{https://github.com/sccn/xdf/wiki/Specifications}{\texttt{ X\+DF}} files. Libxdf is used in the biosignal viewing application \href{https://github.com/cbrnr/sigviewer}{\texttt{ Sig\+Viewer}}. It can also be integrated into other C++ applications.
+
+Libxdf is open-\/source, free, and actively maintained.\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysection{$<$a name=\char`\"{}download\char`\"{}$>$$<$/a$>$\+Download}\label{md__r_e_a_d_m_e_autotoc_md2}
+
+\begin{DoxyItemize}
+\item \href{https://github.com/Yida-Lin/libxdf/archive/0.94.zip}{\texttt{ Source code (zip)}}
+\item \href{https://github.com/Yida-Lin/libxdf/archive/0.94.tar.gz}{\texttt{ Source code (tar.\+gz)}}
+\item \href{https://github.com/Yida-Lin/libxdf/releases}{\texttt{ Pre-\/built binaries}}
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysection{$<$a name=\char`\"{}quick\char`\"{}$>$$<$/a$>$\+Quick-\/\+Start Guide}\label{md__r_e_a_d_m_e_autotoc_md3}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysubsection{Building libxdf}\label{md__r_e_a_d_m_e_autotoc_md4}
+Libxdf can be conveniently built either using {\ttfamily qmake} or {\ttfamily cmake}. Configuration files for both build tools are included with the source.
+
+{\ttfamily cmake} builds a static library by default, but you can build a shared library by setting the \href{https://cmake.org/cmake/help/latest/variable/BUILD_SHARED_LIBS.html}{\texttt{ {\ttfamily B\+U\+I\+L\+D\+\_\+\+S\+H\+A\+R\+E\+D\+\_\+\+L\+I\+BS}}} variable (e.\+g. {\ttfamily -\/D\+B\+U\+I\+L\+D\+\_\+\+S\+H\+A\+R\+E\+D\+\_\+\+L\+I\+BS=ON}).\hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysubsection{Use in conjunction with $<$a href=\char`\"{}https\+://github.\+com/cbrnr/sigviewer\char`\"{}$>$\+Sig\+Viewer$<$/a$>$}\label{md__r_e_a_d_m_e_autotoc_md5}
+Libxdf is a built-\/in component of \href{https://github.com/cbrnr/sigviewer}{\texttt{ Sig\+Viewer}}. If you wish to build Sig\+Viewer from source, follow these steps\+:
+
+
+\begin{DoxyEnumerate}
+\item Download {\ttfamily \mbox{\hyperlink{xdf_8h}{xdf.\+h}}} and {\ttfamily libxdf.\+a} from the \href{https://github.com/Yida-Lin/libxdf/releases}{\texttt{ release}} page.
+\item Copy {\ttfamily \mbox{\hyperlink{xdf_8h}{xdf.\+h}}} into {\ttfamily sigviewer/external/include}
+\item Copy {\ttfamily libxdf.\+a} into {\ttfamily sigviewer/external/lib}
+\item Build and run Sigviewer
+\end{DoxyEnumerate}
+
+
+
+Example\+: Sig\+Viewer using {\itshape libxdf} to display signals in an X\+DF file.\hypertarget{md__r_e_a_d_m_e_autotoc_md6}{}\doxysubsection{Use in other C++ applications}\label{md__r_e_a_d_m_e_autotoc_md6}
+
+\begin{DoxyEnumerate}
+\item Build libxdf from source or use a pre-\/built binary release
+\item Instantiate an object of the {\ttfamily \mbox{\hyperlink{class_xdf}{Xdf}}} class and call the {\ttfamily load\+\_\+xdf} method.
+\end{DoxyEnumerate}
+
+Example\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{C++\}}
+\DoxyCodeLine{\#include "xdf.h"}
+\DoxyCodeLine{}
+\DoxyCodeLine{Xdf xdf;}
+\DoxyCodeLine{xdf.load\_xdf("C:/example.xdf");}
+\end{DoxyCode}
+
+
+To resample the signals, e.\+g. to 100Hz\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{C++\}}
+\DoxyCodeLine{xdf.resample(100);}
+\end{DoxyCode}
+
+
+The methods in libxdf must be called following a certain order. For instance, if you call the {\ttfamily detrend} method before you load any data, it will cause undefined behavior.
+
+The recommended order is shown here. Only {\ttfamily load\+\_\+xdf} is mandatory.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{C++\}}
+\DoxyCodeLine{xdf.load\_xdf(std::string filepath);}
+\DoxyCodeLine{xdf.detrend();}
+\DoxyCodeLine{xdf.create\_labels();}
+\DoxyCodeLine{xdf.resample(int sampling\_rate);}
+\DoxyCodeLine{xdf.free\_up\_time\_stamps();}
+\end{DoxyCode}
+
+
+Libxdf depends on third party libraries \href{http://pugixml.org/}{\texttt{ Pugixml v1.\+8}} for X\+ML parsing and \href{http://audio-smarc.sourceforge.net/}{\texttt{ Smarc}} for resampling.\hypertarget{md__r_e_a_d_m_e_autotoc_md7}{}\doxysection{$<$a name=\char`\"{}doc\char`\"{}$>$$<$/a$>$ Documentation}\label{md__r_e_a_d_m_e_autotoc_md7}
+\href{docs/html/class_xdf.html}{\texttt{ Documentation}} was generated via \href{http://www.stack.nl/~dimitri/doxygen/index.html}{\texttt{ Doxygen}}.\hypertarget{md__r_e_a_d_m_e_autotoc_md8}{}\doxysection{$<$a name=\char`\"{}support\char`\"{}$>$$<$/a$>$\+Support}\label{md__r_e_a_d_m_e_autotoc_md8}
+\href{mailto:yl3842@columbia.edu}{\texttt{ Email author}} or report a new \href{https://github.com/Yida-Lin/libxdf/issues}{\texttt{ issue}}. 

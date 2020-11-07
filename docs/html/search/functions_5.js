@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resample',['resample',['../class_xdf.html#a67c5890ac84f257e91bdb93dcbe958ae',1,'Xdf']]]
+  ['resample_64',['resample',['../class_xdf.html#a4ef5de06800e56726b6ce4a50ffdb0b4',1,'Xdf']]]
 ];
