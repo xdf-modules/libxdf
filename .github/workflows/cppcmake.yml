@@ -68,7 +68,7 @@ jobs:
       with:
         # tag_name: ${{ github.ref }}  # ${{ github.ref }} is default
         name: Release ${{ github.ref }}
-        draft: true
-        prerelease: true
+        draft: false
+        prerelease: false
         # body_path: CHANGELOG.txt
         files: 'pkg-*/*'
