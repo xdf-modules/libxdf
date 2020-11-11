@@ -1,0 +1,5 @@
+# Changelog
+
+## [0.992] - 2020-11-11
+### Added
+- GitHub Actions for automatic build on pull requests to master and automatic build and release on tags.

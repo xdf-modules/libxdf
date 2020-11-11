@@ -28,7 +28,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       run: |
-           cmake -S . -B build -DCMAKE_INSTALL_PREFIX=${PWD}/install
+           cmake -S . -B build -DCMAKE_INSTALL_PREFIX=${PWD}/build/install -DCPACK_PACKAGE_DIRECTORY=${PWD}/build/package -DCPACK_DEBIAN_PACKAGE_SHLIBDEPS=ON
     
     - name: Make
       run: cmake --build build --config Release -j
@@ -36,13 +36,20 @@ jobs:
     - name: Install
       run: cmake --build build --config Release -j --target install
       
+    - name: Package
+      run: cmake --build build --config Release -j --target package
+      
     - name: Upload Artifact
       uses: actions/upload-artifact@master
       # if: "!startsWith(github.ref, 'refs/heads')"
       with:
-        name: build-${{ matrix.os }}
-        path: install
-        
+        name: pkg-${{ matrix.os }}
+        path: |
+            build/package/*.deb
+            build/package/*.tar.bz2
+            build/package/*.zip
+
+
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -64,4 +71,4 @@ jobs:
         draft: true
         prerelease: true
         # body_path: CHANGELOG.txt
-        files: 'build-*'
+        files: 'pkg-*/*'
