@@ -4,8 +4,8 @@
 [![License](https://img.shields.io/github/license/xdf-modules/libxdf)](https://opensource.org/licenses/BSD-2-Clause)
 
 * [Introduction](#intro)
-* [Download](#download)
 * [Quick-Start Guide](#quick)
+    * [Download](#download)
 * [Documentation](#doc)
 * [Reference](#reference)
 * [Support](#support)
@@ -14,27 +14,35 @@
 ## <a name="intro"></a>Introduction
 
 Libxdf is a cross-platform C++ library for loading multimodal, multi-rate signals stored in [XDF](https://github.com/sccn/xdf/wiki/Specifications  "Extensible Data Format") files.
-Libxdf is used in the  biosignal viewing application [SigViewer](https://github.com/cbrnr/sigviewer). It can also be integrated into other
-C++ applications.
+Libxdf is used in the biosignal viewing application [SigViewer](https://github.com/cbrnr/sigviewer) and the LSL application [XDFStreamer](https://github.com/labstreaminglayer/App-XDFStreamer/). It can also be integrated into other C++ applications.
 
 Libxdf is open-source, free, and actively maintained.
 
-
-## <a name="download"></a>Download
-
-* [Source code (zip)](https://github.com/Yida-Lin/libxdf/archive/0.94.zip)
-* [Source code (tar.gz)](https://github.com/Yida-Lin/libxdf/archive/0.94.tar.gz)
-* [Pre-built binaries](https://github.com/Yida-Lin/libxdf/releases)
-
 ## <a name="quick"></a>Quick-Start Guide
 
+### <a name="download"></a>Download
+
+* Find Source and Prebuilt Binaries on the [releases page](https://github.com/Yida-Lin/libxdf/releases).
+    * You may need to expand the list of Assets to find the downloads.
+* For Linux Debian (Ubuntu) users: `sudo dpkg -i libxdf-{version}-Linux.deb`
+* For Windows and Mac users: simply extract the archive somewhere convenient.
+
 ### Building libxdf
+
+If the release does not have assets for your platform or they do not work for you for some other reason, then
 Libxdf can be conveniently built either using `qmake` or `cmake`. Configuration files for both build tools are included with the source.
+
+To build with cmake from command prompt / terminal:
+
+```sh
+cmake -S . -B build -DCMAKE_INSTALL_PREFIX=${PWD}/build/install
+cmake --build build --config Release -j --target install
+```
 
 `cmake` builds a static library by default, but you can build a shared library
 by setting the
 [`BUILD_SHARED_LIBS`](https://cmake.org/cmake/help/latest/variable/BUILD_SHARED_LIBS.html)
-variable (e.g. `-DBUILD_SHARED_LIBS=ON`).
+variable (e.g. add `-DBUILD_SHARED_LIBS=ON` to the first cmake command above).
 
 ### Use in conjunction with [SigViewer](https://github.com/cbrnr/sigviewer)
 
@@ -52,8 +60,22 @@ Example: SigViewer using _libxdf_ to display signals in an XDF file.
 
 ### Use in other C++ applications
 
-1. Build libxdf from source or use a pre-built binary release
-2. Instantiate an object of the `Xdf` class and call the `load_xdf` method.
+1. Install a prebuilt binary release or build from source as above.
+2. For CMake users:
+    * In your project's CMakeLists.txt, use the following snippet:
+       ```CMake
+        find_package(libxdf REQUIRED
+            HINTS ${XDF_INSTALL_ROOT}
+            PATH_SUFFIXES share
+        )
+        target_link_libraries(${PROJECT_NAME}
+            PRIVATE
+            # ... other dependencies
+            XDF::xdf
+        )
+        ```
+    * If the libxdf package was installed or extracted into a folder other than a standard system library folder, you will have to pass a cmake command line argument to indicate where to find it: `-DXDF_INSTALL_ROOT=path/to/libxdf`
+3. In your source code, `#include "xdf.h"`, instantiate an object of the `Xdf` class and call the `load_xdf` method.
 
 Example:
 

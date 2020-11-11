@@ -10,3 +10,5 @@ CMakeSettings.json
 /build
 /out
 /.vs
+/cmake-build-debug
+/.idea
