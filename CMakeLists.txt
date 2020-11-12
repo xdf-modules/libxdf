@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.7)
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
 
 project(libxdf
-        VERSION 0.99.5
+        VERSION 0.99.6
         DESCRIPTION "C++ library for loading multimodal, multi-rate signals stored in XDF files."
         HOMEPAGE_URL https://xdf-modules.github.io/libxdf/)
 
@@ -69,3 +69,4 @@ elseif(UNIX)
     set(CPACK_DEBIAN_PACKAGE_GENERATE_SHLIBS ON)
 endif()
 include(CPack)
+
