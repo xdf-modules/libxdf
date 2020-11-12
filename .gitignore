@@ -4,6 +4,11 @@ CMakeFiles
 Makefile
 cmake_install.cmake
 CMakeLists.txt.user
+CMakeSettings.json
 *.a
 *.dylib
 /build
+/out
+/.vs
+/cmake-build-debug
+/.idea

@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.7)
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
 
-project(libxdf)
+project(libxdf
+        VERSION 0.99.6
+        DESCRIPTION "C++ library for loading multimodal, multi-rate signals stored in XDF files."
+        HOMEPAGE_URL https://xdf-modules.github.io/libxdf/)
 
 option(XDF_NO_SYSTEM_PUGIXML "Force use of bundled pugixml" OFF)
 
@@ -52,3 +55,18 @@ install(EXPORT "${PROJECT_NAME}Config"
 	NAMESPACE "XDF::"
 	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}
 )
+
+# set(CPACK_STRIP_FILES ON)
+# set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
+set(CPACK_PACKAGE_CONTACT "yl3842@columbia.edu")
+if(APPLE)
+    set(CPACK_GENERATOR TBZ2)
+elseif(WIN32)
+    set(CPACK_GENERATOR ZIP)
+elseif(UNIX)
+    set(CPACK_GENERATOR DEB)
+    set(CPACK_DEBIAN_LIBLSL_PACKAGE_SHLIBDEPS ON)
+    set(CPACK_DEBIAN_PACKAGE_GENERATE_SHLIBS ON)
+endif()
+include(CPack)
+

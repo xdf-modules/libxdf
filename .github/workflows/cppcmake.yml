@@ -1,0 +1,76 @@
+name: C/C++ CI
+
+on:
+  push:
+    tags:
+    - v*.*
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      matrix:
+        config:
+          - {name: "ubuntu-latest", os: ubuntu-latest, cmake_extra: ""}
+          - {name: "windows-x64", os: windows-latest, cmake_extra: "-T v140"}
+          - {name: "windows-32", os: windows-latest, cmake_extra: "-T v140 -A Win32"}
+          - {name: "macOS-latest", os: macOS-latest, cmake_extra: ""}
+      fail-fast: false
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: CMake version
+      run: cmake --version
+    
+    - name: Configure CMake
+      shell: bash
+      run: |
+           cmake -S . -B build ${{ matrix.config.cmake_extra }} -DCMAKE_INSTALL_PREFIX=${PWD}/build/install -DCPACK_PACKAGE_DIRECTORY=${PWD}/build/package -DCPACK_DEBIAN_PACKAGE_SHLIBDEPS=ON
+    
+    - name: Make
+      run: cmake --build build --config Release -j
+      
+    - name: Install
+      run: cmake --build build --config Release -j --target install
+      
+    - name: Package
+      run: cmake --build build --config Release -j --target package
+      
+    - name: Upload Artifact
+      uses: actions/upload-artifact@master
+      # if: "!startsWith(github.ref, 'refs/heads')"
+      with:
+        name: pkg-${{ matrix.config.name }}
+        path: |
+            build/package/*.deb
+            build/package/*.tar.bz2
+            build/package/*.zip
+
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Download Artifacts
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/download-artifact@v2
+      
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        # tag_name: ${{ github.ref }}  # ${{ github.ref }} is default
+        name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+        # body_path: CHANGELOG.txt
+        files: 'pkg-*/*'
