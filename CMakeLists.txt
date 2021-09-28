@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
-set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
+set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
 
 project(libxdf
         VERSION 0.99.6
