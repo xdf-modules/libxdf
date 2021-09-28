@@ -1,4 +1,4 @@
-# Libxdf - a C++ library for loading [XDF](https://github.com/sccn/xdf/wiki/Specifications "Extensible Data Format") files
+# Libxdf – a C++ library for loading [XDF](https://github.com/sccn/xdf/wiki/Specifications "Extensible Data Format") files
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![License](https://img.shields.io/github/license/xdf-modules/libxdf)](https://opensource.org/licenses/BSD-2-Clause)
