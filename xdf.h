@@ -26,6 +26,7 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <cstdint>
 
 /*! \class Xdf
  *
