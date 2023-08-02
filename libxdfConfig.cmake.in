@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(pugixml)
+
+if(NOT TARGET XDF::xdf)
+    include("${CMAKE_CURRENT_LIST_DIR}/libxdfTargets.cmake")
+endif()
