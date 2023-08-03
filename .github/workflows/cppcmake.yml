@@ -16,13 +16,13 @@ jobs:
       matrix:
         config:
           - {name: "ubuntu-latest", os: ubuntu-latest, cmake_extra: ""}
-          - {name: "windows-x64", os: windows-latest, cmake_extra: "-T v140"}
-          - {name: "windows-32", os: windows-latest, cmake_extra: "-T v140 -A Win32"}
+          - {name: "windows-x64", os: windows-latest, cmake_extra: "-T v143"}
+          - {name: "windows-32", os: windows-latest, cmake_extra: "-T v143 -A Win32"}
           - {name: "macOS-latest", os: macOS-latest, cmake_extra: ""}
       fail-fast: false
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: CMake version
       run: cmake --version
@@ -42,7 +42,7 @@ jobs:
       run: cmake --build build --config Release -j --target package
       
     - name: Upload Artifact
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v3
       # if: "!startsWith(github.ref, 'refs/heads')"
       with:
         name: pkg-${{ matrix.config.name }}
@@ -59,7 +59,7 @@ jobs:
     
     - name: Download Artifacts
       if: startsWith(github.ref, 'refs/tags/')
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       
     - name: Create Release
       if: startsWith(github.ref, 'refs/tags/')
