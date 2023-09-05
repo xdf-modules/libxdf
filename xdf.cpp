@@ -1002,7 +1002,7 @@ int Xdf::writeEventsToXDF(std::string file_path)
         }
     }
 
-    std::cout << "Succesfully wrote to XDF file." << std::endl;
+    std::cout << "Successfully wrote to XDF file." << std::endl;
 
     return 0; //Success
 }
