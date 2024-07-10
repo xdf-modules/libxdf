@@ -712,7 +712,7 @@ void Xdf::resample(int userSrate)
 //function of reading the length of each chunk
 uint64_t Xdf::readLength(std::ifstream &file)
 {
-    uint8_t bytes;
+    uint8_t bytes = 0;
     Xdf::readBin(file, &bytes);
     uint64_t length = 0;
 
