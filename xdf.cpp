@@ -612,8 +612,10 @@ void Xdf::syncTimeStamps()
         }
         else
         {
-            streams[k].info.first_timestamp = streams[k].time_stamps.front();
-            streams[k].info.last_timestamp = streams[k].time_stamps.back();
+            if (streams[k].time_stamps.size() > 0) {
+                streams[k].info.first_timestamp = streams[k].time_stamps.front();
+            	streams[k].info.last_timestamp = streams[k].time_stamps.back();
+            }	
         }
     }
 }
