@@ -178,41 +178,91 @@ int Xdf::load_xdf(std::string filename)
                 //read [NumSampleBytes], [NumSamples]
                 uint64_t numSamp = readLength(file);
                 
-                //if the time series is empty
-                 if (streams[index].time_series.empty())
-                   streams[index].time_series.resize(streams[index].info.channel_count);
-                   
-				auto tsBytes = readBin<uint8_t>(file);
-				double lastTimestamp = streams[index].stream.last_timestamp;
+                  //if the time series is empty
+                  if (streams[index].time_series.empty())
+                    streams[index].time_series.resize(streams[index].info.channel_count);
 
-                for (size_t i = 0; i < numSamp; i++) {
-                	double ts  = readTimestamp(file, lastTimestamp, streams[index].stream.sampling_interval);
-                	streams[index].time_stamps.emplace_back(ts);
-                	
-                	// Based on the channel format, read and store the data
-                	if(streams[index].info.channel_format.compare("float32")) {
-                		readData<float>(file, streams[index].stream.time_series, streams[index].stream.info.channel_count);
-                	} else if(streams[index].info.channel_format.compare("double64")) {
-                		readData<double>(file, streams[index].stream.time_series, streams[index].stream.info.channel_count);
-                	} else if(streams[index].info.channel_format.compare("int8")) {
-                		readData<int8_t>(file, streams[index].stream.time_series, streams[index].stream.info.channel_count);
-                	} else if(streams[index].info.channel_format.compare("int16")) {
-                		readData<int16_t>(file, streams[index].stream.time_series, streams[index].stream.info.channel_count);
-                	} else if(streams[index].info.channel_format.compare("int32")) {
-                		readData<int32_t>(file, streams[index].stream.time_series, streams[index].stream.info.channel_count);
-                	} else if(streams[index].info.channel_format.compare("int64")) {
-                		readData<int64_t>(file, streams[index].stream.time_series, streams[index].stream.info.channel_count);
-                	} else if(streams[index].info.channel_format.compare("string")) {
-                		auto length = Xdf::readLength(file);
+                  //for each sample
+                  for (size_t i = 0; i < numSamp; i++)
+                  {
+                    //read or deduce time stamp
+                    auto tsBytes = readBin<uint8_t>(file);
+                    
+                    double ts;  //temporary time stamp
+                    
+                    if (tsBytes == 8)
+                    {
+                      Xdf::readBin(file, &ts);
+                      streams[index].time_stamps.emplace_back(ts);
+                    }
+                    else
+                    {
+                      ts = streams[index].last_timestamp + streams[index].sampling_interval;
+                      streams[index].time_stamps.emplace_back(ts);
+                    }
+                    
+                    streams[index].last_timestamp = ts;
+                    
+                    if(streams[index].info.channel_format.compare("string") == 0) {
+                      
+                      std::vector<std::variant<int, float, double, int64_t, std::string>> data;
+                      
+                      for(int v = 0; v < streams[index].info.channel_count; ++v) {
+                        auto length = Xdf::readLength(file);
                         char* buffer = new char[length + 1];
                         file.read(buffer, length);
                         buffer[length] = '\0';
 
                         streams[index].time_series[v].emplace_back(buffer);
-                        delete[] buffer;
                       }
-                	}
-            }
+                    } else {
+                      //read the data
+                        if(streams[index].info.channel_format.compare("float32") == 0) {
+                          for (int v = 0; v < streams[index].info.channel_count; ++v)
+                          {
+                          float data;
+                          Xdf::readBin(file, &data);
+                          streams[index].time_series[v].emplace_back(data);
+                          }
+                        } else if(streams[index].info.channel_format.compare("double64") == 0) {
+                          for (int v = 0; v < streams[index].info.channel_count; ++v)
+                          {
+                            double data;
+                            Xdf::readBin(file, &data);
+                            streams[index].time_series[v].emplace_back(data);
+                          }
+                        } else if(streams[index].info.channel_format.compare("int8_t") == 0) {
+                          for (int v = 0; v < streams[index].info.channel_count; ++v)
+                          {
+                            int8_t data;
+                            Xdf::readBin(file, &data);
+                            streams[index].time_series[v].emplace_back(data);
+                          }
+                        } else if(streams[index].info.channel_format.compare("int16_t") == 0) {
+                          for (int v = 0; v < streams[index].info.channel_count; ++v)
+                          {
+                            int16_t data;
+                            Xdf::readBin(file, &data);
+                            streams[index].time_series[v].emplace_back(data);
+                          }
+                        } else if(streams[index].info.channel_format.compare("int32_t") == 0) {
+                          for (int v = 0; v < streams[index].info.channel_count; ++v)
+                          {
+                            int data;
+                            Xdf::readBin(file, &data);
+                            streams[index].time_series[v].emplace_back(data);
+                          }
+                        } else if(streams[index].info.channel_format.compare("int64_t") == 0) {
+                          for (int v = 0; v < streams[index].info.channel_count; ++v)
+                          {
+                            int64_t data;
+                            Xdf::readBin(file, &data);
+                            streams[index].time_series[v].emplace_back(data);
+                          }
+                        }
+                    }
+                  }
+              }
                 break;
             case 4: //read [ClockOffset] chunk
             {
@@ -423,6 +473,7 @@ void Xdf::resample(int userSrate)
     for (auto &stream : streams)
     {
         if (!stream.time_series.empty() &&
+            !stream.info.channel_format.compare("string") &&
                 stream.info.nominal_srate != userSrate &&
                 stream.info.nominal_srate != 0)
         {
@@ -908,28 +959,4 @@ template<typename T> T Xdf::readBin(std::istream& is, T* obj) {
 	if(!obj) obj = &dummy;
 	is.read(reinterpret_cast<char*>(obj), sizeof(T));
 	return *obj;
-}
-
-// Generic function to read data of any type
-template<typename T>
-void readData(std::ifstream &file, std::vector<std::vector<T>> &time_series, int channel_count) {
-    for (int v = 0; v < channel_count; ++v) {
-        T data;
-        Xdf::readBin(file, &data);
-        time_series[v].emplace_back(data);
-    }
-}
-
-double readTimestamp(std::ifstream &file, double &lastTimestamp, double samplingInterval) {
-    auto tsBytes = readBin<uint8_t>(file);
-    double ts;
-
-    if (tsBytes == 8) {
-        Xdf::readBin(file, &ts);
-    } else {
-        ts = lastTimestamp + samplingInterval;
-    }
-
-    lastTimestamp = ts;
-    return ts;
 }

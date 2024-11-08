@@ -313,23 +313,7 @@ private:
      * \return the read data
      */
     template<typename T> T readBin(std::istream& is, T* obj = nullptr);
-    
-    /*    
-    * \brief Template function to read data of any type and store it in the time_series container.
-    * \param file The input file stream to read the data from.
-    * \param time_series A reference to a 2D vector storing the time series data for each channel.
-    * \param channel_count The number of channels to read data for.
-    */
-    template<typename T> void readData(std::ifstream &file, std::vector<std::vector<T>> &time_series, int channel_count);
-    
-    /*!
-    * \brief Utility function to handle time stamp reading or deduction.
-    * \param file The input file stream from which the time stamp is read.
-    * \param lastTimestamp The last timestamp value to calculate the new timestamp if needed.
-    * \param samplingInterval The interval between samples, used for calculating the timestamp when necessary.
-    * \return The calculated or read timestamp.
-    */
-    double readTimestamp(std::ifstream &file, double &lastTimestamp, double samplingInterval)
+ 
 };
 
 #endif // XDF_H
