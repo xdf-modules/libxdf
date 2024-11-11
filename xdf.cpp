@@ -179,8 +179,9 @@ int Xdf::load_xdf(std::string filename)
                 uint64_t numSamp = readLength(file);
                 
                   //if the time series is empty
-                  if (streams[index].time_series.empty())
-                    streams[index].time_series.resize(streams[index].info.channel_count);
+                  if (Stream stream = streams[index]; stream.time_series.empty()) {
+                    stream.time_series.resize(stream.info.channel_count);
+                  }
 
                   //for each sample
                   for (size_t i = 0; i < numSamp; i++)
@@ -204,8 +205,6 @@ int Xdf::load_xdf(std::string filename)
                     streams[index].last_timestamp = ts;
                     
                     if(streams[index].info.channel_format.compare("string") == 0) {
-                      
-                      std::vector<std::variant<int, float, double, int64_t, std::string>> data;
                       
                       for(int v = 0; v < streams[index].info.channel_count; ++v) {
                         auto length = Xdf::readLength(file);
