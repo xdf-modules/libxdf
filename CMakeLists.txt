@@ -37,7 +37,7 @@ else()
 	target_include_directories(xdf PRIVATE pugixml)
 endif()
 
-target_compile_features(xdf PUBLIC cxx_std_11)
+target_compile_features(xdf PUBLIC cxx_std_20)
 set_target_properties(xdf PROPERTIES OUTPUT_NAME xdf PUBLIC_HEADER xdf.h)
 target_include_directories(xdf PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
@@ -68,7 +68,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxdfConfig.cmake
 
 # set(CPACK_STRIP_FILES ON)
 # set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
-set(CPACK_PACKAGE_CONTACT "yl3842@columbia.edu")
+set(CPACK_PACKAGE_CONTACT "yida.lin@outlook.com")
 if(APPLE)
     set(CPACK_GENERATOR TBZ2)
 elseif(WIN32)
