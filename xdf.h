@@ -175,7 +175,7 @@ public:
      *
      * \sa offsets
      */
-    //void detrend();
+    void detrend();
 
     /*!
      * \brief Delete the time stamps vectors when no longer needed to

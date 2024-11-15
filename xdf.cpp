@@ -228,7 +228,7 @@ int Xdf::load_xdf(std::string filename)
                                     streams[index].time_series[v].emplace_back(data);
                                 }
                             } else if(streams[index].info.channel_format.compare("double64") == 0)
-                            
+                            {
                                 for (int v = 0; v < streams[index].info.channel_count; ++v)
                                 {
                                     double data;
@@ -514,7 +514,7 @@ void Xdf::resample(int userSrate)
                 for(auto& val : row) {
                     std::visit([&inbuf, &read](auto&& arg) {
                         using T = std::decay_t<decltype(arg)>;
-                        if constexpr (std::is_arithmetic_v<t>) {
+                        if constexpr (std::is_arithmetic_v<T>) {
                             inbuf[read++] = static_cast<double>(arg); // Convert to double
                         }
                     }, val);
@@ -528,8 +528,8 @@ void Xdf::resample(int userSrate)
                     // Only replace numeric values
                     std::visit([&outbuf, &read](auto&& arg) {
                         using T = std::decay_t<decltype(arg)>;
-                        if constexpr (std::is_arithmetic_v<t>) {
-                            arg = static_cast<t>(outbuf[read++]);
+                        if constexpr (std::is_arithmetic_v<T>) {
+                            arg = static_cast<T>(outbuf[read++]);
                         }
                     }, val);
                 }
@@ -543,8 +543,8 @@ void Xdf::resample(int userSrate)
                     // Only replace numeric values
                     std::visit([&outbuf, &read](auto&& arg) {
                         using T = std::decay_t<decltype(arg)>;
-                        if constexpr (std::is_arithmetic_v<t>) {
-                            arg = static_cast<t>(outbuf[read++]);
+                        if constexpr (std::is_arithmetic_v<T>) {
+                            arg = static_cast<T>(outbuf[read++]);
                         }
                     }, val);
                 }
@@ -640,15 +640,15 @@ void Xdf::findMajSR()
     typedef int sampRate;
     typedef int numChannel;
     
-    std::vector<std::pair<samprate, numchannel> > srateMap; //<srate, numchannels> pairs of all the streams
+    std::vector<std::pair<sampRate, numChannel> > srateMap; //<srate, numchannels> pairs of all the streams
     
     //find out whether a sample rate already exists in srateMap
     for (auto const &stream : streams)
     {
         if (stream.info.nominal_srate != 0)
         {
-            std::vector<std::pair<samprate, numchannel> >::iterator it {std::find_if(srateMap.begin(), srateMap.end(),
-                                                                                     [&](const std::pair<samprate, numchannel> &element)
+            std::vector<std::pair<sampRate, numChannel> >::iterator it {std::find_if(srateMap.begin(), srateMap.end(),
+                                                                                     [&](const std::pair<sampRate, numChannel> &element)
                                                                                      {return element.first == stream.info.nominal_srate; })} ;
             //if it doesn't, add it here
             if (it == srateMap.end())
@@ -666,8 +666,8 @@ void Xdf::findMajSR()
         //search the srateMap to see which sample rate has the most channels
         int index (std::distance(srateMap.begin(),
                                  std::max_element(srateMap.begin(),srateMap.end(),
-                                                  [] (const std::pair<samprate, numchannel> &largest,
-                                                      const std::pair<samprate, numchannel> &first)
+                                                  [] (const std::pair<sampRate, numChannel> &largest,
+                                                      const std::pair<sampRate, numChannel> &first)
                                                   { return largest.second < first.second; })));
         
         majSR = srateMap[index].first; //the sample rate that has the most channels
@@ -962,7 +962,7 @@ void Xdf::loadDictionary()
     }
 }
 
-template<typename t> T Xdf::readBin(std::istream& is, T* obj) {
+template<typename T> T Xdf::readBin(std::istream& is, T* obj) {
     T dummy;
     if(!obj) obj = &dummy;
     is.read(reinterpret_cast<char*>(obj), sizeof(T));
