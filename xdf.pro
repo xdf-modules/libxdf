@@ -2,7 +2,7 @@ QT -= gui
 
 TARGET = xdf
 TEMPLATE = lib
-CONFIG += c++20 shared_and_static build_all
+CONFIG += c++17 shared_and_static build_all
 INCLUDEPATH += pugixml
 
 QMAKE_CFLAGS += -std=c99
