@@ -27,6 +27,7 @@
 #include <map>
 #include <set>
 #include <cstdint>
+#include <variant>
 
 /*! \class Xdf
  *
@@ -54,7 +55,7 @@ public:
     struct Stream
     {
         //! A 2D vector which stores the time series of a stream. Each row represents a channel.
-        std::vector<std::vector<float> > time_series;
+        std::vector<std::vector<std::variant<int, float, double, int64_t, std::string>>> time_series;
         std::vector<double> time_stamps; /*!< A vector to store time stamps. */
         std::string streamHeader;   /*!< Raw XML of stream header chunk. */
         std::string streamFooter;   /*!< Raw XML of stream footer chunk. */
@@ -312,6 +313,7 @@ private:
      * \return the read data
      */
     template<typename T> T readBin(std::istream& is, T* obj = nullptr);
+ 
 };
 
 #endif // XDF_H
