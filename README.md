@@ -26,17 +26,17 @@ If you want to use libXDF in C++ applications, follow these steps:
 1. Install a prebuilt binary release or build libXDF from source as described above.
 2. If you use CMake, add the following lines to your `CMakeLists.txt` to find and link against libXDF:
 
-       ```CMake
-        find_package(libxdf REQUIRED
-            HINTS ${XDF_INSTALL_ROOT}
-            PATH_SUFFIXES share
-        )
-        target_link_libraries(${PROJECT_NAME}
-            PRIVATE
-            # ... other dependencies
-            XDF::xdf
-        )
-        ```
+    ```CMake
+    find_package(libxdf REQUIRED
+        HINTS ${XDF_INSTALL_ROOT}
+        PATH_SUFFIXES share
+    )
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        # ... other dependencies
+        XDF::xdf
+    )
+    ```
 
     If `libxdf` was installed or extracted into a folder other than a standard system library folder, you will have to pass `-DXDF_INSTALL_ROOT=path/to/libxdf` to indicate where to find it.
 3. In your source code, `#include "xdf.h"`, instantiate an object of the `Xdf` class, and call the `load_xdf` method.
