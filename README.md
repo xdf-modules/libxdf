@@ -1,20 +1,22 @@
 # LibXDF – a C++ library for loading XDF files
 
 LibXDF is a cross-platform C++ library for loading multimodal signals stored in [XDF](https://github.com/sccn/xdf/wiki/Specifications  "Extensible Data Format") files.
-LibXDF is used in the biosignal viewing application [SigViewer](https://github.com/cbrnr/sigviewer) and the LSL application [XDFStreamer](https://github.com/labstreaminglayer/App-XDFStreamer/). It can also be integrated into other C++ applications.
+It is used in the biosignal viewing application [SigViewer](https://github.com/cbrnr/sigviewer) and the LSL application [XDFStreamer](https://github.com/labstreaminglayer/App-XDFStreamer/) and can also be integrated into other C++ applications.
 
 
 ## Quick start
 
-The source code and prebuilt binaries are available on the [releases page](https://github.com/Yida-Lin/libxdf/releases) (you may need to expand the list of assets to find the downloads).
+The source code and prebuilt binaries are available as [releases](https://github.com/Yida-Lin/libxdf/releases) (you may need to expand the list of assets to find the downloads).
 
 If a particular release does not have assets for your platform or they do not work for you for some other reason, then
 libXDF can be built with [CMake](https://cmake.org) using the following two commands:
 
-1. Configure: `cmake -S . -B build -DCMAKE_INSTALL_PREFIX=${PWD}/build/install -DCMAKE_BUILD_TYPE=Release`
-2. Build and install into `./build/install`: `cmake --build build -j --target install`
+```sh
+cmake -S . -B build -DCMAKE_INSTALL_PREFIX=${PWD}/build/install -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j --target install
+```
 
-This builds a static library in `./build/install`, but you can build a shared library by adding `-DBUILD_SHARED_LIBS=ON` to the first CMake command above.
+This builds and installs a static library in `./build/install`, but you can build a shared library by adding `-DBUILD_SHARED_LIBS=ON` to the first CMake command.
 
 
 ## Integrating into C++ applications
