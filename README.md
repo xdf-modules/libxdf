@@ -63,11 +63,6 @@ XDFdata.freeUpTimeStamps();
 ```
 
 
-## Documentation
-
-Detailed documentation is available [here](docs/html/class_xdf.html).
-
-
 ## References
 
 If you use libXDF in your project, please consider citing the following [conference paper](https://arxiv.org/abs/1708.06333):
