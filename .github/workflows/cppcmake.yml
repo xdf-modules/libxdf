@@ -3,12 +3,12 @@ name: C/C++ CI
 on:
   push:
     branches:
-    - main
+      - main
     tags:
-    - v*.*
+      - v*.*
   pull_request:
     branches:
-    - main
+      - main
 
 jobs:
   build:
@@ -19,41 +19,44 @@ jobs:
     strategy:
       matrix:
         config:
-          - {name: "ubuntu-latest", os: ubuntu-latest, cmake_extra: ""}
-          - {name: "windows-x64", os: windows-latest, cmake_extra: "-T v143"}
-          - {name: "windows-x32", os: windows-latest, cmake_extra: "-T v143 -A Win32"}
-          - {name: "macOS-latest", os: macos-latest, cmake_extra: ""}
+          - { name: "ubuntu-latest", os: ubuntu-latest, cmake_extra: "" }
+          - { name: "windows-x64", os: windows-latest, cmake_extra: "-T v143" }
+          - {
+              name: "windows-x32",
+              os: windows-latest,
+              cmake_extra: "-T v143 -A Win32",
+            }
+          - { name: "macOS-latest", os: macos-latest, cmake_extra: "" }
       fail-fast: false
-    
+
     steps:
-    - uses: actions/checkout@v6
-    
-    - name: CMake version
-      run: cmake --version
-    
-    - name: Configure CMake
-      shell: bash
-      run: |
-           cmake -S . -B build ${{ matrix.config.cmake_extra }} -DCMAKE_INSTALL_PREFIX=${PWD}/build/install -DCPACK_PACKAGE_DIRECTORY=${PWD}/build/package -DCPACK_DEBIAN_PACKAGE_SHLIBDEPS=ON
-    
-    - name: Make
-      run: cmake --build build --config Release -j
-      
-    - name: Install
-      run: cmake --build build --config Release -j --target install
-      
-    - name: Package
-      run: cmake --build build --config Release -j --target package
-      
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v7
-      with:
-        name: pkg-${{ matrix.config.name }}
-        path: |
+      - uses: actions/checkout@v6
+
+      - name: CMake version
+        run: cmake --version
+
+      - name: Configure CMake
+        shell: bash
+        run: |
+          cmake -S . -B build ${{ matrix.config.cmake_extra }} -DCMAKE_INSTALL_PREFIX=${PWD}/build/install -DCPACK_PACKAGE_DIRECTORY=${PWD}/build/package -DCPACK_DEBIAN_PACKAGE_SHLIBDEPS=ON
+
+      - name: Make
+        run: cmake --build build --config Release -j
+
+      - name: Install
+        run: cmake --build build --config Release -j --target install
+
+      - name: Package
+        run: cmake --build build --config Release -j --target package
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: pkg-${{ matrix.config.name }}
+          path: |
             build/package/*.deb
             build/package/*.tar.bz2
             build/package/*.zip
-
 
   release:
     needs: build
@@ -62,17 +65,16 @@ jobs:
     permissions:
       contents: write
     steps:
-    
-    - name: Download Artifacts
-      uses: actions/download-artifact@v8
+      - name: Download Artifacts
+        uses: actions/download-artifact@v8
 
-    - name: Create Release
-      id: create_release
-      uses: softprops/action-gh-release@v2
-      env:
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        name: ${{ github.ref_name }}
-        draft: false
-        prerelease: false
-        files: 'pkg-*/*'
+        with:
+          name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: "pkg-*/*"
