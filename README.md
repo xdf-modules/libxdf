@@ -38,7 +38,7 @@ If you want to use libXDF in C++ applications, follow these steps:
     )
     ```
 
-    If `libxdf` was installed or extracted into a folder other than a standard system library folder, you will have to pass `-DXDF_INSTALL_ROOT=path/to/libxdf` to indicate where to find it.
+    If `libxdf` is not in a standard system library location, pass `-DXDF_INSTALL_ROOT=path/to/libxdf` to specify its path.
 3. In your source code, `#include "xdf.h"`, instantiate an object of the `Xdf` class, and call the `load_xdf` method.
 
     For example:
