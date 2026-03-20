@@ -2,6 +2,8 @@ name: C/C++ CI
 
 on:
   push:
+    branches:
+    - main
     tags:
     - v*.*
   pull_request:
@@ -11,14 +13,16 @@ on:
 jobs:
   build:
     name: ${{ matrix.config.name }}
+    permissions:
+      contents: read
     runs-on: ${{ matrix.config.os }}
     strategy:
       matrix:
         config:
           - {name: "ubuntu-latest", os: ubuntu-latest, cmake_extra: ""}
           - {name: "windows-x64", os: windows-latest, cmake_extra: "-T v143"}
-          - {name: "windows-32", os: windows-latest, cmake_extra: "-T v143 -A Win32"}
-          - {name: "macOS-latest", os: macOS-latest, cmake_extra: ""}
+          - {name: "windows-x32", os: windows-latest, cmake_extra: "-T v143 -A Win32"}
+          - {name: "macOS-latest", os: macos-latest, cmake_extra: ""}
       fail-fast: false
     
     steps:
@@ -43,7 +47,6 @@ jobs:
       
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
-      # if: "!startsWith(github.ref, 'refs/heads')"
       with:
         name: pkg-${{ matrix.config.name }}
         path: |
@@ -54,23 +57,22 @@ jobs:
 
   release:
     needs: build
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     
     - name: Download Artifacts
-      if: startsWith(github.ref, 'refs/tags/')
       uses: actions/download-artifact@v8
-      
+
     - name: Create Release
-      if: startsWith(github.ref, 'refs/tags/')
       id: create_release
       uses: softprops/action-gh-release@v2
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        # tag_name: ${{ github.ref }}  # ${{ github.ref }} is default
-        name: Release ${{ github.ref }}
+        name: Release ${{ github.ref_name }}
         draft: false
         prerelease: false
-        # body_path: CHANGELOG.txt
         files: 'pkg-*/*'
