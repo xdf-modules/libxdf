@@ -47,12 +47,12 @@ If you want to use libXDF in C++ applications, follow these steps:
     #include "xdf.h"
 
     Xdf XDFdata;
-    XDFdata.load_xdf("C:/example.xdf");
+    XDFdata.load_xdf("example.xdf");
     ```
 
-Functions in libXDF must be called following a certain order. For instance, calling the `subtractMean` function before loading any data will result in undefined behavior.
+Functions must be called in a specific order. For example, calling `subtractMean` before loading data leads to undefined behavior.
 
-The recommended order is shown here:
+The recommended order is shown below:
 
 ```C++
 XDFdata.load_xdf(std::string filepath);
@@ -70,7 +70,7 @@ Detailed documentation is available [here](docs/html/class_xdf.html).
 
 ## References
 
-If you use this code in your project, please consider citing the following [conference paper](https://arxiv.org/abs/1708.06333):
+If you use libXDF in your project, please consider citing the following [conference paper](https://arxiv.org/abs/1708.06333):
 
 > Yida Lin, Clemens Brunner, Paul Sajda and Josef Faller. *SigViewer: Visualizing Multimodal Signals Stored in XDF (Extensible Data Format) Files.* The 39th Annual International Conference of the IEEE Engineering in Medicine and Biology Society.
 
