@@ -20,13 +20,8 @@ jobs:
       matrix:
         config:
           - { name: "ubuntu-latest", os: ubuntu-latest, cmake_extra: "" }
-          - { name: "windows-x64", os: windows-latest, cmake_extra: "-T v143" }
-          - {
-              name: "windows-x32",
-              os: windows-latest,
-              cmake_extra: "-T v143 -A Win32",
-            }
-          - { name: "macOS-latest", os: macos-latest, cmake_extra: "" }
+          - { name: "windows-latest", os: windows-latest, cmake_extra: "-T v143" }
+          - { name: "macos-latest", os: macos-latest, cmake_extra: "" }
       fail-fast: false
 
     steps:
@@ -65,6 +60,16 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Validate tag format
+        shell: bash
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Tag '$TAG' does not match the required vX.Y.Z format"
+            exit 1
+          fi
+
       - name: Download Artifacts
         uses: actions/download-artifact@v8
 

@@ -76,7 +76,7 @@ Releases are built and published automatically by [.github/workflows/cppcmake.ym
     git tag vX.Y.Z
     git push origin vX.Y.Z
     ```
-5. CI builds, packages, and publishes the release automatically — check the Actions and Releases tabs to confirm it succeeded.
+5. CI builds, packages, and publishes the release automatically — check the Actions and Releases tabs to confirm it succeeded. The release step rejects any tag that does not match `vX.Y.Z` (e.g. `v0.99.11`), so no release is created if the tag format is wrong.
 
 
 ## References
