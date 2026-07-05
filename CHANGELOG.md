@@ -1,3 +1,5 @@
+## [UNRELEASED] · YYYY-MM-DD
+
 ## [1.0.0] · 2026-07-05
 ### 🔧 Fixed
 - Read all channels of multi-channel string streams instead of only the first, which previously misaligned the file cursor and corrupted subsequent reads ([#58](https://github.com/xdf-modules/libxdf/pull/58) by [Alberto Barradas](https://github.com/abcsds))
