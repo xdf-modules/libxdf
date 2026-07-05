@@ -409,14 +409,22 @@ int Xdf::load_xdf(std::string filename)
                         else
                             ts = streams[index].last_timestamp + streams[index].sampling_interval;
 
-                        //read the event
-                        auto length = Xdf::readLength(file);
+                        //read one length-prefixed string per channel: a string
+                        //sample contains channel_count values, just like the
+                        //numeric branches above. Reading only a single string
+                        //here leaves the remaining channels' bytes unconsumed,
+                        //which desyncs the file cursor and breaks the next chunk.
+                        for (int v = 0; v < streams[index].info.channel_count; ++v)
+                        {
+                            //read the event
+                            auto length = Xdf::readLength(file);
 
-                        char* buffer = new char[length + 1];
-                        file.read(buffer, length);
-                        buffer[length] = '\0';
-                        eventMap.emplace_back(std::make_pair(buffer, ts), index);
-                        delete[] buffer;
+                            char* buffer = new char[length + 1];
+                            file.read(buffer, length);
+                            buffer[length] = '\0';
+                            eventMap.emplace_back(std::make_pair(buffer, ts), index);
+                            delete[] buffer;
+                        }
                         streams[index].last_timestamp = ts;
                     }
                 }
