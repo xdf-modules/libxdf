@@ -65,6 +65,16 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Validate tag format
+        shell: bash
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Tag '$TAG' does not match the required vX.Y.Z format"
+            exit 1
+          fi
+
       - name: Download Artifacts
         uses: actions/download-artifact@v8
 
