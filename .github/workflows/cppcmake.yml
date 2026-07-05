@@ -20,12 +20,7 @@ jobs:
       matrix:
         config:
           - { name: "ubuntu-latest", os: ubuntu-latest, cmake_extra: "" }
-          - { name: "windows-x64", os: windows-latest, cmake_extra: "-T v143" }
-          - {
-              name: "windows-x32",
-              os: windows-latest,
-              cmake_extra: "-T v143 -A Win32",
-            }
+          - { name: "windows-latest", os: windows-latest, cmake_extra: "-T v143" }
           - { name: "macOS-latest", os: macos-latest, cmake_extra: "" }
       fail-fast: false
 
