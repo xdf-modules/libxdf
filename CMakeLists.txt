@@ -3,7 +3,7 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET 11)
 
 project(
     libxdf
-    VERSION 0.99.10
+    VERSION 1.0.0
     DESCRIPTION "C++ library for loading multimodal, multi-rate signals stored in XDF files"
     HOMEPAGE_URL https://xdf-modules.github.io/libxdf/
 )
