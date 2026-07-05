@@ -63,6 +63,22 @@ XDFdata.freeUpTimeStamps();
 ```
 
 
+## Releasing
+
+Releases are built and published automatically by [.github/workflows/cppcmake.yml](.github/workflows/cppcmake.yml) whenever a tag matching `v*.*` is pushed: it builds and packages the library on Ubuntu, Windows (x64 and x32), and macOS, then attaches the resulting archives to a new GitHub release. To cut a new release:
+
+1. Bump the version in `project(... VERSION X.Y.Z ...)` in [CMakeLists.txt](CMakeLists.txt).
+2. Add an entry for the new version to [CHANGELOG.txt](CHANGELOG.txt).
+3. Commit and push these changes to `main`.
+4. Tag the commit following the `vX.Y.Z` scheme (e.g. `v0.99.11`) and push the tag:
+
+    ```sh
+    git tag vX.Y.Z
+    git push origin vX.Y.Z
+    ```
+5. CI builds, packages, and publishes the release automatically — check the Actions and Releases tabs to confirm it succeeded.
+
+
 ## References
 
 If you use libXDF in your project, please consider citing the following [conference paper](https://arxiv.org/abs/1708.06333):
