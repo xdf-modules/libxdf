@@ -422,7 +422,13 @@ int Xdf::load_xdf(std::string filename)
                             char* buffer = new char[length + 1];
                             file.read(buffer, length);
                             buffer[length] = '\0';
-                            eventMap.emplace_back(std::make_pair(buffer, ts), index);
+                            // Regular-rate marker streams emit a sample on every
+                            // tick, using an empty string as a "nothing happened"
+                            // placeholder; only non-empty samples are markers.
+                            // Irregular streams only emit samples when something
+                            // actually happens, so every sample is kept.
+                            if (streams[index].info.nominal_srate == 0 || length > 0)
+                                eventMap.emplace_back(std::make_pair(buffer, ts), index);
                             delete[] buffer;
                         }
                         streams[index].last_timestamp = ts;
