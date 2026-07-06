@@ -1,4 +1,4 @@
-## [UNRELEASED] · YYYY-MM-DD
+## [1.0.1] · 2026-07-06
 ### 🔧 Fixed
 - Ignore empty samples in regular-rate marker streams ([#61](https://github.com/xdf-modules/libxdf/pull/61) by [Clemens Brunner](https://github.com/cbrnr))
 
