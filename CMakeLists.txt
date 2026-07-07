@@ -3,7 +3,7 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET 11)
 
 project(
     libxdf
-    VERSION 1.0.1
+    VERSION 1.0.2
     DESCRIPTION "C++ library for loading multimodal, multi-rate signals stored in XDF files"
     HOMEPAGE_URL https://xdf-modules.github.io/libxdf/
 )
@@ -54,6 +54,11 @@ configure_package_config_file(
     ${CMAKE_CURRENT_BINARY_DIR}/libxdfConfig.cmake
     INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/libxdfConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
 install(
     TARGETS xdf
     EXPORT "${PROJECT_NAME}Targets"
@@ -68,7 +73,9 @@ install(
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 install(
-    FILES ${CMAKE_CURRENT_BINARY_DIR}/libxdfConfig.cmake
+    FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/libxdfConfig.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/libxdfConfigVersion.cmake
     COMPONENT ${PROJECT_NAME}
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
