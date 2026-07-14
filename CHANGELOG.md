@@ -1,4 +1,4 @@
-## [1.0.3] · YYYY-MM-DD
+## [1.0.3] · 2026-07-14
 ### 🔧 Fixed
 - `libxdfConfig.cmake` no longer unconditionally requires system `pugixml` for library consumers ([#64](https://github.com/xdf-modules/libxdf/pull/64) by [Clemens Brunner](https://github.com/cbrnr))
 
