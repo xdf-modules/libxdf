@@ -3,7 +3,7 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET 11)
 
 project(
     libxdf
-    VERSION 1.0.2
+    VERSION 1.0.3
     DESCRIPTION "C++ library for loading multimodal, multi-rate signals stored in XDF files"
     HOMEPAGE_URL https://xdf-modules.github.io/libxdf/
 )
@@ -34,10 +34,15 @@ find_package(pugixml 1.9 QUIET)
 if(TARGET pugixml AND NOT XDF_NO_SYSTEM_PUGIXML)
     message(STATUS "Using system pugixml")
     target_link_libraries(xdf PRIVATE pugixml)
+    # Consumers of the installed xdf target need to find_dependency(pugixml)
+    # too (see libxdfConfig.cmake.in), but only in this branch: the bundled
+    # copy below is compiled directly into libxdf and needs nothing external.
+    set(XDF_PUGIXML_FIND_DEPENDENCY "find_dependency(pugixml)")
 else()
     message(STATUS "Using bundled pugixml")
     target_sources(xdf PRIVATE pugixml/pugixml.cpp)
     target_include_directories(xdf PRIVATE pugixml)
+    set(XDF_PUGIXML_FIND_DEPENDENCY "")
 endif()
 
 target_compile_features(xdf PUBLIC cxx_std_20)
