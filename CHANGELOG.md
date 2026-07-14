@@ -1,3 +1,7 @@
+## [1.0.3] · YYYY-MM-DD
+### 🔧 Fixed
+- `libxdfConfig.cmake` no longer unconditionally requires system `pugixml` for library consumers ([Clemens Brunner](https://github.com/cbrnr))
+
 ## [1.0.2] · 2026-07-07
 ### ✨ Added
 - Add `libxdfConfigVersion.cmake` to allow CMake's `find_package()` to check for compatible versions ([#62](https://github.com/xdf-modules/libxdf/pull/62) by [Clemens Brunner](https://github.com/cbrnr))

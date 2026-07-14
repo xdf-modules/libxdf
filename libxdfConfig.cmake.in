@@ -2,7 +2,7 @@
 
 include(CMakeFindDependencyMacro)
 
-find_dependency(pugixml)
+@XDF_PUGIXML_FIND_DEPENDENCY@
 
 if(NOT TARGET XDF::xdf)
     include("${CMAKE_CURRENT_LIST_DIR}/libxdfTargets.cmake")
