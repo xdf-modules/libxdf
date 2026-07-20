@@ -1,4 +1,4 @@
-## [UNRELEASED] · YYYY-MM-DD
+## [1.0.4] · 2026-07-20
 ### 🔧 Fixed
 - Fix `xdf.h`/`xdf.cpp` license headers that still said GPL-3.0 despite the project being BSD-2-Clause since 2020, and add `THIRD-PARTY-NOTICES.md` documenting the separate licenses of bundled smarc (LGPL-3.0) and pugixml (MIT) ([#65](https://github.com/xdf-modules/libxdf/pull/65) by [Clemens Brunner](https://github.com/cbrnr))
 
