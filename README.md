@@ -86,3 +86,8 @@ If you use libXDF in your project, please consider citing the following [confere
 > Yida Lin, Clemens Brunner, Paul Sajda and Josef Faller. *SigViewer: Visualizing Multimodal Signals Stored in XDF (Extensible Data Format) Files.* The 39th Annual International Conference of the IEEE Engineering in Medicine and Biology Society.
 
 LibXDF depends on third party libraries [pugixml](http://pugixml.org/) for XML parsing and [Smarc](http://audio-smarc.sourceforge.net/) for resampling.
+
+
+## License
+
+LibXDF's own source code is licensed under the [BSD 2-Clause License](LICENSE). See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for details on the bundled third-party libraries.
